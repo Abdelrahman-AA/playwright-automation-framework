@@ -64,9 +64,9 @@ export class SearchHotelPage {
         await this.checkInDateField.fill(arrivalDate);
     }
 
-    async enterDepartureDate(departure: string) {
+    async enterDepartureDate(departureDate: string) {
         await this.checkOutDateField.clear();
-        await this.checkOutDateField.fill(departure);
+        await this.checkOutDateField.fill(departureDate);
     }
 
     async selectNumOfAdults(numOfAdults: string) {
@@ -101,23 +101,29 @@ export class SearchHotelPage {
     // #endregion
 
     // #region Flows
-async selectAndFillDataAndClickAnyButton(
-    location:string,
-    hotel:string,
-    roomType: string,
-    numOfRooms: string,
-    arrivalDate: string,
-    departure: string,
-    numOfAdults: string,
-    numOfChildren: string,
-    clickSearchButton: boolean,
-    clickResetButton: boolean
-){
-await this.selectLocation(location);
-await this.selectHotel(hotel);
-await this.selectRoomType(roomType);
-await this.selectNumOfRooms(numOfRooms);
-await
-}
+    async selectAndFillDataAndClickAnyButton(
+        location: string,
+        hotel: string,
+        roomType: string,
+        numOfRooms: string,
+        arrivalDate: string,
+        departureDate: string,
+        numOfAdults: string,
+        numOfChildren: string,
+        clickSearchButton?: boolean,
+        clickResetButton?: boolean
+    ) {
+        await this.selectLocation(location);
+        await this.selectHotel(hotel);
+        await this.selectRoomType(roomType);
+        await this.selectNumOfRooms(numOfRooms);
+        await this.enterArrivalDate(arrivalDate);
+        await this.enterDepartureDate(departureDate);
+        await this.selectNumOfAdults(numOfAdults);
+        await this.selectNumOfChildren(numOfChildren);
+
+        if (clickSearchButton) await this.clickSearchButton();
+        else if (clickResetButton) await this.clickResetButton();
+    }
     // #endregion
 }
