@@ -1,0 +1,14 @@
+ValidUser:
+ UserName:
+ FullName:
+ FirstName:
+ LastName:
+ Password:
+ RePassword:
+
+ValidBilling:
+ CCNum:
+ CCType:
+ CCExpireMonth:
+ CCExpireYear:
+ CCCsv:

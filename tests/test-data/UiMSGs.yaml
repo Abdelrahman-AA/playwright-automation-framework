@@ -1,0 +1,66 @@
+HomePage:
+  Errors:
+    EmptyUserName: "Enter Username"
+    EmptyPassword: "Enter Password"
+    NotVerifiedEmail: "Error: Pending Email Verification"
+    WrongUserNameOrPAssword: "Invalid Login details or Your Password might have expired"
+
+RegisterPage:
+  Errors:
+    EmptyUserName: "Username is Empty"
+    EmptyPassword: "Password is Empty"
+    EmptyConfirmPassword: "Confirm Password is Empty"
+    EmptyFullName: "Full Name is Empty"
+    EmptyEmail: "Email Address is Empty"
+    EmptyCaptcha: "Captcha is Empty"
+    NotAgreeTerms: "You must agree to Terms and Conditions"
+    ShortUserName: "Username must contain minimum 8 characters"
+    ShortPassword: "Password must contain minimum 6 characters"
+    ShortFullName: "Full Name must contain minimum 6 characters"
+    UsedUserName: "This username is Not available"
+    UsedEmail: "This Email Is Already Registered"
+    ConfirmPasswordNotMatch: "Passwords Do Not Match"
+    InvalidEmail: "Invalid email, Please enter correct email."
+    InvalidCaptcha: "Captcha is Invalid"
+  Success:
+    Registration: "An email verification code has been sent to your email address. Please check your email and verify your email address."
+
+SearchHotelPage:
+  Errors:
+    LocationNotSelected: "Please Select a Location"
+    CheckInDateAfterCheckOutDate: "Check-In Date shall be before than Check-Out Date"
+    CheckOutDateBeforeCheckInDate: "Check-Out Date shall be after than Check-In Date"
+    EmptyCheckInDate: "Please Select Check-In Date"
+    EmptyCheckOutDate: "Please Select Check-Out Date"
+    WrongDateFormat: "Date Should Be in That Format (dd/mm/yyyy)"
+    PassedDate: "This Date Has Passed, A More Recent Date Must Be Entered."
+
+SelectHotelPage:
+  Errors:
+    NoSelectedHotel: "Please Select a Hotel"
+
+BookHotelPage:
+  Errors:
+    EmptyFirstName: "Please Enter your First Name"
+    EmptyLastName: "Please Enter you Last Name"
+    EmptyBillingAddress: "Please Enter your Address"
+    ErrorCreditCard: "Please Enter your 16 Digit Credit Card Number"
+    CreditCardTypeNotSelected: "Please Select your Credit Card Type"
+    CreditCardExpiryDateNotSelectedMonth: "Please Select your Credit Card Expiry Month"
+    CreditCardExpiryDateNotSelectedYear: "Please Select your Credit Card Expiry Year"
+    EmptyCvvNum: "Please Enter your Credit Card CVV Number"
+
+ForgetPasswordPage:
+  Errors:
+    EmptyEmail: "Email Address is Empty"
+    NotRegisteredEmail: "Email Address does not exsit in database"
+    InvalidEmail: "Invalid email, Please enter correct email."
+
+ChangePasswordPage:
+  Errors:
+    WrongCurrentPassword: "Please enter correct current password!!!"
+    MismatchConfirmation: "New Password Not Match!!"
+    NewOrConfirmIsEmpty: "Please enter new password and its confirmation!!"
+    ShortPassWord: "Password must contain minimum 6 characters"
+  Success:
+      Updated: "Your Password is successfully updated!!!"

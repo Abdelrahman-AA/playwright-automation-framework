@@ -1,0 +1,8 @@
+Login: "https://adactinhotelapp.com/"
+SearchHotel: "https://adactinhotelapp.com/SearchHotel.php"
+SelectHotel: "https://adactinhotelapp.com/SelectHotel.php"
+BookHotel: "https://adactinhotelapp.com/BookingConfirm.php"
+BookedItinerary: "https://adactinhotelapp.com/BookedItinerary.php"
+CancelOrderById: "https://adactinhotelapp.com/BookedItinerary.php?cancel_order="
+ForgetPassword: "https://adactinhotelapp.com/ForgotPassword.php"
+ChangePassword: "https://adactinhotelapp.com/ChangePassword.php"
