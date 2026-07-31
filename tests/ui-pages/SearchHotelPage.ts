@@ -87,15 +87,15 @@ export class SearchHotelPage {
     // #endregion
 
     // #region Getters
-    getLocationSelectorErrorMSG() {
+    getLocationSelectorErrorMSG(): Locator {
         return this.errorMSGLocationSelector;
     }
 
-    getCheckInDateFieldErrorMSG() {
+    getCheckInDateFieldErrorMSG(): Locator {
         return this.errorMSGCheckInDateField;
     }
 
-    getCheckOutDateFieldErrorMSG() {
+    getCheckOutDateFieldErrorMSG(): Locator {
         return this.errorMSGCheckOutDateField;
     }
     // #endregion
@@ -110,7 +110,7 @@ export class SearchHotelPage {
         departureDate: string,
         numOfAdults: string,
         numOfChildren: string,
-        clickSearchButton: boolean=false,
+        clickSearchButton: boolean = false,
     ) {
         await this.selectLocation(location);
         await this.selectHotel(hotel);

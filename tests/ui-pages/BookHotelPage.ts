@@ -113,67 +113,67 @@ export class BookHotelPage {
     // #endregion
 
     // #region Getters
-    getHotelNameFixedField() {
+    getHotelNameFixedField(): Locator {
         return this.hotelNameFixedField;
     }
 
-    getLocationFixedField() {
+    getLocationFixedField(): Locator {
         return this.locationFixedField;
     }
 
-    getRoomTypeFixedField() {
+    getRoomTypeFixedField(): Locator {
         return this.roomTypeFixedField;
     }
 
-    getNumOfRoomsFixedField() {
+    getNumOfRoomsFixedField(): Locator {
         return this.numOfRoomsFixedField;
     }
 
-    getTotalDaysFixedField() {
+    getTotalDaysFixedField(): Locator {
         return this.totalDaysFixedField;
     }
 
-    getPricePerNightFixedField() {
+    getPricePerNightFixedField(): Locator {
         return this.pricePerNightFixedField;
     }
 
-    getTotalPriceFixedField() {
+    getTotalPriceFixedField(): Locator {
         return this.totalPriceFixedField;
     }
 
-    getGstFixedField() {
+    getGstFixedField(): Locator {
         return this.gstFixedField;
     }
 
-    getFinalBilledPriceFixedField() {
+    getFinalBilledPriceFixedField(): Locator {
         return this.finalBilledPriceFixedField;
     }
 
-    getFirstNameFieldErrorMSG() {
+    getFirstNameFieldErrorMSG(): Locator {
         return this.errorMSGFirstNameField;
     }
 
-    getLastNameFieldErrorMSG() {
+    getLastNameFieldErrorMSG(): Locator {
         return this.errorMSGLastNameField;
     }
 
-    getBillingAddressFieldErrorMSG() {
+    getBillingAddressFieldErrorMSG(): Locator {
         return this.errorMSGBillingAddressField;
     }
 
-    getCreditCardNumFieldErrorMSG() {
+    getCreditCardNumFieldErrorMSG(): Locator {
         return this.errorMSGCreditCardNumField;
     }
 
-    getCreditCardTypeSelectorErrorMSG() {
+    getCreditCardTypeSelectorErrorMSG(): Locator {
         return this.errorMSGCreditCardTypeSelector;
     }
 
-    getCreditCardExpiryDateSelectorsErrorMSG() {
+    getCreditCardExpiryDateSelectorsErrorMSG(): Locator {
         return this.errorMSGCreditCardExpiryDateSelectors;
     }
 
-    getCreditCardCvvFieldErrorMSG() {
+    getCreditCardCvvFieldErrorMSG(): Locator {
         return this.errorMSGCreditCardCvvField;
     }
     // #endregion

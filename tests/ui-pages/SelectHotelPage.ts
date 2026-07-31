@@ -39,8 +39,8 @@ export class SelectHotelPage {
     // #endregion
 
     // #region Getters
-    getContinueErrorMSG() {
-        this.errorMSGContinue;
+    getContinueErrorMSG(): Locator {
+        return this.errorMSGContinue;
     }
     // #endregion
 

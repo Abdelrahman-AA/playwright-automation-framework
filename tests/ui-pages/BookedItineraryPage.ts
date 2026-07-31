@@ -40,4 +40,79 @@ export class BookedItineraryPage {
         this.showAllAfterSearch = page.locator("//a[normalize-space()='Show all']");
     }
     // #endregion
+
+    // #region Actions
+    async enterOrderIdAtSearch(orderId: string) {
+        await this.searchOrderField.clear();
+        await this.searchOrderField.fill(orderId);
+    }
+
+    async clickSearchOrderButton() {
+        await this.searchOrderGoButton.click();
+    }
+
+    async checkToSelectAllBookedOrders() {
+        await this.tableCheckBoxSelectAll.click();
+    }
+
+    async checkSelectBookedOrderByTableIndex(index: string) {
+        const ids = await this.getTableRowsIDs();
+        await this.getTableCheckBoxForRows(ids[+index]).click();
+    }
+
+    async clickCancelButtonToBookedOrderAtTableByTableIndex(index: string) {
+        const ids = await this.getTableRowsIDs();
+        await this.getTableRowsCancelButton(ids[+index]).click();
+    }
+
+    async clickCancelSelectedBookedOrders() {
+        await this.cancelSelectedButton.click();
+    }
+
+    async clickSearchHotelButton() {
+        await this.searchHotelButton.click();
+    }
+
+    async clickLogoutButton() {
+        await this.logoutButton.click();
+    }
+
+    async clickShowAllAfterSearch() {
+        await this.showAllAfterSearch.click();
+    }
+    // #endregion
+
+    // #region Getters
+    async getTableRowsIDs(): Promise<string[]> {
+        await this.tableRowsIds.first().waitFor({ state: 'visible' });
+        return await this.tableRowsIds.evaluateAll((elements) =>
+            elements.map((el) => el.getAttribute('value') || '')
+        );
+    }
+
+    async getTableRowsCount(): Promise<number> {
+        return await this.itineraryTable.locator('tr').count();
+    }
+
+    getSearchResultMsg(): Locator {
+        return this.searchResultMsg;
+    }
+    // #endregion
+
+    // #region Flows
+    async searchBookedOrderByOrderID(orderId: string) {
+        await this.enterOrderIdAtSearch(orderId);
+        await this.clickSearchOrderButton();
+    }
+
+    async cancelBookedOrderIdByOrderId(orderId: string) {
+        await this.searchBookedOrderByOrderID(orderId);
+        await this.clickCancelButtonToBookedOrderAtTableByTableIndex("0");
+    }
+
+    async cancelAllBookedOrders() {
+        await this.checkToSelectAllBookedOrders();
+        await this.clickCancelSelectedBookedOrders();
+    }
+    // #endregion
 }

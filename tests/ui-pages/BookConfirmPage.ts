@@ -65,68 +65,68 @@ export class BookHotelPage {
     // #endregion
 
     // #region Getters
-    getHotelNameFixedField() {
+    getHotelNameFixedField(): Locator {
         return this.hotelNameFixedField;
     }
 
-    getLocationFixedField() {
-        this.locationFixedField;
+    getLocationFixedField(): Locator {
+        return this.locationFixedField;
     }
 
-    getRoomTypeFixedField() {
-        this.roomTypeFixedField;
+    getRoomTypeFixedField(): Locator {
+        return this.roomTypeFixedField;
     }
 
-    getArrivalDateFixedField() {
-        this.arrivalDateFixedField;
+    getArrivalDateFixedField(): Locator {
+        return this.arrivalDateFixedField;
     }
 
-    getDepartureDateFixedField() {
-        this.departureDateFixedField;
+    getDepartureDateFixedField(): Locator {
+        return this.departureDateFixedField;
     }
 
-    getTotalRoomsFixedField() {
-        this.totalRoomsFixedField;
+    getTotalRoomsFixedField(): Locator {
+        return this.totalRoomsFixedField;
     }
 
-    getAdultsPerRoomFixedField() {
-        this.adultsPerRoomFixedField;
+    getAdultsPerRoomFixedField(): Locator {
+        return this.adultsPerRoomFixedField;
     }
 
-    getChildrenPerRoomFixedField() {
-        this.childrenPerRoomFixedField;
+    getChildrenPerRoomFixedField(): Locator {
+        return this.childrenPerRoomFixedField;
     }
 
-    getPricePerNightFixedField() {
-        this.pricePerNightFixedField;
+    getPricePerNightFixedField(): Locator {
+        return this.pricePerNightFixedField;
     }
 
-    getTotalPriceFixedField() {
-        this.totalPriceFixedField;
+    getTotalPriceFixedField(): Locator {
+        return this.totalPriceFixedField;
     }
 
-    getGstFixedField() {
-        this.gstFixedField;
+    getGstFixedField(): Locator {
+        return this.gstFixedField;
     }
 
-    getFinalBillingPriceFixedField() {
-        this.finalBillingPriceFixedField;
+    getFinalBillingPriceFixedField(): Locator {
+        return this.finalBillingPriceFixedField;
     }
 
-    getFirstNameFixedField() {
-        this.firstNameFixedField;
+    getFirstNameFixedField(): Locator {
+        return this.firstNameFixedField;
     }
 
-    getLastNameFixedField() {
-        this.lastNameFixedField;
+    getLastNameFixedField(): Locator {
+        return this.lastNameFixedField;
     }
 
-    getBillingAddressFixedField() {
-        this.billingAddressFixedField;
+    getBillingAddressFixedField(): Locator {
+        return this.billingAddressFixedField;
     }
 
-    getOrderNoFixedField() {
-        this.orderNoFixedField;
+    getOrderNoFixedField(): Locator {
+        return this.orderNoFixedField;
     }
     // #endregion
 }

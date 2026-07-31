@@ -58,15 +58,15 @@ export class LoginPage {
     // #endregion
 
     // #region Getters
-    getUserNameFieldErrorMsg() {
+    getUserNameFieldErrorMsg(): Locator {
         return this.errorMSGUserNameField;
     }
 
-    getPasswordFieldErrorMsg() {
+    getPasswordFieldErrorMsg(): Locator {
         return this.errorMSGPasswordField;
     }
 
-    getLoginErrorMsg() {
+    getLoginErrorMsg(): Locator {
         return this.errorMSGLogin;
     }
     // #endregion
