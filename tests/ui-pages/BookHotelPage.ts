@@ -1,5 +1,4 @@
 import { Locator, Page } from "@playwright/test";
-import { uiURL } from "../test-data/testDataYamlReader";
 
 export class BookHotelPage {
 
