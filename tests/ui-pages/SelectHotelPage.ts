@@ -23,31 +23,32 @@ export class SelectHotelPage {
     // #endregion
 
     // #region Actions
-    async goToSelectHotelPage() {
-        await this.page.goto(uiURL.SelectHotelPage);
+    async selectRadioOptionByIndex(index: number) {
+        let radios: number = await this.tableRadio.count();
+        if (index <= radios && index >= 0)
+            await this.tableRadio.nth(index).click();
     }
 
-    async selectRadioOptionByIndex(index:number){
-        let radios:number=await this.tableRadio.count();
-        if(index<=radios&&index>=0)
-        await this.tableRadio.nth(index).click();
-    }
-
-    async clickContinueButton(){
+    async clickContinueButton() {
         await this.continueButton.click();
     }
 
-    async clickCancelButton(){
+    async clickCancelButton() {
         await this.cancelButton.click();
     }
     // #endregion
 
     // #region Getters
-
+    getContinueErrorMSG() {
+        this.errorMSGContinue;
+    }
     // #endregion
 
     // #region Flows
-
+    async selectRadioIndexAndClickContinue(index: number) {
+        await this.selectRadioIndexAndClickContinue(index);
+        await this.clickContinueButton();
+    }
     // #endregion
 
 }

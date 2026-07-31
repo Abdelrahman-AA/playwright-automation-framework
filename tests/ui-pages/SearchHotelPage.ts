@@ -101,7 +101,7 @@ export class SearchHotelPage {
     // #endregion
 
     // #region Flows
-    async selectAndFillDataAndClickAnyButton(
+    async selectAndFillDataAndOptionalClickSearch(
         location: string,
         hotel: string,
         roomType: string,
@@ -110,8 +110,7 @@ export class SearchHotelPage {
         departureDate: string,
         numOfAdults: string,
         numOfChildren: string,
-        clickSearchButton?: boolean,
-        clickResetButton?: boolean
+        clickSearchButton: boolean=false,
     ) {
         await this.selectLocation(location);
         await this.selectHotel(hotel);
@@ -123,7 +122,6 @@ export class SearchHotelPage {
         await this.selectNumOfChildren(numOfChildren);
 
         if (clickSearchButton) await this.clickSearchButton();
-        else if (clickResetButton) await this.clickResetButton();
     }
     // #endregion
 }
