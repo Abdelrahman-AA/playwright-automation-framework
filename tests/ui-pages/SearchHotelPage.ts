@@ -3,23 +3,23 @@ import { uiURL } from "../test-data/testDataYamlReader";
 
 export class SearchHotelPage {
 
-        // #region Locators
-        private readonly locationSelector :Locator;
-        private readonly hotelsSelector :Locator;
-        private readonly roomTypeSelector :Locator;
-        private readonly numbersOfRoomsSelector :Locator;
-        private readonly checkInDateField :Locator;
-        private readonly checkOutDateField :Locator;
-        private readonly adultPerRoomSelector :Locator;
-        private readonly childrenPerRoomSelector :Locator;
-        private readonly searchButton :Locator;
-        private readonly resetButton :Locator;
-        private readonly errorMSGLocationSelector :Locator;
-        private readonly errorMSGCheckInDateField :Locator;
-        private readonly errorMSGCheckOutDateField :Locator;
+    // #region Locators
+    private readonly locationSelector: Locator;
+    private readonly hotelsSelector: Locator;
+    private readonly roomTypeSelector: Locator;
+    private readonly numbersOfRoomsSelector: Locator;
+    private readonly checkInDateField: Locator;
+    private readonly checkOutDateField: Locator;
+    private readonly adultPerRoomSelector: Locator;
+    private readonly childrenPerRoomSelector: Locator;
+    private readonly searchButton: Locator;
+    private readonly resetButton: Locator;
+    private readonly errorMSGLocationSelector: Locator;
+    private readonly errorMSGCheckInDateField: Locator;
+    private readonly errorMSGCheckOutDateField: Locator;
     // #endregion
 
-        // #region Constructor
+    // #region Constructor
     constructor(public page: Page) {
         this.locationSelector = page.locator("#location");
         this.hotelsSelector = page.locator("#hotels");
@@ -38,6 +38,44 @@ export class SearchHotelPage {
     }
     // #endregion
 
-        // #region Actions
-        
+    // #region Actions
+    async goToSearchPage(){
+        await this.page.goto(uiURL.SearchHotelPage);
+    }
+
+    async selectLocation(location : string){
+        await this.locationSelector.selectOption({label: location });
+    }
+
+    async selectHotel(hotel: string){
+        await this.hotelsSelector.selectOption({label: hotel});
+    }
+
+    async selectRoomType(roomType:string){
+        await this.roomTypeSelector.selectOption({label:roomType});
+    }
+
+    async selectNumOfRooms(numOfRooms:string){
+        await this.numbersOfRoomsSelector.selectOption({label:numOfRooms});
+    }
+
+    async enterArrivalDate(arrivalDate:string){
+        await this.checkInDateField.clear();
+        await this.checkInDateField.fill(arrivalDate);
+    }
+
+       async enterDepartureDate(departure:string){
+        await this.checkOutDateField.clear();
+        await this.checkOutDateField.fill(departure);
+    }
+
+    async selectNumOfAdults(numOfAdults:string){
+        await this.adultPerRoomSelector.selectOption({label: numOfAdults});
+    }
+
+    async selectNumOfChildren(numOfChildren:string){
+        await this.childrenPerRoomSelector.selectOption({label:numOfChildren});
+    }
+        // #endregion
+
 }

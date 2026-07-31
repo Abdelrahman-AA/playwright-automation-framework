@@ -35,10 +35,12 @@ export class LoginPage {
     }
 
     async enterUserName(userName: string) {
+        await this.userNameField.clear();
         await this.userNameField.fill(userName);
     }
 
     async enterPassword(password: string) {
+        await this.passwordField.clear();
         await this.passwordField.fill(password);
     }
 
