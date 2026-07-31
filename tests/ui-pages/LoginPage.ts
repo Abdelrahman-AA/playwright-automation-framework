@@ -58,24 +58,24 @@ export class LoginPage {
     // #endregion
 
     // #region Getters
-    async getUserNameFieldErrorMsgText() {
+    getUserNameFieldErrorMsg() {
         return this.errorMSGUserNameField;
     }
 
-    async getPasswordFieldErrorMsgText() {
+    getPasswordFieldErrorMsg() {
         return this.errorMSGPasswordField;
     }
 
-    async getLoginErrorMsgText() {
+    getLoginErrorMsg() {
         return this.errorMSGLogin;
     }
     // #endregion
 
     // #region Flows
     async enterUserNameAndPasswordAndClickLoginButton(username: string, password: string) {
-      await  this.enterUserName(username);
-       await this.enterPassword(password);
-       await this.clickLoginButton();
+        await this.enterUserName(username);
+        await this.enterPassword(password);
+        await this.clickLoginButton();
     }
     // #endregion
 }

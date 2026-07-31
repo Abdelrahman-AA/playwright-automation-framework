@@ -39,43 +39,85 @@ export class SearchHotelPage {
     // #endregion
 
     // #region Actions
-    async goToSearchPage(){
+    async goToSearchPage() {
         await this.page.goto(uiURL.SearchHotelPage);
     }
 
-    async selectLocation(location : string){
-        await this.locationSelector.selectOption({label: location });
+    async selectLocation(location: string) {
+        await this.locationSelector.selectOption({ label: location });
     }
 
-    async selectHotel(hotel: string){
-        await this.hotelsSelector.selectOption({label: hotel});
+    async selectHotel(hotel: string) {
+        await this.hotelsSelector.selectOption({ label: hotel });
     }
 
-    async selectRoomType(roomType:string){
-        await this.roomTypeSelector.selectOption({label:roomType});
+    async selectRoomType(roomType: string) {
+        await this.roomTypeSelector.selectOption({ label: roomType });
     }
 
-    async selectNumOfRooms(numOfRooms:string){
-        await this.numbersOfRoomsSelector.selectOption({label:numOfRooms});
+    async selectNumOfRooms(numOfRooms: string) {
+        await this.numbersOfRoomsSelector.selectOption({ label: numOfRooms });
     }
 
-    async enterArrivalDate(arrivalDate:string){
+    async enterArrivalDate(arrivalDate: string) {
         await this.checkInDateField.clear();
         await this.checkInDateField.fill(arrivalDate);
     }
 
-       async enterDepartureDate(departure:string){
+    async enterDepartureDate(departure: string) {
         await this.checkOutDateField.clear();
         await this.checkOutDateField.fill(departure);
     }
 
-    async selectNumOfAdults(numOfAdults:string){
-        await this.adultPerRoomSelector.selectOption({label: numOfAdults});
+    async selectNumOfAdults(numOfAdults: string) {
+        await this.adultPerRoomSelector.selectOption({ label: numOfAdults });
     }
 
-    async selectNumOfChildren(numOfChildren:string){
-        await this.childrenPerRoomSelector.selectOption({label:numOfChildren});
+    async selectNumOfChildren(numOfChildren: string) {
+        await this.childrenPerRoomSelector.selectOption({ label: numOfChildren });
     }
-        // #endregion
 
+    async clickSearchButton() {
+        await this.searchButton.click();
+    }
+
+    async clickResetButton() {
+        await this.resetButton.click();
+    }
+    // #endregion
+
+    // #region Getters
+    getLocationSelectorErrorMSG() {
+        return this.errorMSGLocationSelector;
+    }
+
+    getCheckInDateFieldErrorMSG() {
+        return this.errorMSGCheckInDateField;
+    }
+
+    getCheckOutDateFieldErrorMSG() {
+        return this.errorMSGCheckOutDateField;
+    }
+    // #endregion
+
+    // #region Flows
+async selectAndFillDataAndClickAnyButton(
+    location:string,
+    hotel:string,
+    roomType: string,
+    numOfRooms: string,
+    arrivalDate: string,
+    departure: string,
+    numOfAdults: string,
+    numOfChildren: string,
+    clickSearchButton: boolean,
+    clickResetButton: boolean
+){
+await this.selectLocation(location);
+await this.selectHotel(hotel);
+await this.selectRoomType(roomType);
+await this.selectNumOfRooms(numOfRooms);
+await
+}
+    // #endregion
 }
