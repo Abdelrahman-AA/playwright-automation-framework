@@ -103,4 +103,103 @@ export class BookHotelPage {
         await this.creditCardCvvNumField.clear();
         await this.creditCardCvvNumField.fill(cvvNum);
     }
+
+    async clickBookButton() {
+        await this.bookNowButton.click();
+    }
+
+    async clickCancelButton() {
+        await this.cancelButton.click();
+    }
+    // #endregion
+
+    // #region Getters
+    getHotelNameFixedField() {
+        return this.hotelNameFixedField;
+    }
+
+    getLocationFixedField() {
+        return this.locationFixedField;
+    }
+
+    getRoomTypeFixedField() {
+        return this.roomTypeFixedField;
+    }
+
+    getNumOfRoomsFixedField() {
+        return this.numOfRoomsFixedField;
+    }
+
+    getTotalDaysFixedField() {
+        return this.totalDaysFixedField;
+    }
+
+    getPricePerNightFixedField() {
+        return this.pricePerNightFixedField;
+    }
+
+    getTotalPriceFixedField() {
+        return this.totalPriceFixedField;
+    }
+
+    getGstFixedField() {
+        return this.gstFixedField;
+    }
+
+    getFinalBilledPriceFixedField() {
+        return this.finalBilledPriceFixedField;
+    }
+
+    getFirstNameFieldErrorMSG() {
+        return this.errorMSGFirstNameField;
+    }
+
+    getLastNameFieldErrorMSG() {
+        return this.errorMSGLastNameField;
+    }
+
+    getBillingAddressFieldErrorMSG() {
+        return this.errorMSGBillingAddressField;
+    }
+
+    getCreditCardNumFieldErrorMSG() {
+        return this.errorMSGCreditCardNumField;
+    }
+
+    getCreditCardTypeSelectorErrorMSG() {
+        return this.errorMSGCreditCardTypeSelector;
+    }
+
+    getCreditCardExpiryDateSelectorsErrorMSG() {
+        return this.errorMSGCreditCardExpiryDateSelectors;
+    }
+
+    getCreditCardCvvFieldErrorMSG() {
+        return this.errorMSGCreditCardCvvField;
+    }
+    // #endregion
+
+    // #region Flows
+    async selectAndFillDataAndOptionalClickBookButton(
+        firstName: string,
+        lastName: string,
+        address: string,
+        ccNum: string,
+        ccType: string,
+        ccExMonth: string,
+        ccExYear: string,
+        cvvNum: string,
+        bookButton: boolean = false
+    ) {
+        await this.enterFirstName(firstName);
+        await this.enterLastName(lastName);
+        await this.enterBillingAddress(address);
+        await this.enterCreditCardNum(ccNum);
+        await this.selectCreditCardType(ccType);
+        await this.selectCreditCardExpiryDateMonth(ccExMonth);
+        await this.selectCreditCardExpiryDateYear(ccExYear);
+        await this.enterCreditCardCvvNum(cvvNum);
+        if (bookButton) await this.clickBookButton();
+    }
+    // #endregion
 }
