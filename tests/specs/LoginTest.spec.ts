@@ -180,6 +180,10 @@ test.describe("Negative Path Suite", { tag: "@negative" }, () => {
             await loginPage.enterPassword(validTestData.RegisteredAccount.Password);
         });
 
+        await test.step("Click Login Button", async () => {
+            await loginPage.clickLoginButton();
+        });
+
         await test.step("Login Error MSG", async () => {
             await expect.soft(loginPage.getLoginErrorMsg(), "Login error message should be visible for invalid data").toBeVisible();
             await expect.soft(loginPage.getLoginErrorMsg(), "Login error message text mismatch").toHaveText(uiMSGs.LoginPage.Errors.WrongUserNameOrPAssword);
