@@ -1,7 +1,7 @@
 import { APIRequestContext } from '@playwright/test';
 import { endPoints } from '../test-data/testDataYamlReader';
 
-export class CancelOrderId {
+export class CancelOrderService {
     private request: APIRequestContext;
 
     constructor(request: APIRequestContext) {

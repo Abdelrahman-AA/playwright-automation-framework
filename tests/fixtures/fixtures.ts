@@ -1,31 +1,41 @@
-import { test as baseTest, expect } from "@playwright/test";
+import { test as baseTest, expect } from "@playwright/test"
+import * as ApiServices from "./ApiServicesIndex"
 import * as UiPages from "./UiPagesIndex"
-// import { LoginPage } from "../ui-pages/LoginPage";
-// import { SearchHotelPage } from "../ui-pages/SearchHotelPage";
-// import { SelectHotelPage } from "../ui-pages/SelectHotelPage";
-// import { BookHotelPage } from "../ui-pages/BookHotelPage";
-// import { BookConfirmPage } from "../ui-pages/BookConfirmPage";
-// import { BookedItineraryPage } from "../ui-pages/BookedItineraryPage";
-// import { LogoutPage } from "../ui-pages/LogoutPage";
-// import { RegisterPage } from "../ui-pages/RegisterPage";
-// import { ForgetPasswordPage } from "../ui-pages/ForgetPasswordPage";
-// import { ChangePasswordPage } from "../ui-pages/ChangePasswordPage";
 
 type MyFixtures = {
+    loginService: ApiServices.LoginService;
+    searchHotelService: ApiServices.SearchHotelService
+    selectHotelService: ApiServices.SelectHotelService
+    bookHotelService: ApiServices.BookHotelService
+    getBookedItineraryService: ApiServices.GetBookedItineraryService
+    cancelOrderService: ApiServices.CancelOrderService
+    changePasswordService: ApiServices.ChangePasswordService
+    forgetPasswordService: ApiServices.ForgetPasswordService
+    getBookingOrderService: ApiServices.GetBookingOrderService
+
     loginPage: UiPages.LoginPage;
     searchHotelPage: UiPages.SearchHotelPage;
     selectHotelPage: UiPages.SelectHotelPage;
     bookHotelPage: UiPages.BookHotelPage;
     bookConfirmPage: UiPages.BookConfirmPage;
-    bookedItineraryPage:UiPages. BookedItineraryPage;
+    bookedItineraryPage: UiPages.BookedItineraryPage;
     logoutPage: UiPages.LogoutPage;
     registerPage: UiPages.RegisterPage;
     forgetPasswordPage: UiPages.ForgetPasswordPage;
     changePasswordPage: UiPages.ChangePasswordPage;
-
 }
 
 export const test = baseTest.extend<MyFixtures>({
+    loginService: async ({ request }, use) => await use(new ApiServices.LoginService(request)),
+    searchHotelService: async ({ request }, use) => await use(new ApiServices.SearchHotelService(request)),
+    selectHotelService: async ({ request }, use) => await use(new ApiServices.SelectHotelService(request)),
+    bookHotelService: async ({ request }, use) => await use(new ApiServices.BookHotelService(request)),
+    getBookedItineraryService: async ({ request }, use) => await use(new ApiServices.GetBookedItineraryService(request)),
+    cancelOrderService: async ({ request }, use) => await use(new ApiServices.CancelOrderService(request)),
+    changePasswordService: async ({ request }, use) => await use(new ApiServices.ChangePasswordService(request)),
+    forgetPasswordService: async ({ request }, use) => await use(new ApiServices.ForgetPasswordService(request)),
+    getBookingOrderService: async ({ request }, use) => await use(new ApiServices.GetBookingOrderService(request)),
+
     loginPage: async ({ page }, use) => await use(new UiPages.LoginPage(page)),
     searchHotelPage: async ({ page }, use) => await use(new UiPages.SearchHotelPage(page)),
     selectHotelPage: async ({ page }, use) => await use(new UiPages.SelectHotelPage(page)),

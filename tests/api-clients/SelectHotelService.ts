@@ -2,7 +2,7 @@ import { APIRequestContext } from '@playwright/test';
 import { endPoints } from '../test-data/testDataYamlReader';
 import { getDaysDifference } from './helpers/helpers';
 
-export class SelectHotel {
+export class SelectHotelService {
     private request: APIRequestContext;
 
     constructor(request: APIRequestContext) {

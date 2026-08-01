@@ -1,7 +1,7 @@
 import { APIRequestContext } from '@playwright/test';
 import { endPoints } from '../test-data/testDataYamlReader';
 
-export class ChangePassword {
+export class ChangePasswordService {
     private request: APIRequestContext;
 
     constructor(request: APIRequestContext) {

@@ -1,7 +1,7 @@
 // import { APIRequestContext } from '@playwright/test';
 // import { testData } from '../test-data/testDataYamlReader';
 
-// export class NewAccountRegistration {
+// export class NewAccountRegistrationService {
 //     private request: APIRequestContext;
 
 //     constructor(request: APIRequestContext) {
