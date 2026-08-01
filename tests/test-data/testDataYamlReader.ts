@@ -21,3 +21,8 @@ export const uiMSGs = yaml.load(uiMSGsFileContents) as any;
 const validDataFilePath = path.resolve(__dirname, 'ValidTestData.yaml');
 const validDataFileContents = fs.readFileSync(validDataFilePath, 'utf8');
 export const validTestData = yaml.load(validDataFileContents) as any;
+
+
+const inValidDataFilePath = path.resolve(__dirname, 'InValidTestData.yaml');
+const inValidDataFileContents = fs.readFileSync(inValidDataFilePath, 'utf8');
+export const inValidTestData = yaml.load(inValidDataFileContents) as any;
