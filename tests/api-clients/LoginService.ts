@@ -1,4 +1,4 @@
-import { APIRequestContext } from '@playwright/test';
+import { APIRequestContext, Page } from '@playwright/test';
 import { endPoints } from '../test-data/testDataYamlReader';
 
 export class LoginService {
@@ -9,7 +9,7 @@ export class LoginService {
   }
 
   async login(username: string, password: string) {
-    const response = await this.request.post((endPoints.Login), {
+    const response = await this.request.post((`https://${endPoints.Domain}`), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -23,12 +23,24 @@ export class LoginService {
     return response;
   }
 
-  async getLoginPhpSessId(username: string, password: string) {
+  async getLoginPhpSessionId(username: string, password: string) {
     await this.login(username, password);
 
     const storage = await this.request.storageState();
     const sessionCookie = storage.cookies.find(c => c.name === 'PHPSESSID');
 
     return sessionCookie ? sessionCookie.value : 'Not found';
+  }
+
+
+  async injectSessionId(page: Page, sessionID: string) {
+    await page.context().addCookies([
+      {
+        name: 'PHPSESSID',
+        value: sessionID,
+        domain: endPoints.Domain,
+        path: '/',
+      }
+    ]);
   }
 }
