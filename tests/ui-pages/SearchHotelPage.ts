@@ -1,7 +1,12 @@
 import { Locator, Page } from "@playwright/test";
 import { uiURL } from "../test-data/testDataYamlReader";
+import { StaticBarAtLogged } from "./Components/StaticBarAtLogged";
 
 export class SearchHotelPage {
+
+    // #region Components
+    readonly staticBar: StaticBarAtLogged;
+    // #endregion
 
     // #region Locators
     private readonly locationSelector: Locator;
@@ -21,6 +26,8 @@ export class SearchHotelPage {
 
     // #region Constructor
     constructor(public page: Page) {
+        this.staticBar = new StaticBarAtLogged(page);
+
         this.locationSelector = page.locator("#location");
         this.hotelsSelector = page.locator("#hotels");
         this.roomTypeSelector = page.locator("#room_type");

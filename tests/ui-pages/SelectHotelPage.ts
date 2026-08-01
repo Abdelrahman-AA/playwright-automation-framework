@@ -1,7 +1,12 @@
 import { Locator, Page } from "@playwright/test";
 import { uiURL } from "../test-data/testDataYamlReader";
+import { StaticBarAtLogged } from "./Components/StaticBarAtLogged";
 
 export class SelectHotelPage {
+
+    // #region Components
+    readonly staticBar: StaticBarAtLogged;
+    // #endregion
 
     // #region Locators
     private readonly resultTable: Locator;
@@ -13,6 +18,8 @@ export class SelectHotelPage {
 
     // #region Constructor
     constructor(public page: Page) {
+        this.staticBar = new StaticBarAtLogged(page);
+
         this.resultTable = page.locator("//td[@align='right']//table");
         this.tableRadio = page.locator(".//input[@type='radio']");
         this.continueButton = page.locator("#continue");

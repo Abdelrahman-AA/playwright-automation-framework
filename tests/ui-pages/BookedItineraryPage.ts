@@ -1,6 +1,11 @@
 import { Locator, Page } from "@playwright/test";
+import { StaticBarAtLogged } from "./Components/StaticBarAtLogged";
 
 export class BookedItineraryPage {
+
+    // #region Components
+    readonly staticBar: StaticBarAtLogged;
+    // #endregion
 
     // #region Locators
     private readonly searchOrderField: Locator;
@@ -22,11 +27,12 @@ export class BookedItineraryPage {
     private readonly logoutButton: Locator;
     private readonly searchResultMsg: Locator;
     private readonly showAllAfterSearch: Locator;
-
     // #endregion
 
     // #region Constructor
     constructor(public page: Page) {
+        this.staticBar = new StaticBarAtLogged(page);
+
         this.searchOrderField = page.locator("#order_id_text");
         this.searchOrderGoButton = page.locator("#search_hotel_id");
         this.itineraryTable = page.locator("td[align='right'] table");

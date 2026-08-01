@@ -1,7 +1,12 @@
 import { Locator, Page } from "@playwright/test";
 import { uiURL } from "../test-data/testDataYamlReader";
+import { StaticBarAtLogged } from "./Components/StaticBarAtLogged";
 
 export class ChangePasswordPage {
+
+    // #region Components
+    readonly staticBar: StaticBarAtLogged;
+    // #endregion
 
     // #region Locators
     private readonly currentPasswordField: Locator;
@@ -13,6 +18,8 @@ export class ChangePasswordPage {
 
     // #region Constructor
     constructor(public page: Page) {
+        this.staticBar = new StaticBarAtLogged(page);
+
         this.currentPasswordField = page.locator("#current_pass");
         this.newPasswordField = page.locator("#new_password");
         this.confirmPasswordField = page.locator("#re_password");

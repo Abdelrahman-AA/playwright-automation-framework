@@ -1,6 +1,11 @@
 import { Locator, Page } from "@playwright/test";
+import { StaticBarAtLogged } from "./Components/StaticBarAtLogged";
 
-export class BookHotelPage {
+export class BookConfirmPage {
+
+    // #region Components
+    readonly staticBar: StaticBarAtLogged;
+    // #endregion
 
     // #region Locators
     private readonly hotelNameFixedField: Locator;
@@ -27,6 +32,8 @@ export class BookHotelPage {
 
     // #region Constructor
     constructor(public page: Page) {
+        this.staticBar = new StaticBarAtLogged(page);
+
         this.hotelNameFixedField = page.locator("#hotel_name");
         this.locationFixedField = page.locator("#location");
         this.roomTypeFixedField = page.locator("#room_type");
