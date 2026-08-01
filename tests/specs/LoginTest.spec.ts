@@ -22,16 +22,11 @@ test.describe("Happy Path Suite", { tag: "@happy" }, () => {
 
 
     test('Verify Logging With Valid Data', async ({ page, loginPage, searchHotelPage }) => {
-        await test.step("Enter User Name", async () => {
-            await loginPage.enterUserName(validTestData.RegisteredAccount.UserName);
-        });
 
-        await test.step("Enter Password", async () => {
-            await loginPage.enterPassword(validTestData.RegisteredAccount.Password);
-        });
-
-        await test.step("Click Login", async () => {
-            await loginPage.clickLoginButton();
+        await test.step("Enter User Name and Password and Submit", async () => {
+            await loginPage.enterUserNameAndPasswordAndClickLoginButton(
+                validTestData.RegisteredAccount.UserName,
+                validTestData.RegisteredAccount.Password);
         });
 
         await test.step("Verify User Logging", async () => {
@@ -172,16 +167,10 @@ test.describe("Negative Path Suite", { tag: "@negative" }, () => {
 
     test('Verify Not Logging With Invalid Data', async ({ page, loginPage }) => {
 
-        await test.step("Enter Valid User Name", async () => {
-            await loginPage.enterUserName(inValidTestData.NotRegisteredAccount.UserName);
-        });
-
-        await test.step("Enter Valid Password", async () => {
-            await loginPage.enterPassword(inValidTestData.NotRegisteredAccount.Password);
-        });
-
-        await test.step("Click Login Button", async () => {
-            await loginPage.clickLoginButton();
+        await test.step("Enter InValid User Name and Password and Submit", async () => {
+            await loginPage.enterUserNameAndPasswordAndClickLoginButton(
+                inValidTestData.NotRegisteredAccount.UserName,
+                inValidTestData.NotRegisteredAccount.Password)
         });
 
         await test.step("Login Error MSG", async () => {
