@@ -4,7 +4,7 @@ LoginPage:
     EmptyUserName: "Enter Username"
     EmptyPassword: "Enter Password"
     NotVerifiedEmail: "Error: Pending Email Verification"
-    WrongUserNameOrPAssword: "Invalid Login details or Your Password might have expired"
+    WrongUserNameOrPAssword: "Invalid Login details or Your Password might have expired. Click here to reset your password"
 
 RegisterPage:
   Title: "Adactin.com - New User Registration"

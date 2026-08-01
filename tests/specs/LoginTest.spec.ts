@@ -173,11 +173,11 @@ test.describe("Negative Path Suite", { tag: "@negative" }, () => {
     test('Verify Not Logging With Invalid Data', async ({ page, loginPage }) => {
 
         await test.step("Enter Valid User Name", async () => {
-            await loginPage.enterUserName(validTestData.RegisteredAccount.UserName);
+            await loginPage.enterUserName(inValidTestData.NotRegisteredAccount.UserName);
         });
 
         await test.step("Enter Valid Password", async () => {
-            await loginPage.enterPassword(validTestData.RegisteredAccount.Password);
+            await loginPage.enterPassword(inValidTestData.NotRegisteredAccount.Password);
         });
 
         await test.step("Click Login Button", async () => {
