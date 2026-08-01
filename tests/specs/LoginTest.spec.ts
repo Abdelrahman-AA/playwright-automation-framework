@@ -39,7 +39,7 @@ test.describe("Happy Path Suite", { tag: "@happy" }, () => {
         });
 
         await test.step("Verify Search Hotel Page URL", async () => {
-            await expect(page, "Search Hotel Page URL does not match expected URL").toHaveURL(uiURL.SearchHotelPage);
+            await expect.soft(page, "Search Hotel Page URL does not match expected URL").toHaveURL(uiURL.SearchHotelPage);
         });
     });
 
@@ -76,4 +76,26 @@ test.describe("Happy Path Suite", { tag: "@happy" }, () => {
 
 
 test.describe("Negative Path Suite", { tag: "@negative" }, () => {
+
+    test.beforeEach("Navigate to Home Page", async ({ loginPage }) => {
+        await loginPage.goToLoginPage();
+    });
+
+
+        test('Verify Error Msg Appearance With Empty Login Data', async ({page,loginPage}) => {
+
+        await test.step("Click Login", async () => {
+            await loginPage.clickLoginButton();
+        });
+
+        await test.step("User Name Error MSG", async () => {
+            await expect.soft(loginPage.getUserNameFieldErrorMsg(),"Username error message should be visible for empty login").toBeVisible();
+            await expect.soft(loginPage.getUserNameFieldErrorMsg(),"Username error message text mismatch").toHaveText(uiMSGs.LoginPage.Errors.EmptyUserName)
+        });
+
+        await test.step("Verify Still At Login Page", async()=>{
+            await expect.soft(page,"Login Page Title does not match expected Title").toHaveTitle(uiMSGs.LoginPage.Title);
+            await expect.soft(page,"Login Page URL does not match expected URL").toHaveURL(uiURL.LoginPage);
+        })
+    });
 });
