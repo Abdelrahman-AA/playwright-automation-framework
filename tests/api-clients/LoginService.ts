@@ -1,13 +1,13 @@
 import { APIRequestContext } from '@playwright/test';
-import {endPoints} from '../test-data/testDataYamlReader';
+import { endPoints } from '../test-data/testDataYamlReader';
 
-export class Login {
+export class LoginService {
   private request: APIRequestContext;
 
   constructor(request: APIRequestContext) {
     this.request = request;
   }
-  
+
   async login(username: string, password: string) {
     const response = await this.request.post((endPoints.Login), {
       headers: {

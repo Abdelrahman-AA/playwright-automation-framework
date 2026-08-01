@@ -1,0 +1,10 @@
+export { LoginPage } from "../ui-pages/LoginPage";
+export { SearchHotelPage } from "../ui-pages/SearchHotelPage";
+export { SelectHotelPage } from "../ui-pages/SelectHotelPage";
+export { BookHotelPage } from "../ui-pages/BookHotelPage";
+export { BookConfirmPage } from "../ui-pages/BookConfirmPage";
+export { BookedItineraryPage } from "../ui-pages/BookedItineraryPage";
+export { LogoutPage } from "../ui-pages/LogoutPage";
+export { RegisterPage } from "../ui-pages/RegisterPage";
+export { ForgetPasswordPage } from "../ui-pages/ForgetPasswordPage";
+export { ChangePasswordPage } from "../ui-pages/ChangePasswordPage";
