@@ -25,16 +25,16 @@ type MyFixtures = {
 }
 
 export const test = baseTest.extend<MyFixtures>({
-    loginPage: async ({ page }, use) => { await use(new LoginPage(page)); },
-    searchHotelPage: async ({ page }, use) => { await use(new SearchHotelPage(page)); },
-    selectHotelPage: async ({ page }, use) => { await use(new SelectHotelPage(page)); },
-    bookHotelPage: async ({ page }, use) => { await use(new BookHotelPage(page)); },
-    bookConfirmPage: async ({ page }, use) => { await use(new BookConfirmPage(page)); },
-    bookedItineraryPage: async ({ page }, use) => { await use(new BookedItineraryPage(page)); },
-    logoutPage: async ({ page }, use) => { await use(new LogoutPage(page)); },
-    registerPage: async ({ page }, use) => { await use(new RegisterPage(page)); },
-    forgetPasswordPage: async ({ page }, use) => { await use(new ForgetPasswordPage(page)); },
-    changePasswordPage: async ({ page }, use) => { await use(new ChangePasswordPage(page)); },
+    loginPage: async ({ page }, use) =>  await use(new LoginPage(page)),
+    searchHotelPage: async ({ page }, use) =>  await use(new SearchHotelPage(page)),
+    selectHotelPage: async ({ page }, use) =>  await use(new SelectHotelPage(page)),
+    bookHotelPage: async ({ page }, use) => await use(new BookHotelPage(page)),
+    bookConfirmPage: async ({ page }, use) => await use(new BookConfirmPage(page)),
+    bookedItineraryPage: async ({ page }, use) =>  await use(new BookedItineraryPage(page)),
+    logoutPage: async ({ page }, use) =>  await use(new LogoutPage(page)),
+    registerPage: async ({ page }, use) =>  await use(new RegisterPage(page)),
+    forgetPasswordPage: async ({ page }, use) =>  await use(new ForgetPasswordPage(page)),
+    changePasswordPage: async ({ page }, use) =>  await use(new ChangePasswordPage(page))
 });
 
 export { expect } from '@playwright/test';
