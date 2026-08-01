@@ -1,20 +1,79 @@
-import { test, expect } from "../fixtures/fixtures"; 
-import { uiURL } from "../test-data/testDataYamlReader";
+import { test, expect } from "../fixtures/fixtures";
+import { uiURL,uiMSGs, validTestData } from "../test-data/testDataYamlReader";
 
 test.describe("Happy Path Suite", { tag: "@happy" }, () => {
 
-    test('Verify Home Page Opened', async ({ page, loginPage }) => {
-        
-        await test.step("Navigate to Home Page", async () => {
-            await loginPage.goToLoginPage();
-        });
+    test.beforeEach("Navigate to Home Page", async ({ loginPage }) => {
+        await loginPage.goToLoginPage();
+    });
+
+
+    test('Verify Home Page Opened', async ({ page }) => {
 
         await test.step("Verify Home Page URL", async () => {
-            await expect(page, "Home Page URL does not match expected URL.").toHaveURL(uiURL.LoginPage);
+            await expect.soft(page, "Home Page URL does not match expected URL").toHaveURL(uiURL.LoginPage);
+        });
+
+                        await test.step("Login Page Page Title",async()=>{
+            await expect.soft(page, "Login Page Title does not match expected Title").toHaveTitle(uiMSGs.LoginPage.Title);
         });
 
     });
 
-    
 
+    test('Verify Logging With Valid Data', async ({ page, loginPage, searchHotelPage }) => {
+        await test.step("Enter User Name", async () => {
+            await loginPage.enterUserName(validTestData.UserName);
+        });
+
+        await test.step("Enter Password", async () => {
+            await loginPage.enterPassword(validTestData.Password);
+        });
+
+        await test.step("Click Login", async () => {
+            await loginPage.clickLoginButton();
+        });
+
+        await test.step("Verify User Logging", async () => {
+            await expect.soft(searchHotelPage.staticBar.getHelloUserNameMSG(), "UserName Not Appear At Static Bar").toHaveValue(`Hello ${validTestData.UserName}!`);
+        });
+
+        await test.step("Verify Search Hotel Page URL", async () => {
+            await expect(page, "Search Hotel Page URL does not match expected URL").toHaveURL(uiURL.SearchHotelPage);
+        });
+    });
+
+
+    test('Verify Going To Register Page From Login Page',async({page,loginPage})=>{
+        await test.step("Click New User Register Here",async()=>{
+            await loginPage.clickRegisterCTA();
+        });
+
+        await test.step("Verify Register Page URL",async()=>{
+            await expect.soft(page, "Register Page URL does not match expected URL").toHaveURL(uiURL.RegisterPage);
+        });
+
+                await test.step("Verify Register Page Title",async()=>{
+            await expect.soft(page, "Register Page Title does not match expected Title").toHaveTitle(uiMSGs.RegisterPage.Title);
+        });
+    });
+
+
+        test('Verify Going To Forget Password Page From Login Page',async({page,loginPage})=>{
+        await test.step("Click Forgot Password?",async()=>{
+            await loginPage.clickForgetPasswordCTA();
+        });
+
+        await test.step("Verify Forget Password Page URL",async()=>{
+            await expect.soft(page, "Forget Password Page URL does not match expected URL").toHaveURL(uiURL.ForgetPasswordPage);
+        });
+
+                await test.step("Verify Forget Password Page Title",async()=>{
+            await expect.soft(page, "Forget Password Page Title does not match expected Title").toHaveTitle(uiMSGs.ForgetPasswordPage.Title);
+        });
+    });
+});
+
+
+test.describe("Negative Path Suite", { tag: "@negative" }, () => {
 });
