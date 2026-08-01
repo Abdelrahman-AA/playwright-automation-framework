@@ -28,6 +28,7 @@ RegisterPage:
     Registration: "An email verification code has been sent to your email address. Please check your email and verify your email address."
 
 SearchHotelPage:
+  Title: "Adactin.com - Search Hotel"
   Errors:
     LocationNotSelected: "Please Select a Location"
     CheckInDateAfterCheckOutDate: "Check-In Date shall be before than Check-Out Date"

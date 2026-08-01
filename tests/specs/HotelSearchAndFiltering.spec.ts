@@ -13,7 +13,18 @@ test.describe("Happy Path Suite", { tag: "@happy" }, () => {
 
     });
 
-    test('aa', async ({ searchHotelPage }) => {
+
+    test('Verify Going To Search Hotel Page', async ({ page, searchHotelPage }) => {
+        test.step("", async () => {
+            await expect.soft(searchHotelPage.staticBar.getHelloUserNameMSG(), "UserName Not Appear At Static Bar").toHaveValue(`Hello ${validTestData.RegisteredAccount.UserName}!`);
+            await expect.soft(page,).toHaveURL(uiURL.SearchHotelPage);
+            await expect.soft(page).toHaveTitle(uiMSGs.SearchHotelPage.Title)
+        });
+
+    });
+
+
+    test('Verify Going To Hotel Reservation Options When Valid Data', async ({ searchHotelPage }) => {
         await searchHotelPage.goToSearchPage();
         await searchHotelPage.selectAndFillDataAndOptionalClickSearch(
             validTestData.BookingData.Location,
