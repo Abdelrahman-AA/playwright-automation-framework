@@ -1,7 +1,8 @@
 import { test, expect } from "../fixtures/fixtures";
 import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/testDataYamlReader";
 
-test.describe("Happy Path Suite", { tag: "@happy" }, () => {
+
+test.describe("Happy Path Suite", { tag: "@happy @login" }, () => {
 
     test.beforeEach("Navigate to Home Page", async ({ loginPage }) => {
         await loginPage.goToLoginPage();
@@ -74,7 +75,7 @@ test.describe("Happy Path Suite", { tag: "@happy" }, () => {
 
 
 
-test.describe("Negative Path Suite", { tag: "@negative" }, () => {
+test.describe("Negative Path Suite", { tag: "@negative @login" }, () => {
 
     test.beforeEach("Navigate to Home Page", async ({ loginPage }) => {
         await loginPage.goToLoginPage();

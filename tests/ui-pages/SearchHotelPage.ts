@@ -96,9 +96,7 @@ export class SearchHotelPage {
     // #region Getters
     async getFormCurrentValues(): Promise<string[]> {
         let currentValues: string[] = [];
-        currentValues.push(await this.locationSelector.evaluate((node: HTMLSelectElement) => {
-            return node.options[node.selectedIndex].text;
-        }));
+        currentValues.push(await this.locationSelector.inputValue());
         currentValues.push(await this.hotelsSelector.inputValue());
         currentValues.push(await this.roomTypeSelector.inputValue());
         currentValues.push(await this.numbersOfRoomsSelector.inputValue());
