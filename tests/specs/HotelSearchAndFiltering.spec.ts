@@ -215,8 +215,6 @@ test.describe("Negative Path Suite", { tag: "@negative @HotelSearchAndFiltering"
 
         await test.step("", async () => {
             await searchHotelPage.enterArrivalDate(new Date().toLocaleDateString('en-GB'));
-            console.log(new Date().toLocaleDateString('en-GB'));
-            console.log(new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-GB'));
             await searchHotelPage.enterDepartureDate(new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-GB'));
         });
 
@@ -371,7 +369,7 @@ test.describe("Negative Path Suite", { tag: "@negative @HotelSearchAndFiltering"
     });
 
 
-        test("Verify Error MSG For Check In And Out Date For Wrong Entry Text", async ({ searchHotelPage }) => {
+    test("Verify Error MSG For Check In And Out Date For Wrong Entry Text", async ({ searchHotelPage }) => {
 
         await test.step("", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
@@ -397,7 +395,7 @@ test.describe("Negative Path Suite", { tag: "@negative @HotelSearchAndFiltering"
         });
     });
 
-            test("Verify Error MSG For Check In And Out Date For Wrong Entry Text Not Date", async ({ searchHotelPage }) => {
+    test("Verify Error MSG For Check In And Out Date For Wrong Entry Text Not Date", async ({ searchHotelPage }) => {
 
         await test.step("", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
