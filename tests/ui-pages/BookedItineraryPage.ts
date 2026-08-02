@@ -15,11 +15,11 @@ export class BookedItineraryPage {
 
     private getTableCheckBoxForRows(id: string) {
         return this.page.locator(`input[value='${id}']`);
-    }
+    };
 
     private getTableRowsCancelButton(id: string) {
         return this.page.locator(`btn_id_${id}`);
-    }
+    };
 
     private readonly tableRowsIds: Locator;
     private readonly cancelSelectedButton: Locator;

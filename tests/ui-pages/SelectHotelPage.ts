@@ -11,6 +11,43 @@ export class SelectHotelPage {
     // #region Locators
     private readonly resultTable: Locator;
     private readonly tableRadio: Locator;
+
+    private getRadioButtons(rowNum: number) {
+        return this.page.locator(`#radiobutton_${rowNum}`)
+    };
+
+    private getTableHotelNames(rowNum: number) {
+        return this.page.locator(`#hotel_name_${rowNum}`)
+    };
+
+    private getTableLocations(rowNum: number) {
+        return this.page.locator(`#location_${rowNum}`)
+    };
+
+    private getTableArrivalDates(rowNum: number) {
+        return this.page.locator(`#arr_date_${rowNum}`)
+    };
+
+    private getTableDepartureDates(rowNum: number) {
+        return this.page.locator(`#dep_date_${rowNum}`)
+    };
+
+    private getTableNumOfDays(rowNum: number) {
+        return this.page.locator(`#no_days_${rowNum}`)
+    };
+
+    private getTableRoomTypes(rowNum: number) {
+        return this.page.locator(`#room_type_${rowNum}`)
+    };
+
+    private getTablePricesPerNight(rowNum: number) {
+        return this.page.locator(`#price_night_${rowNum}`)
+    };
+
+    private getTableTotalPrices(rowNum: number) {
+        return this.page.locator(`#total_price_${rowNum}`)
+    };
+
     private readonly continueButton: Locator;
     private readonly cancelButton: Locator;
     private readonly errorMSGContinue: Locator;
@@ -31,9 +68,7 @@ export class SelectHotelPage {
 
     // #region Actions
     async selectRadioOptionByIndex(index: number) {
-        let radios: number = await this.tableRadio.count();
-        if (index <= radios && index >= 0)
-            await this.tableRadio.nth(index).click();
+        await this.getRadioButtons(index).click();
     }
 
     async clickContinueButton() {
@@ -46,6 +81,23 @@ export class SelectHotelPage {
     // #endregion
 
     // #region Getters
+    getResultTable(): Locator {
+        return this.resultTable;
+    }
+
+    async getResultTableRowsCount(): Promise<number> {
+        return await this.tableRadio.count();
+    }
+
+    async getTableHotelsNameResult():Promise<string[]> {
+        let hotels:string[]=[];
+        let rawsCount: number = await this.getResultTableRowsCount();
+        for (let i: number = 1; i <= rawsCount; i++) {
+            hotels.push(await this.getTableHotelNames(i).toString());
+        }
+        return hotels;
+    }
+
     getContinueErrorMSG(): Locator {
         return this.errorMSGContinue;
     }
