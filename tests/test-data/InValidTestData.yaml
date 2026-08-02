@@ -9,3 +9,14 @@ CCType: "VISA"
 CCExpireMonth: "December"
 CCExpireYear: "2030"
 CCCsv: "123"
+
+
+InValidBookingData:
+ PassedCheckInDate: "01/01/2025"
+ PassedCheckOutDate: "02/02/2025"
+ WrongEntryNumCheckInDate: "01012028"
+ WrongEntryNumCheckOutDate: "01022028"
+ WrongEntryTextCheckInDate: "01jan2028"
+ WrongEntryTextCheckOutDate: "01feb2029"
+ WrongEntryTextNotDateCheckInDate: "abcdeaaaa"
+ WrongEntryTextNotDateCheckOutDate: "dcbaeaaaa"

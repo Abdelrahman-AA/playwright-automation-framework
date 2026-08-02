@@ -2,18 +2,21 @@ import { test, expect } from "../fixtures/fixtures";
 import { getDaysDifference } from "../helpers/helpers";
 import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/testDataYamlReader";
 
+let empty: string = "";
+
+
+test.beforeEach("Login and Get Session ID", async ({ page, loginService, searchHotelPage }) => {
+    const sessionID: string = await loginService.getLoginPhpSessionId(
+        validTestData.RegisteredAccount.UserName,
+        validTestData.RegisteredAccount.Password);
+
+    await loginService.injectSessionId(page, sessionID);
+    await searchHotelPage.goToSearchPage();
+
+});
+
 
 test.describe("Happy Path Suite", { tag: "@happy @HotelSearchAndFiltering" }, () => {
-
-    test.beforeEach("Login and Get Session ID", async ({ page, loginService, searchHotelPage }) => {
-        const sessionID: string = await loginService.getLoginPhpSessionId(
-            validTestData.RegisteredAccount.UserName,
-            validTestData.RegisteredAccount.Password);
-
-        await loginService.injectSessionId(page, sessionID);
-        await searchHotelPage.goToSearchPage();
-
-    });
 
 
     test('Verify Going To Search Hotel Page', async ({ page, searchHotelPage }) => {
@@ -57,36 +60,37 @@ test.describe("Happy Path Suite", { tag: "@happy @HotelSearchAndFiltering" }, ()
             }
         });
 
-      await  test.step("Verify Room Type Values In Results", async () => {
+        await test.step("Verify Room Type Values In Results", async () => {
             for (const type of await selectHotelPage.getTableRoomTypesResult()) {
                 await expect.soft(type, "Room Type Values In Results Do Not Match").toEqual(validTestData.BookingData.RoomType);
             }
         });
 
-       await test.step("Verify Number Of Rooms Values In Results", async () => {
+        await test.step("Verify Number Of Rooms Values In Results", async () => {
             for (const num of await selectHotelPage.getTableNumOfRoomsResult()) {
                 await expect.soft(num, "Number Of Rooms Values In Results Do Not Match").toEqual((validTestData.BookingData.NumberOfRooms).split(" ")[0].trim());
             }
         });
 
-       await test.step("Verify Arrival Dates Values In Results", async () => {
+        await test.step("Verify Arrival Dates Values In Results", async () => {
             for (const num of await selectHotelPage.getTableArrivalDatesResult()) {
                 await expect.soft(num, "Arrival Dates Values In Results Do Not Match").toEqual(validTestData.BookingData.CheckInDate);
             }
         });
 
-       await test.step("Verify Departure Dates Values In Results", async () => {
+        await test.step("Verify Departure Dates Values In Results", async () => {
             for (const num of await selectHotelPage.getTableDepartureDatesResult()) {
                 await expect.soft(num, "Departure Dates Values In Results Do Not Match").toEqual(validTestData.BookingData.CheckOutDate);
             }
         });
 
-       await test.step("Verify Number Of Days Values In Results", async () => {
+        await test.step("Verify Number Of Days Values In Results", async () => {
             for (const num of await selectHotelPage.getTableNumOfDaysResult()) {
                 await expect.soft(num, "Number Of Days Values In Results Do Not Match").toEqual(getDaysDifference(validTestData.BookingData.CheckInDate, validTestData.BookingData.CheckOutDate));
             }
         });
     });
+
 
     test("Verify Reset All Fields When Click Reset", async ({ searchHotelPage }) => {
         let currentVal1: string[];
@@ -116,6 +120,306 @@ test.describe("Happy Path Suite", { tag: "@happy @HotelSearchAndFiltering" }, ()
 
         await test.step("Verify Form Values Are Reset", async () => {
             expect(currentVal1, "Form Values Not Reset").toEqual(currentVal2);
+        });
+    });
+});
+
+
+
+
+
+test.describe("Negative Path Suite", { tag: "@negative @HotelSearchAndFiltering" }, () => {
+
+
+    test("Verify Error MSG For No Selected Location", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getLocationSelectorErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getLocationSelectorErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.LocationNotSelected);
+        });
+    });
+
+
+    test("Verify Error MSG For Empty Check In Date", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+            await searchHotelPage.enterArrivalDate(empty);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.EmptyCheckInDate);
+        });
+    });
+
+
+    test("Verify Error MSG For Empty Check Out Date", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+            await searchHotelPage.enterDepartureDate(empty);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.EmptyCheckOutDate);
+        });
+    });
+
+
+    test("Verify Error MSG For Passed Check In And Out Dates", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.PassedCheckInDate);
+            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.PassedCheckOutDate);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.PassedDate);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.PassedDate);
+        });
+    });
+
+
+    test("Verify Error MSG For Check Out Date Is Before Check In Date Case If Today And Yesterday", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.enterArrivalDate(new Date().toLocaleDateString('en-GB'));
+            console.log(new Date().toLocaleDateString('en-GB'));
+            console.log(new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-GB'));
+            await searchHotelPage.enterDepartureDate(new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-GB'));
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
+        });
+    });
+
+
+    test("Verify Error MSG For Check Out Date Is Before Check In Date Case If Today And Tomorrow", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.enterArrivalDate(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB'));
+            await searchHotelPage.enterDepartureDate(new Date().toLocaleDateString('en-GB'));
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
+        });
+    });
+
+
+    test("Verify Error MSG For Check Out Date Is Before Check In Date Case If Tomorrow And After Tomorrow", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.enterArrivalDate(new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleDateString('en-GB'));
+            await searchHotelPage.enterDepartureDate(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB'));
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
+        });
+    });
+
+
+    test("Verify Error MSG For Check In And Out Dates Are The Same", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.enterArrivalDate(new Date(new Date().setDate(new Date().getDate() + 5)).toLocaleDateString('en-CA'));
+            await searchHotelPage.enterDepartureDate(new Date(new Date().setDate(new Date().getDate() + 5)).toLocaleDateString('en-CA'));
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
+        });
+    });
+
+
+    test("Verify Error MSG For Check In And Out Date For Wrong Format Date", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.enterArrivalDate(new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleDateString('en-CA'));
+            await searchHotelPage.enterDepartureDate(new Date(new Date().setDate(new Date().getDate() + 5)).toLocaleDateString('en-CA'));
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        });
+    });
+
+
+    test("Verify Error MSG For Check In And Out Date For Wrong Entry Numbers", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.WrongEntryNumCheckInDate);
+            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.WrongEntryNumCheckOutDate);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        });
+    });
+
+
+        test("Verify Error MSG For Check In And Out Date For Wrong Entry Text", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.WrongEntryTextCheckInDate);
+            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.WrongEntryTextCheckOutDate);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        });
+    });
+
+            test("Verify Error MSG For Check In And Out Date For Wrong Entry Text Not Date", async ({ searchHotelPage }) => {
+
+        await test.step("", async () => {
+            await searchHotelPage.selectLocation(validTestData.BookingData.Location);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.WrongEntryTextNotDateCheckInDate);
+            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.WrongEntryTextNotDateCheckOutDate);
+        });
+
+        await test.step("", async () => {
+            await searchHotelPage.clickSearchButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
         });
     });
 });
