@@ -94,6 +94,22 @@ export class SearchHotelPage {
     // #endregion
 
     // #region Getters
+    async getFormCurrentValues(): Promise<string[]> {
+        let currentValues: string[] = [];
+        currentValues.push(await this.locationSelector.evaluate((node: HTMLSelectElement) => {
+            return node.options[node.selectedIndex].text;
+        }));
+        currentValues.push(await this.hotelsSelector.inputValue());
+        currentValues.push(await this.roomTypeSelector.inputValue());
+        currentValues.push(await this.numbersOfRoomsSelector.inputValue());
+        currentValues.push(await this.checkInDateField.inputValue());
+        currentValues.push(await this.checkOutDateField.inputValue());
+        currentValues.push(await this.adultPerRoomSelector.inputValue());
+        currentValues.push(await this.childrenPerRoomSelector.inputValue());
+
+        return currentValues;
+    }
+
     getLocationSelectorErrorMSG(): Locator {
         return this.errorMSGLocationSelector;
     }

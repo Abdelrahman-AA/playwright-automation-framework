@@ -24,6 +24,10 @@ export class SelectHotelPage {
         return this.page.locator(`#location_${rowNum}`)
     };
 
+    private getTableNumOfRooms(rowNum: number) {
+        return this.page.locator(`#rooms_${rowNum}`)
+    };
+
     private getTableArrivalDates(rowNum: number) {
         return this.page.locator(`#arr_date_${rowNum}`)
     };
@@ -58,7 +62,7 @@ export class SelectHotelPage {
         this.staticBar = new StaticBarAtLogged(page);
 
         this.resultTable = page.locator("//td[@align='right']//table");
-        this.tableRadio = page.locator(".//input[@type='radio']");
+        this.tableRadio = page.locator("input[type='radio']");
         this.continueButton = page.locator("#continue");
         this.cancelButton = page.locator("#cancel");
 
@@ -86,16 +90,89 @@ export class SelectHotelPage {
     }
 
     async getResultTableRowsCount(): Promise<number> {
-        return await this.tableRadio.count();
+        const count = await this.tableRadio.count();
+        return count;
     }
 
-    async getTableHotelsNameResult():Promise<string[]> {
-        let hotels:string[]=[];
+    async getTableHotelsNameResult(): Promise<string[]> {
+        let hotels: string[] = [];
         let rawsCount: number = await this.getResultTableRowsCount();
-        for (let i: number = 1; i <= rawsCount; i++) {
-            hotels.push(await this.getTableHotelNames(i).toString());
+        for (let i: number = 0; i < rawsCount; i++) {
+            hotels.push(await this.getTableHotelNames(i).inputValue());
         }
         return hotels;
+    }
+
+    async getTableLocationsResult(): Promise<string[]> {
+        let locations: string[] = [];
+        let rawsCount: number = await this.getResultTableRowsCount();
+        for (let i: number = 0; i < rawsCount; i++) {
+            locations.push(await this.getTableLocations(i).inputValue());
+        }
+        return locations;
+    }
+
+    async getTableNumOfRoomsResult(): Promise<string[]> {
+        let numOfRooms: string[] = [];
+        let rawsCount: number = await this.getResultTableRowsCount();
+        for (let i: number = 0; i < rawsCount; i++) {
+            numOfRooms.push((await this.getTableNumOfRooms(i).inputValue()).split(" ")[0].trim());
+        }
+        return numOfRooms;
+    }
+
+    async getTableArrivalDatesResult(): Promise<string[]> {
+        let arrDates: string[] = [];
+        let rawsCount: number = await this.getResultTableRowsCount();
+        for (let i: number = 0; i < rawsCount; i++) {
+            arrDates.push(await this.getTableArrivalDates(i).inputValue());
+        }
+        return arrDates;
+    }
+
+    async getTableDepartureDatesResult(): Promise<string[]> {
+        let depDates: string[] = [];
+        let rawsCount: number = await this.getResultTableRowsCount();
+        for (let i: number = 0; i < rawsCount; i++) {
+            depDates.push(await this.getTableDepartureDates(i).inputValue());
+        }
+        return depDates;
+    }
+
+    async getTableNumOfDaysResult(): Promise<string[]> {
+        let numOfDays: string[] = [];
+        let rawsCount: number = await this.getResultTableRowsCount();
+        for (let i: number = 0; i < rawsCount; i++) {
+            numOfDays.push((await this.getTableNumOfDays(i).inputValue()).split(" ")[0].trim());
+        }
+        return numOfDays;
+    }
+
+    async getTableRoomTypesResult(): Promise<string[]> {
+        let roomTypes: string[] = [];
+        let rawsCount: number = await this.getResultTableRowsCount();
+        for (let i: number = 0; i < rawsCount; i++) {
+            roomTypes.push(await this.getTableRoomTypes(i).inputValue());
+        }
+        return roomTypes;
+    }
+
+    async getTablePricesPerNightResult(): Promise<string[]> {
+        let pricesPerNight: string[] = [];
+        let rawsCount: number = await this.getResultTableRowsCount();
+        for (let i: number = 0; i < rawsCount; i++) {
+            pricesPerNight.push(await this.getTablePricesPerNight(i).inputValue());
+        }
+        return pricesPerNight;
+    }
+
+    async getTableTotalPricesResult(): Promise<string[]> {
+        let totalPrices: string[] = [];
+        let rawsCount: number = await this.getResultTableRowsCount();
+        for (let i: number = 0; i < rawsCount; i++) {
+            totalPrices.push(await this.getTableTotalPrices(i).inputValue());
+        }
+        return totalPrices;
     }
 
     getContinueErrorMSG(): Locator {
@@ -105,7 +182,7 @@ export class SelectHotelPage {
 
     // #region Flows
     async selectRadioIndexAndClickContinue(index: number) {
-        await this.selectRadioIndexAndClickContinue(index);
+        await this.selectRadioOptionByIndex(index);
         await this.clickContinueButton();
     }
     // #endregion

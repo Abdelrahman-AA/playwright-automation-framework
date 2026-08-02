@@ -1,6 +1,6 @@
 import { APIRequestContext } from '@playwright/test';
 import { endPoints } from '../test-data/testDataYamlReader';
-import { getDaysDifference } from './helpers/helpers';
+import { getDaysDifference } from '../helpers/helpers';
 
 export class SearchHotelService {
     private request: APIRequestContext;
