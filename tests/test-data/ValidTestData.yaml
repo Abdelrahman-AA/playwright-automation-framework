@@ -11,6 +11,7 @@ CCType: "VISA"
 CCExpireMonth: "December"
 CCExpireYear: "2030"
 CCCsv: "123"
+BillingAddress: "1 Khalifa Al-Maamun St, Cairo, Egypt"
 
 BookingData:
  Location: "London"

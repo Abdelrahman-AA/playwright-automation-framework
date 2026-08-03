@@ -204,14 +204,28 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
     });
 
 
-    test("Verify Booking With Valid Data",async({selectHotelPage,bookHotelPage})=>{
+    test("Verify Booking With Valid Data", async ({ page, selectHotelPage, bookHotelPage }) => {
 
-                await test.step("", async () => {
+        await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
         });
 
-                        await test.step("", async () => {
-            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect.soft(page, "Booking Hotel Confirm Page URL Not Match").toHaveURL(uiURL.BookConfirmPage, { timeout: 60000 });
+            await expect.soft(page, "Booking Hotel Confirm Page Title Not Match").toHaveTitle(uiMSGs.BookingConfirmPage.Title)
         });
     });
 });
