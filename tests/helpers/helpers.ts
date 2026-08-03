@@ -14,3 +14,8 @@ export function getDaysDifference(dateString1: string, dateString2: string): str
     return diffInDays.toString();
 }
 
+
+export function getDateShiftingOfToday(shifting:number,format:string='en-GB'):string{
+    if(shifting===0) return new Date().toLocaleDateString(format);
+    else return (new Date(new Date().setDate(new Date().getDate() +shifting)).toLocaleDateString(format))
+}

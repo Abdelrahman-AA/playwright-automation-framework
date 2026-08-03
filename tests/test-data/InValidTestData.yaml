@@ -12,8 +12,6 @@ CCCsv: "123"
 
 
 InValidBookingData:
- PassedCheckInDate: "01/01/2025"
- PassedCheckOutDate: "02/02/2025"
  WrongEntryNumCheckInDate: "01012028"
  WrongEntryNumCheckOutDate: "01022028"
  WrongEntryTextCheckInDate: "01jan2028"

@@ -1,5 +1,5 @@
 import { test, expect } from "../fixtures/fixtures";
-import { getDaysDifference } from "../helpers/helpers";
+import { getDaysDifference, getDateShiftingOfToday } from "../helpers/helpers";
 import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/testDataYamlReader";
 
 let empty: string = "";
@@ -133,291 +133,291 @@ test.describe("Negative Path Suite", { tag: "@negative @HotelSearchAndFiltering"
 
     test("Verify Error MSG For No Selected Location", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Click Search Button Without Selecting Location", async () => {
             searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getLocationSelectorErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getLocationSelectorErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.LocationNotSelected);
+        await test.step("Verify Location Selector Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getLocationSelectorErrorMSG(), "Location Selector Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getLocationSelectorErrorMSG(), "Location Selector Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.LocationNotSelected);
         });
     });
 
 
     test("Verify Error MSG For Empty Check In Date", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location and Enter Empty Check In Date", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
             await searchHotelPage.enterArrivalDate(empty);
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.EmptyCheckInDate);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.EmptyCheckInDate);
         });
     });
 
 
     test("Verify Error MSG For Empty Check Out Date", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location and Enter Empty Check Out Date", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
             await searchHotelPage.enterDepartureDate(empty);
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.EmptyCheckOutDate);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.EmptyCheckOutDate);
         });
     });
 
 
     test("Verify Error MSG For Passed Check In And Out Dates", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
         });
 
-        await test.step("", async () => {
-            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.PassedCheckInDate);
-            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.PassedCheckOutDate);
+        await test.step("Enter Passed Check In and Check Out Dates", async () => {
+            await searchHotelPage.enterArrivalDate(getDateShiftingOfToday(-600));
+            await searchHotelPage.enterDepartureDate(getDateShiftingOfToday(-589));
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.PassedDate);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.PassedDate);
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.PassedDate);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.PassedDate);
         });
     });
 
 
     test("Verify Error MSG For Check Out Date Is Before Check In Date Case If Today And Yesterday", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
         });
 
-        await test.step("", async () => {
-            await searchHotelPage.enterArrivalDate(new Date().toLocaleDateString('en-GB'));
-            await searchHotelPage.enterDepartureDate(new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-GB'));
+        await test.step("Enter Check In and Check Out Dates", async () => {
+            await searchHotelPage.enterArrivalDate(getDateShiftingOfToday(0));
+            await searchHotelPage.enterDepartureDate(getDateShiftingOfToday(-1));
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
         });
     });
 
 
     test("Verify Error MSG For Check Out Date Is Before Check In Date Case If Today And Tomorrow", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
         });
 
-        await test.step("", async () => {
-            await searchHotelPage.enterArrivalDate(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB'));
-            await searchHotelPage.enterDepartureDate(new Date().toLocaleDateString('en-GB'));
+        await test.step("Enter Check In and Check Out Dates", async () => {
+            await searchHotelPage.enterArrivalDate(getDateShiftingOfToday(1));
+            await searchHotelPage.enterDepartureDate(getDateShiftingOfToday(0));
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
         });
     });
 
 
     test("Verify Error MSG For Check Out Date Is Before Check In Date Case If Tomorrow And After Tomorrow", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
         });
 
-        await test.step("", async () => {
-            await searchHotelPage.enterArrivalDate(new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleDateString('en-GB'));
-            await searchHotelPage.enterDepartureDate(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB'));
+        await test.step("Enter Check In and Check Out Dates", async () => {
+            await searchHotelPage.enterArrivalDate(getDateShiftingOfToday(2));
+            await searchHotelPage.enterDepartureDate(getDateShiftingOfToday(1));
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
         });
     });
 
 
     test("Verify Error MSG For Check In And Out Dates Are The Same", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
         });
 
-        await test.step("", async () => {
-            await searchHotelPage.enterArrivalDate(new Date(new Date().setDate(new Date().getDate() + 5)).toLocaleDateString('en-CA'));
-            await searchHotelPage.enterDepartureDate(new Date(new Date().setDate(new Date().getDate() + 5)).toLocaleDateString('en-CA'));
+        await test.step("Enter Check In and Check Out Dates", async () => {
+            await searchHotelPage.enterArrivalDate(getDateShiftingOfToday(5,'en-CA'));
+            await searchHotelPage.enterDepartureDate(getDateShiftingOfToday(5,'en-CA'));
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.CheckInDateAfterCheckOutDate);
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.CheckOutDateBeforeCheckInDate);
         });
     });
 
 
     test("Verify Error MSG For Check In And Out Date For Wrong Format Date", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
         });
 
-        await test.step("", async () => {
-            await searchHotelPage.enterArrivalDate(new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleDateString('en-CA'));
-            await searchHotelPage.enterDepartureDate(new Date(new Date().setDate(new Date().getDate() + 5)).toLocaleDateString('en-CA'));
+        await test.step("Enter Check In and Check Out Dates", async () => {
+            await searchHotelPage.enterArrivalDate(getDateShiftingOfToday(2,'en-CA'));
+            await searchHotelPage.enterDepartureDate(getDateShiftingOfToday(5,'en-CA'));
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
         });
     });
 
 
     test("Verify Error MSG For Check In And Out Date For Wrong Entry Numbers", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
         });
 
-        await test.step("", async () => {
+        await test.step("Enter Check In and Check Out Dates", async () => {
             await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.WrongEntryNumCheckInDate);
             await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.WrongEntryNumCheckOutDate);
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
         });
     });
 
 
     test("Verify Error MSG For Check In And Out Date For Wrong Entry Text", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
         });
 
-        await test.step("", async () => {
+        await test.step("Enter Check In and Check Out Dates", async () => {
             await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.WrongEntryTextCheckInDate);
             await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.WrongEntryTextCheckOutDate);
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
         });
     });
 
     test("Verify Error MSG For Check In And Out Date For Wrong Entry Text Not Date", async ({ searchHotelPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select Location", async () => {
             await searchHotelPage.selectLocation(validTestData.BookingData.Location);
         });
 
-        await test.step("", async () => {
+        await test.step("Enter Check In and Check Out Dates", async () => {
             await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.WrongEntryTextNotDateCheckInDate);
             await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.WrongEntryTextNotDateCheckOutDate);
         });
 
-        await test.step("", async () => {
+        await test.step("Click Search Button", async () => {
             await searchHotelPage.clickSearchButton();
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        await test.step("Verify Check In Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckInDateFieldErrorMSG(), "Check In Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
         });
 
-        await test.step("", async () => {
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toBeVisible();
-            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG()).toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
+        await test.step("Verify Check Out Date Field Error Message Is Visible", async () => {
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Not Visible").toBeVisible();
+            await expect.soft(searchHotelPage.getCheckOutDateFieldErrorMSG(), "Check Out Date Field Error Message Does Not Match").toHaveText(uiMSGs.SearchHotelPage.Errors.WrongDateFormat);
         });
     });
 });
