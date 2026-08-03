@@ -71,6 +71,10 @@ export class SelectHotelPage {
     // #endregion
 
     // #region Actions
+        async goToSelectPage() {
+        await this.page.goto(uiURL.SelectHotelPage);
+    }
+
     async selectRadioOptionByIndex(index: number) {
         await this.getRadioButtons(index).click();
     }

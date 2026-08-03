@@ -5,7 +5,7 @@ import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/test
 let empty: string = "";
 
 
-test.beforeEach("Login and Get Session ID", async ({ page, loginService, searchHotelPage }) => {
+test.beforeEach("Login and Get Session ID Then Open Search Page", async ({ page, loginService, searchHotelPage }) => {
     const sessionID: string = await loginService.getLoginPhpSessionId(
         validTestData.RegisteredAccount.UserName,
         validTestData.RegisteredAccount.Password);
@@ -16,7 +16,7 @@ test.beforeEach("Login and Get Session ID", async ({ page, loginService, searchH
 });
 
 
-test.describe("Happy Path Suite", { tag: "@happy @HotelSearchAndFiltering" }, () => {
+test.describe("Happy Path Suite", { tag: "@happy @Hotel-Search&Filtering" }, () => {
 
 
     test('Verify Going To Search Hotel Page', async ({ page, searchHotelPage }) => {
@@ -128,7 +128,7 @@ test.describe("Happy Path Suite", { tag: "@happy @HotelSearchAndFiltering" }, ()
 
 
 
-test.describe("Negative Path Suite", { tag: "@negative @HotelSearchAndFiltering" }, () => {
+test.describe("Negative Path Suite", { tag: "@negative @Hotel-Search&Filtering" }, () => {
 
 
     test("Verify Error MSG For No Selected Location", async ({ searchHotelPage }) => {

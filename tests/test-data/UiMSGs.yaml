@@ -39,10 +39,12 @@ SearchHotelPage:
     PassedDate: "This Date Has Passed, A More Recent Date Must Be Entered."
 
 SelectHotelPage:
+  Title: "Adactin.com - Select Hotel"
   Errors:
     NoSelectedHotel: "Please Select a Hotel"
 
 BookHotelPage:
+  Title: "Adactin.com - Book A Hotel"
   Errors:
     EmptyFirstName: "Please Enter your First Name"
     EmptyLastName: "Please Enter you Last Name"
@@ -52,6 +54,12 @@ BookHotelPage:
     CreditCardExpiryDateNotSelectedMonth: "Please Select your Credit Card Expiry Month"
     CreditCardExpiryDateNotSelectedYear: "Please Select your Credit Card Expiry Year"
     EmptyCvvNum: "Please Enter your Credit Card CVV Number"
+
+BookingConfirmPage:
+  Title: "Adactin.com - Hotel Booking Confirmation"
+
+BookedItineraryPage:
+  Title: "Adactin.com - Select Hotel"  ##as title name at website 
 
 ForgetPasswordPage:
   Title: "Adactin.com - Forgot Password"

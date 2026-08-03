@@ -17,13 +17,17 @@ export class SearchHotelService {
         arrivalDate: string,
         departureDate: string,
         numAdults: string,
-        numChildren: string) {
+        numChildren: string,
+        sessionID: string) {
 
-        let diff: number = getDaysDifference(arrivalDate, departureDate);
+        let diff: string = getDaysDifference(arrivalDate, departureDate);
 
-        const response = await this.request.post((endPoints.SearchHotel), {
+        const response = await this.request.post((`https://${endPoints.Domain}${endPoints.SearchHotel}`), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Cookie': `PHPSESSID=${sessionID}`,
+                'Referer': `https://${endPoints.Domain}${endPoints.SearchHotel}`,
+                'Origin': `https://${endPoints.Domain}`
             },
             form: {
                 location: location,
@@ -35,7 +39,7 @@ export class SearchHotelService {
                 adult_room: numAdults,
                 child_room: numChildren,
                 Submit: "Search",
-                datepick_diff: diff.toString()
+                datepick_diff: diff
             }
         });
 
