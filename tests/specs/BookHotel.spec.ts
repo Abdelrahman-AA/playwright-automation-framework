@@ -3,7 +3,7 @@ import { getDaysDifference } from "../helpers/helpers";
 import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/testDataYamlReader";
 
 
-test.beforeEach("Login and Get Session ID Then Select Hotel And Open Select Page", async ({ page, loginService, searchHotelPage}) => {
+test.beforeEach("Login and Get Session ID Then Select Hotel And Open Select Page", async ({ page, loginService, searchHotelPage }) => {
     const sessionID: string = await loginService.getLoginPhpSessionId(
         validTestData.RegisteredAccount.UserName,
         validTestData.RegisteredAccount.Password);
@@ -38,7 +38,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
     });
 
 
-    test.only("Verify Select Hotel Table Of Options Against Searched Data", async ({ selectHotelPage }) => {
+    test("Verify Select Hotel Table Of Options Against Searched Data", async ({ selectHotelPage }) => {
 
         await test.step("", async () => {
             const locations = await selectHotelPage.getTableLocationsResult()
@@ -76,4 +76,67 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
     });
 
+
+    test("Verify Return To Search Form When Click Cancel From Select Page", async ({ page, searchHotelPage, selectHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.clickCancelButton();
+        });
+
+        await test.step("Check Opening Search Hotel Page", async () => {
+            await expect.soft(page, "Search Hotel Page URL Not Match").toHaveURL(uiURL.SearchHotelPage);
+            await expect.soft(page, "Search Hotel Page Title Not Match").toHaveTitle(uiMSGs.SearchHotelPage.Title)
+        });
+    });
+
+
+    test("Verify Going To Book Hotel Page After Select Hotel And Click Continue", async ({ page, selectHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("Check Opening Book Hotel Page", async () => {
+            await expect.soft(page, "Book Hotel Page URL Not Match").toHaveURL(uiURL.BookHotelPage);
+            await expect.soft(page, "Book Hotel Page Title Not Match").toHaveTitle(uiMSGs.BookHotelPage.Title)
+        });
+    });
+
+
+    test("Verify Return To Select Page When Click Cancel From Book Hotel Page", async ({ page, selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickCancelButton();
+        });
+
+        await test.step("Check Opening Select Hotel Page", async () => {
+            await expect.soft(page, "Select Hotel Page URL Not Match").toHaveURL(uiURL.SelectHotelPage);
+            await expect.soft(page, "Select Hotel Page Title Not Match").toHaveTitle(uiMSGs.SelectHotelPage.Title)
+        });
+    });
+
+});
+
+
+
+
+
+
+
+test.describe("Negative Path Suite", { tag: "@negative @Book-Hotel" }, () => {
+
+    test("Verify Error MSG When Click Continue Without Select Hotel", async ({ selectHotelPage }) => {
+        await test.step("", async () => {
+            await selectHotelPage.clickContinueButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(selectHotelPage.getContinueErrorMSG()).toBeVisible();
+            await expect.soft(selectHotelPage.getContinueErrorMSG()).toHaveText(uiMSGs.SelectHotelPage.Errors.NoSelectedHotel);
+        });
+    });
 });
