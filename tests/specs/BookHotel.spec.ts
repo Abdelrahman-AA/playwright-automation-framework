@@ -77,6 +77,23 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
     });
 
 
+    test("Verify Total Price Before GST Is Number Of Days by Price Per Night And Add ten", async ({ selectHotelPage, bookHotelPage }) => {
+        let pricePerNight: string;
+        let totalPrice: string;
+
+        await test.step("", async () => {
+            let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
+            pricePerNight = pricePerNightList[0];
+            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
+            totalPrice = totalPriceList[0];
+        });
+
+        await test.step("", async () => {
+            await expect(+totalPrice).toEqual((+pricePerNight * +(getDaysDifference((validTestData.BookingData.CheckInDate), (validTestData.BookingData.CheckOutDate)))) + 10)
+        });
+    });
+
+
     test("Verify Return To Search Form When Click Cancel From Select Page", async ({ page, searchHotelPage, selectHotelPage }) => {
 
         await test.step("", async () => {
@@ -120,14 +137,14 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
     });
 
     test("Verify Book Page Fixed Fields Against Selected Hotel Details", async ({ selectHotelPage, bookHotelPage }) => {
-        let pricePerNight:string;
-        let totalPrice:string;
+        let pricePerNight: string;
+        let totalPrice: string;
 
         await test.step("", async () => {
             let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
-            pricePerNight = pricePerNightList[0].toString();
+            pricePerNight = pricePerNightList[0];
             let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
-            totalPrice = totalPriceList[0].toString();
+            totalPrice = totalPriceList[0];
         });
 
         await test.step("", async () => {
@@ -135,16 +152,68 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect.soft( bookHotelPage.getHotelNameFixedField()).toContainText(validTestData.BookingData.Hotel);
-            await expect.soft( bookHotelPage.getLocationFixedField()).toContainText(validTestData.BookingData.Location);
-            await expect.soft( bookHotelPage.getRoomTypeFixedField()).toContainText(validTestData.BookingData.RoomType);
-            await expect.soft( bookHotelPage.getNumOfRoomsFixedField()).toContainText(validTestData.BookingData.NumberOfRooms);
-            await expect.soft( bookHotelPage.getTotalDaysFixedField()).toContainText(getDaysDifference(validTestData.BookingData.CheckInDate,validTestData.BookingData.CheckOutDate));
-            await expect.soft( bookHotelPage.getPricePerNightFixedField()).toContainText(pricePerNight);
-            await expect.soft( bookHotelPage.getTotalPriceFixedField()).toContainText(totalPrice);
+            await expect.soft(bookHotelPage.getHotelNameFixedField()).toHaveAttribute("value", validTestData.BookingData.Hotel);
+            await expect.soft(bookHotelPage.getLocationFixedField()).toHaveAttribute("value", validTestData.BookingData.Location);
+            await expect.soft(bookHotelPage.getRoomTypeFixedField()).toHaveAttribute("value", validTestData.BookingData.RoomType);
+            await expect.soft(bookHotelPage.getNumOfRoomsFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.NumberOfRooms).split(" ")[0].trim()} Room(s)`);
+            await expect.soft(bookHotelPage.getTotalDaysFixedField()).toHaveAttribute("value", `${getDaysDifference(validTestData.BookingData.CheckInDate, validTestData.BookingData.CheckOutDate)} Day(s)`);
+            await expect.soft(bookHotelPage.getPricePerNightFixedField()).toHaveAttribute("value", pricePerNight);
+            await expect.soft(bookHotelPage.getTotalPriceFixedField()).toHaveAttribute("value", totalPrice);
         });
     });
 
+
+    test("Verify GST As Ten Percent", async ({ selectHotelPage, bookHotelPage }) => {
+        let pricePerNight: string;
+        let totalPrice: string;
+
+        await test.step("", async () => {
+            let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
+            pricePerNight = pricePerNightList[0];
+            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
+            totalPrice = totalPriceList[0];
+        });
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await expect(bookHotelPage.getGstFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) / 10).toString()}`);
+
+        });
+    });
+
+
+    test("Verify Final Billing Price Is Summation GST And Total Price", async ({ selectHotelPage, bookHotelPage }) => {
+        let totalPrice: string;
+
+        await test.step("", async () => {
+            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
+            totalPrice = totalPriceList[0];
+        });
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await expect(bookHotelPage.getFinalBilledPriceFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) * 1.1).toString().split(".")[0].trim()}`);
+
+        });
+    });
+
+
+    test("Verify Booking With Valid Data",async({selectHotelPage,bookHotelPage})=>{
+
+                await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+                        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+    });
 });
 
 

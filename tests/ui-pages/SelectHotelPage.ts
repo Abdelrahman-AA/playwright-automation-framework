@@ -10,7 +10,7 @@ export class SelectHotelPage {
 
     // #region Locators
     private readonly resultTable: Locator;
-    private readonly tableRadio: Locator;
+    private readonly tableRadioNum: Locator;
 
     private getRadioButtons(rowNum: number) {
         return this.page.locator(`#radiobutton_${rowNum}`)
@@ -62,7 +62,7 @@ export class SelectHotelPage {
         this.staticBar = new StaticBarAtLogged(page);
 
         this.resultTable = page.locator("//td[@align='right']//table");
-        this.tableRadio = page.locator("input[type='radio']");
+        this.tableRadioNum = page.locator("#total_radiobutton");
         this.continueButton = page.locator("#continue");
         this.cancelButton = page.locator("#cancel");
 
@@ -94,8 +94,8 @@ export class SelectHotelPage {
     }
 
     async getResultTableRowsCount(): Promise<number> {
-        const count = await this.tableRadio.count();
-        return count;
+        const count = await this.tableRadioNum.getAttribute("value");
+        return count ? parseInt(count, 10) : 0;
     }
 
     async getTableHotelsNameResult(): Promise<string[]> {
