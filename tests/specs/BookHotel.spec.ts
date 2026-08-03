@@ -119,6 +119,32 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
     });
 
+    test("Verify Book Page Fixed Fields Against Selected Hotel Details", async ({ selectHotelPage, bookHotelPage }) => {
+        let pricePerNight:string;
+        let totalPrice:string;
+
+        await test.step("", async () => {
+            let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
+            pricePerNight = pricePerNightList[0].toString();
+            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
+            totalPrice = totalPriceList[0].toString();
+        });
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await expect.soft( bookHotelPage.getHotelNameFixedField()).toContainText(validTestData.BookingData.Hotel);
+            await expect.soft( bookHotelPage.getLocationFixedField()).toContainText(validTestData.BookingData.Location);
+            await expect.soft( bookHotelPage.getRoomTypeFixedField()).toContainText(validTestData.BookingData.RoomType);
+            await expect.soft( bookHotelPage.getNumOfRoomsFixedField()).toContainText(validTestData.BookingData.NumberOfRooms);
+            await expect.soft( bookHotelPage.getTotalDaysFixedField()).toContainText(getDaysDifference(validTestData.BookingData.CheckInDate,validTestData.BookingData.CheckOutDate));
+            await expect.soft( bookHotelPage.getPricePerNightFixedField()).toContainText(pricePerNight);
+            await expect.soft( bookHotelPage.getTotalPriceFixedField()).toContainText(totalPrice);
+        });
+    });
+
 });
 
 
