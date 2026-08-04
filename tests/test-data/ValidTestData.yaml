@@ -22,3 +22,13 @@ BookingData:
  CheckOutDate: "09/08/2027"
  AdultsPerRoom: "3 - Three"
  ChildrenPerRoom: "3 - Three"
+
+BookingDataItinerary:
+ NumberOfRooms: "7"
+ NumberOfDays: "8"
+ AdultsPerRoom: "3"
+ ChildrenPerRoom: "3"
+ PricePerNight: "375"
+ TotalPrice: "3010"
+ GST: "301"
+ FinalBillingPrice: "3311"

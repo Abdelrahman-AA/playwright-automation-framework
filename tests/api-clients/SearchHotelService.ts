@@ -26,8 +26,6 @@ export class SearchHotelService {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Cookie': `PHPSESSID=${sessionID}`,
-                'Referer': `https://${endPoints.Domain}${endPoints.SearchHotel}`,
-                'Origin': `https://${endPoints.Domain}`
             },
             form: {
                 location: location,

@@ -29,13 +29,15 @@ export class BookHotelService {
         gst: string,
         finalPrice: string,
         numAdults: string,
-        numChildren: string) {
+        numChildren: string,
+        sessionID: string) {
 
-        let diff: number = getDaysDifference(arrivalDate, departureDate);
+        let diff: string = getDaysDifference(arrivalDate, departureDate);
 
-        const response = await this.request.post((endPoints.BookHotel), {
+        const response = await this.request.post((`https://${endPoints.Domain}${endPoints.BookHotel}`), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Cookie': `PHPSESSID=${sessionID}`,
             },
             form: {
                 first_name: firstName,
@@ -52,7 +54,7 @@ export class BookHotelService {
                 rooms_no_hid: numRooms,
                 arr_date_hid: arrivalDate,
                 dep_date_hid: departureDate,
-                no_days_hid: diff.toString(),
+                no_days_hid: diff,
                 adults_room_hid: numAdults,
                 children_room_hid: numChildren,
                 price_night_hid: `AUD $ ${price_night}`,

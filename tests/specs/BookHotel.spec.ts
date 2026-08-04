@@ -23,8 +23,6 @@ test.beforeEach("Login and Get Session ID Then Select Hotel And Open Select Page
         validTestData.BookingData.ChildrenPerRoom,
         true
     );
-
-
 });
 
 

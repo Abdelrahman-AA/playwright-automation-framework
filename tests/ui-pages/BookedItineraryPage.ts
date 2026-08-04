@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import { StaticBarAtLogged } from "./Components/StaticBarAtLogged";
+import { uiURL } from "../test-data/testDataYamlReader";
 
 export class BookedItineraryPage {
 
@@ -48,6 +49,10 @@ export class BookedItineraryPage {
     // #endregion
 
     // #region Actions
+    async goToBooKItineraryPage() {
+        await this.page.goto(uiURL.BookedItineraryPage);
+    }
+
     async enterOrderIdAtSearch(orderId: string) {
         await this.searchOrderField.clear();
         await this.searchOrderField.fill(orderId);
@@ -89,6 +94,10 @@ export class BookedItineraryPage {
     // #endregion
 
     // #region Getters
+    getTableResult(){
+        return this.itineraryTable;
+    }
+
     async getTableRowsIDs(): Promise<string[]> {
         await this.tableRowsIds.first().waitFor({ state: 'visible' });
         return await this.tableRowsIds.evaluateAll((elements) =>
@@ -96,9 +105,9 @@ export class BookedItineraryPage {
         );
     }
 
-    async getTableRowsCount(): Promise<number> {
-        return await this.itineraryTable.locator('tr').count();
-    }
+    async getTableRowsCount():Promise<number> {
+    return await this.tableRowsIds.count();
+}
 
     getSearchResultMsg(): Locator {
         return this.searchResultMsg;
