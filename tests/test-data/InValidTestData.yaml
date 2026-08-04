@@ -4,17 +4,34 @@ NotRegisteredAccount:
  Password: "Abd--el--rahman0123"
  RePassword: "Abd--el--rahman0123"
 
-CCNum: "1234567812345678"
+
+InValidCC:
+CCNumContainChar: "1234567abc345678"
+CCNumShort: "12345678"
 CCType: "VISA"
 CCExpireMonth: "December"
 CCExpireYear: "2030"
 CCCsv: "123"
 
+InValidAddress:
+ Short: "A"
 
-InValidBookingData:
+
+InValidBookingDate:
  WrongEntryNumCheckInDate: "01012028"
  WrongEntryNumCheckOutDate: "01022028"
  WrongEntryTextCheckInDate: "01jan2028"
  WrongEntryTextCheckOutDate: "01feb2029"
  WrongEntryTextNotDateCheckInDate: "abcdeaaaa"
  WrongEntryTextNotDateCheckOutDate: "dcbaeaaaa"
+
+
+InvalidFirstName:
+  ContainNum: "Abdelrahman123"
+  Short: "A"
+  OnlyNum: "123"
+
+InvalidLastName:
+  ContainNum: "Abo123"
+  Short: "A"
+  OnlyNum: "123"

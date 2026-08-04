@@ -349,8 +349,8 @@ test.describe("Negative Path Suite", { tag: "@negative @Hotel-Search&Filtering" 
         });
 
         await test.step("Enter Check In and Check Out Dates", async () => {
-            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.WrongEntryNumCheckInDate);
-            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.WrongEntryNumCheckOutDate);
+            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingDate.WrongEntryNumCheckInDate);
+            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingDate.WrongEntryNumCheckOutDate);
         });
 
         await test.step("Click Search Button", async () => {
@@ -376,8 +376,8 @@ test.describe("Negative Path Suite", { tag: "@negative @Hotel-Search&Filtering" 
         });
 
         await test.step("Enter Check In and Check Out Dates", async () => {
-            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.WrongEntryTextCheckInDate);
-            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.WrongEntryTextCheckOutDate);
+            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingDate.WrongEntryTextCheckInDate);
+            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingDate.WrongEntryTextCheckOutDate);
         });
 
         await test.step("Click Search Button", async () => {
@@ -402,8 +402,8 @@ test.describe("Negative Path Suite", { tag: "@negative @Hotel-Search&Filtering" 
         });
 
         await test.step("Enter Check In and Check Out Dates", async () => {
-            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingData.WrongEntryTextNotDateCheckInDate);
-            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingData.WrongEntryTextNotDateCheckOutDate);
+            await searchHotelPage.enterArrivalDate(inValidTestData.InValidBookingDate.WrongEntryTextNotDateCheckInDate);
+            await searchHotelPage.enterDepartureDate(inValidTestData.InValidBookingDate.WrongEntryTextNotDateCheckOutDate);
         });
 
         await test.step("Click Search Button", async () => {

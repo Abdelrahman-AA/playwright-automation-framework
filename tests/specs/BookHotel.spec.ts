@@ -238,6 +238,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
 
 test.describe("Negative Path Suite", { tag: "@negative @Book-Hotel" }, () => {
 
+
     test("Verify Error MSG When Click Continue Without Select Hotel", async ({ selectHotelPage }) => {
         await test.step("", async () => {
             await selectHotelPage.clickContinueButton();
@@ -246,6 +247,322 @@ test.describe("Negative Path Suite", { tag: "@negative @Book-Hotel" }, () => {
         await test.step("", async () => {
             await expect.soft(selectHotelPage.getContinueErrorMSG()).toBeVisible();
             await expect.soft(selectHotelPage.getContinueErrorMSG()).toHaveText(uiMSGs.SelectHotelPage.Errors.NoSelectedHotel);
+        });
+    });
+
+
+    test("Verify First Name Cant Contain Num At Book Hotel Page", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.enterFirstName(inValidTestData.InvalidFirstName.ContainNum);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getFirstNameFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getFirstNameFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.NotValidFirstName);
+        });
+    });
+
+
+    test("Verify First Name Error MSG For Short Name At Book Hotel Page", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.enterFirstName(inValidTestData.InvalidFirstName.Short);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getFirstNameFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getFirstNameFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.NotValidFirstName);
+        });
+    });
+
+
+    test("Verify First Name Error MSG For Only Num Name At Book Hotel Page", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.enterFirstName(inValidTestData.InvalidFirstName.OnlyNum);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getFirstNameFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getFirstNameFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.NotValidFirstName);
+        });
+    });
+
+
+    test("Verify First Name Error MSG For Empty Name At Book Hotel Page", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getFirstNameFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getFirstNameFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.EmptyFirstName);
+        });
+    });
+
+
+    test("Verify Last Name Cant Contain Num At Book Hotel Page", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.enterLastName(inValidTestData.InvalidLastName.ContainNum);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getLastNameFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getLastNameFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.NotValidLastName);
+        });
+    });
+
+
+    test("Verify Last Name Error MSG For Short Name At Book Hotel Page", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.enterLastName(inValidTestData.InvalidLastName.Short);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getLastNameFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getLastNameFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.NotValidLastName);
+        });
+    });
+
+
+    test("Verify Last Name Error MSG For Only Num Name At Book Hotel Page", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.enterLastName(inValidTestData.InvalidLastName.OnlyNum);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getLastNameFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getLastNameFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.NotValidLastName);
+        });
+    });
+
+
+    test("Verify Last Name Error MSG For Empty Name At Book Hotel Page", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getLastNameFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getLastNameFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.EmptyLastName);
+        });
+    });
+
+
+    test("Verify Billing Address Error MSG For Short Address", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.enterBillingAddress(inValidTestData.InValidAddress.Short);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getBillingAddressFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getBillingAddressFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.NotValidBillingAddress);
+        });
+    });
+
+
+    test("Verify Billing Address Error MSG For Empty Address", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getBillingAddressFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getBillingAddressFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.EmptyBillingAddress);
+        });
+    });
+
+
+    test("Verify CCNum Cant Contain Characters", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.enterCreditCardNum(inValidTestData.InValidCC.CCNumContainChar);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getCreditCardNumFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getCreditCardNumFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.ErrorCreditCard);
+        });
+    });
+
+
+    test("Verify CCNum Error MSG For Less Than Sixteen Digits", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.enterCreditCardNum(inValidTestData.InValidCC.CCNumShort);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getCreditCardNumFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getCreditCardNumFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.ErrorCreditCard);
+        });
+    });
+
+
+    test("Verify CCNum Error MSG If Empty", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getCreditCardNumFieldErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getCreditCardNumFieldErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.ErrorCreditCard);
+        });
+    });
+
+
+    test("Verify Error MSG For Not Selected CC Type", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getCreditCardTypeSelectorErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getCreditCardTypeSelectorErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.CreditCardTypeNotSelected);
+        });
+    });
+
+
+    test("Verify Error MSG For Not Selected Expiry Month", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectCreditCardExpiryDateYear(validTestData.CCExpireYear);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getCreditCardExpiryDateSelectorsErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getCreditCardExpiryDateSelectorsErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.CreditCardExpiryDateNotSelectedMonth);
+        });
+    });
+
+
+    test("Verify Error MSG For Not Selected Expiry Year", async ({ selectHotelPage, bookHotelPage }) => {
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectCreditCardExpiryDateMonth(validTestData.CCExpireMonth);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.clickBookButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(bookHotelPage.getCreditCardExpiryDateSelectorsErrorMSG()).toBeVisible();
+            await expect.soft(bookHotelPage.getCreditCardExpiryDateSelectorsErrorMSG()).toHaveText(uiMSGs.BookHotelPage.Errors.CreditCardExpiryDateNotSelectedYear);
         });
     });
 });

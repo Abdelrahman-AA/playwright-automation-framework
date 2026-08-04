@@ -18,6 +18,7 @@ export class LoginService {
         password: password,
         login: 'Login',
       },
+      timeout: 30000
     });
 
     return response;

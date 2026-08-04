@@ -47,8 +47,11 @@ BookHotelPage:
   Title: "Adactin.com - Book A Hotel"
   Errors:
     EmptyFirstName: "Please Enter your First Name"
+    NotValidFirstName: "Please Enter Valid First Name"
     EmptyLastName: "Please Enter you Last Name"
+    NotValidLastName: "Please Enter Valid Last Name"
     EmptyBillingAddress: "Please Enter your Address"
+    NotValidBillingAddress: "Please Enter Valid Address"
     ErrorCreditCard: "Please Enter your 16 Digit Credit Card Number"
     CreditCardTypeNotSelected: "Please Select your Credit Card Type"
     CreditCardExpiryDateNotSelectedMonth: "Please Select your Credit Card Expiry Month"
