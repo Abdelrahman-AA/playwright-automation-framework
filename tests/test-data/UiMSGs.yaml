@@ -79,3 +79,6 @@ ChangePasswordPage:
     ShortPassWord: "Password must contain minimum 6 characters"
   Success:
       Updated: "Your Password is successfully updated!!!"
+
+LogoutPage:
+  Title: "Adactin.com - Logout"

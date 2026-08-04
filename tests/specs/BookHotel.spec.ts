@@ -231,16 +231,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
 
 
     test("Verify Booked hotel Name At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let pricePerNight: string;
-        let totalPrice: string;
         let timeOut: number = 60000;
-
-        await test.step("", async () => {
-            let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
-            pricePerNight = pricePerNightList[0];
-            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
-            totalPrice = totalPriceList[0];
-        });
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -266,16 +257,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
 
 
     test("Verify Booked hotel Location At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let pricePerNight: string;
-        let totalPrice: string;
         let timeOut: number = 60000;
-
-        await test.step("", async () => {
-            let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
-            pricePerNight = pricePerNightList[0];
-            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
-            totalPrice = totalPriceList[0];
-        });
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -301,16 +283,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
 
 
     test("Verify Booked hotel Room Type At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let pricePerNight: string;
-        let totalPrice: string;
         let timeOut: number = 60000;
-
-        await test.step("", async () => {
-            let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
-            pricePerNight = pricePerNightList[0];
-            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
-            totalPrice = totalPriceList[0];
-        });
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -336,16 +309,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
 
 
     test("Verify Booked hotel Arrival Date At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let pricePerNight: string;
-        let totalPrice: string;
         let timeOut: number = 60000;
-
-        await test.step("", async () => {
-            let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
-            pricePerNight = pricePerNightList[0];
-            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
-            totalPrice = totalPriceList[0];
-        });
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -370,17 +334,8 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
     });
 
 
-        test("Verify Booked hotel Departure Date At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let pricePerNight: string;
-        let totalPrice: string;
+    test("Verify Booked hotel Departure Date At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
         let timeOut: number = 60000;
-
-        await test.step("", async () => {
-            let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
-            pricePerNight = pricePerNightList[0];
-            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
-            totalPrice = totalPriceList[0];
-        });
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -405,17 +360,8 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
     });
 
 
-            test("Verify Booked hotel Num Of Rooms At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let pricePerNight: string;
-        let totalPrice: string;
+    test("Verify Booked hotel Num Of Rooms At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
         let timeOut: number = 60000;
-
-        await test.step("", async () => {
-            let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
-            pricePerNight = pricePerNightList[0];
-            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
-            totalPrice = totalPriceList[0];
-        });
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -436,28 +382,100 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
 
         await test.step("", async () => {
             await expect(bookConfirmPage.getTotalRoomsFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.NumberOfRooms).split(" ")[0].trim()} Room(s)`, { timeout: timeOut });
-            // await expect.soft(bookConfirmPage.getAdultsPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.AdultsPerRoom).split(" ")[0].trim()} Adult(s)`);
-            // await expect.soft(bookConfirmPage.getChildrenPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.ChildrenPerRoom).split(" ")[0].trim()} Children`);
-            // await expect.soft(bookConfirmPage.getPricePerNightFixedField()).toHaveAttribute("value", pricePerNight);
-            // await expect.soft(bookConfirmPage.getTotalPriceFixedField()).toHaveAttribute("value", totalPrice);
-            // await expect.soft(bookConfirmPage.getGstFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) / 10).toString()}`);
-            // await expect.soft(bookConfirmPage.getFinalBillingPriceFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) * 1.1).toString().split(".")[0].trim()}`);
-            // await expect.soft(bookConfirmPage.getFirstNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.FirstName);
-            // await expect.soft(bookConfirmPage.getLastNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.LastName);
-            // await expect.soft(bookConfirmPage.getBillingAddressFixedField()).toHaveAttribute("value", validTestData.BillingAddress);
         });
     });
 
 
 
-            test("Verify Booked hotel Adults Per Room At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+    test("Verify Booked hotel Adults Per Room At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+        let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect(bookConfirmPage.getAdultsPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.AdultsPerRoom).split(" ")[0].trim()} Adult(s)`, { timeout: timeOut });
+        });
+    });
+
+
+    test("Verify Booked hotel Children Per Room At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+        let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect(bookConfirmPage.getChildrenPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.ChildrenPerRoom).split(" ")[0].trim()} Children`, { timeout: timeOut });
+        });
+    });
+
+
+    test("Verify Booked hotel Price Per Night At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
         let pricePerNight: string;
-        let totalPrice: string;
         let timeOut: number = 60000;
 
         await test.step("", async () => {
             let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
             pricePerNight = pricePerNightList[0];
+        });
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect(bookConfirmPage.getPricePerNightFixedField()).toHaveAttribute("value", pricePerNight, { timeout: timeOut });
+        });
+    });
+
+
+    test("Verify Booked hotel Total Price At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+        let totalPrice: string;
+        let timeOut: number = 60000;
+
+        await test.step("", async () => {
             let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
             totalPrice = totalPriceList[0];
         });
@@ -480,15 +498,268 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getAdultsPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.AdultsPerRoom).split(" ")[0].trim()} Adult(s)`, { timeout: timeOut });
-            // await expect.soft(bookConfirmPage.getChildrenPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.ChildrenPerRoom).split(" ")[0].trim()} Children`);
-            // await expect.soft(bookConfirmPage.getPricePerNightFixedField()).toHaveAttribute("value", pricePerNight);
-            // await expect.soft(bookConfirmPage.getTotalPriceFixedField()).toHaveAttribute("value", totalPrice);
-            // await expect.soft(bookConfirmPage.getGstFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) / 10).toString()}`);
-            // await expect.soft(bookConfirmPage.getFinalBillingPriceFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) * 1.1).toString().split(".")[0].trim()}`);
-            // await expect.soft(bookConfirmPage.getFirstNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.FirstName);
-            // await expect.soft(bookConfirmPage.getLastNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.LastName);
-            // await expect.soft(bookConfirmPage.getBillingAddressFixedField()).toHaveAttribute("value", validTestData.BillingAddress);
+            await expect(bookConfirmPage.getTotalPriceFixedField()).toHaveAttribute("value", totalPrice, { timeout: timeOut });
+        });
+    });
+
+
+    test("Verify Booked hotel Price GST At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+        let totalPrice: string;
+        let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
+            totalPrice = totalPriceList[0];
+        });
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect(bookConfirmPage.getGstFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) / 10).toString()}`, { timeout: timeOut });
+        });
+    });
+
+
+        test("Verify Booked hotel Final Billing Price At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+        let totalPrice: string;
+        let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
+            totalPrice = totalPriceList[0];
+        });
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect(bookConfirmPage.getFinalBillingPriceFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) * 1.1).toString().split(".")[0].trim()}`, { timeout: timeOut });
+        });
+    });
+
+
+     test("Verify Booked hotel First Name At Booked Confirm Page Against Entered", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+        let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect(bookConfirmPage.getFirstNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.FirstName, { timeout: timeOut });
+        });
+    });
+
+
+         test("Verify Booked hotel Last Name At Booked Confirm Page Against Entered", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+        let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect(bookConfirmPage.getLastNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.LastName, { timeout: timeOut });
+        });
+    });
+
+
+             test("Verify Booked hotel Billing Address At Booked Confirm Page Against Entered", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+        let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect(bookConfirmPage.getBillingAddressFixedField()).toHaveText( validTestData.BillingAddress, { timeout: timeOut });
+        });
+    });
+
+
+    test("Verify Going To Search Hotel Page By Clicking On Search Hotel Button",async({page,selectHotelPage, bookHotelPage, bookConfirmPage})=>{
+              let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+               await test.step("", async () => {
+            await bookConfirmPage.clickSearchHotelButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(page, "Search Hotel Page URL Not Match").toHaveURL(uiURL.SearchHotelPage,{timeout:timeOut});
+            await expect.soft(page, "Search Hotel Page Title Not Match").toHaveTitle(uiMSGs.SearchHotelPage.Title,{timeout:timeOut});
+        });
+    });
+
+
+        test("Verify Going To My Itinerary Page By Clicking On My Itinerary Button",async({page,selectHotelPage, bookHotelPage, bookConfirmPage})=>{
+              let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+               await test.step("", async () => {
+            await bookConfirmPage.clickMyItineraryButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(page, "My Itinerary Page URL Not Match").toHaveURL(uiURL.BookedItineraryPage,{timeout:timeOut});
+            await expect.soft(page, "My Itinerary Page Title Not Match").toHaveTitle(uiMSGs.BookedItineraryPage.Title,{timeout:timeOut});
+        });
+    });
+
+
+            test("Verify Going To Logout Page By Clicking On Logout Button",async({page,selectHotelPage, bookHotelPage, bookConfirmPage})=>{
+              let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+               await test.step("", async () => {
+            await bookConfirmPage.clickLogoutButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(page, "Logout Page URL Not Match").toHaveURL(uiURL.LogoutPage,{timeout:timeOut});
+            await expect.soft(page, "Logout Page Title Not Match").toHaveTitle(uiMSGs.LogoutPage.Title,{timeout:timeOut});
+        });
+    });
+
+
+                test("Verify Order Num Not Empty",async({page,selectHotelPage, bookHotelPage, bookConfirmPage})=>{
+              let timeOut: number = 60000;
+
+        await test.step("", async () => {
+            await selectHotelPage.selectRadioIndexAndClickContinue(0);
+        });
+
+        await test.step("", async () => {
+            await bookHotelPage.selectAndFillDataAndOptionalClickBookButton(
+                validTestData.RegisteredAccount.FirstName,
+                validTestData.RegisteredAccount.LastName,
+                validTestData.BillingAddress,
+                validTestData.CCNum,
+                validTestData.CCType,
+                validTestData.CCExpireMonth,
+                validTestData.CCExpireYear,
+                validTestData.CCCsv,
+                true);
+        });
+
+        await test.step("", async () => {
+            await expect(bookConfirmPage.getOrderNoFixedField()).not.toBeEmpty({timeout: timeOut});
         });
     });
 });
