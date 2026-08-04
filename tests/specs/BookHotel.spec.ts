@@ -2,6 +2,7 @@ import { test, expect } from "../fixtures/fixtures";
 import { getDaysDifference } from "../helpers/helpers";
 import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/testDataYamlReader";
 
+let longTimeOut: number = 60000;
 
 test.beforeEach("Login and Get Session ID Then Select Hotel And Open Select Page", async ({ page, loginService, searchHotelPage }) => {
     const sessionID: string = await loginService.getLoginPhpSessionId(
@@ -224,14 +225,13 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect.soft(page, "Booking Hotel Confirm Page URL Not Match").toHaveURL(uiURL.BookConfirmPage, { timeout: 60000 });
+            await expect.soft(page, "Booking Hotel Confirm Page URL Not Match").toHaveURL(uiURL.BookConfirmPage, { timeout: longTimeOut });
             await expect.soft(page, "Booking Hotel Confirm Page Title Not Match").toHaveTitle(uiMSGs.BookingConfirmPage.Title)
         });
     });
 
 
     test("Verify Booked hotel Name At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -251,13 +251,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getHotelNameFixedField()).toHaveAttribute("value", validTestData.BookingData.Hotel, { timeout: timeOut });
+            await expect(bookConfirmPage.getHotelNameFixedField()).toHaveAttribute("value", validTestData.BookingData.Hotel, { timeout: longTimeOut });
         });
     });
 
 
     test("Verify Booked hotel Location At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -277,13 +276,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getLocationFixedField()).toHaveAttribute("value", validTestData.BookingData.Location, { timeout: timeOut });
+            await expect(bookConfirmPage.getLocationFixedField()).toHaveAttribute("value", validTestData.BookingData.Location, { timeout: longTimeOut });
         });
     });
 
 
     test("Verify Booked hotel Room Type At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -303,13 +301,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getRoomTypeFixedField()).toHaveAttribute("value", validTestData.BookingData.RoomType, { timeout: timeOut });
+            await expect(bookConfirmPage.getRoomTypeFixedField()).toHaveAttribute("value", validTestData.BookingData.RoomType, { timeout: longTimeOut });
         });
     });
 
 
     test("Verify Booked hotel Arrival Date At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -329,13 +326,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getArrivalDateFixedField()).toHaveAttribute("value", validTestData.BookingData.CheckInDate, { timeout: timeOut });
+            await expect(bookConfirmPage.getArrivalDateFixedField()).toHaveAttribute("value", validTestData.BookingData.CheckInDate, { timeout: longTimeOut });
         });
     });
 
 
     test("Verify Booked hotel Departure Date At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -355,13 +351,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getDepartureDateFixedField()).toHaveAttribute("value", validTestData.BookingData.CheckOutDate, { timeout: timeOut });
+            await expect(bookConfirmPage.getDepartureDateFixedField()).toHaveAttribute("value", validTestData.BookingData.CheckOutDate, { timeout: longTimeOut });
         });
     });
 
 
     test("Verify Booked hotel Num Of Rooms At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -381,14 +376,13 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getTotalRoomsFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.NumberOfRooms).split(" ")[0].trim()} Room(s)`, { timeout: timeOut });
+            await expect(bookConfirmPage.getTotalRoomsFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.NumberOfRooms).split(" ")[0].trim()} Room(s)`, { timeout: longTimeOut });
         });
     });
 
 
 
     test("Verify Booked hotel Adults Per Room At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -408,13 +402,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getAdultsPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.AdultsPerRoom).split(" ")[0].trim()} Adult(s)`, { timeout: timeOut });
+            await expect(bookConfirmPage.getAdultsPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.AdultsPerRoom).split(" ")[0].trim()} Adult(s)`, { timeout: longTimeOut });
         });
     });
 
 
     test("Verify Booked hotel Children Per Room At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -434,14 +427,13 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getChildrenPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.ChildrenPerRoom).split(" ")[0].trim()} Children`, { timeout: timeOut });
+            await expect(bookConfirmPage.getChildrenPerRoomFixedField()).toHaveAttribute("value", `${(validTestData.BookingData.ChildrenPerRoom).split(" ")[0].trim()} Children`, { timeout: longTimeOut });
         });
     });
 
 
     test("Verify Booked hotel Price Per Night At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
         let pricePerNight: string;
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             let pricePerNightList = await selectHotelPage.getTablePricesPerNightResult();
@@ -466,14 +458,13 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getPricePerNightFixedField()).toHaveAttribute("value", pricePerNight, { timeout: timeOut });
+            await expect(bookConfirmPage.getPricePerNightFixedField()).toHaveAttribute("value", pricePerNight, { timeout: longTimeOut });
         });
     });
 
 
     test("Verify Booked hotel Total Price At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
         let totalPrice: string;
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
@@ -498,14 +489,13 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getTotalPriceFixedField()).toHaveAttribute("value", totalPrice, { timeout: timeOut });
+            await expect(bookConfirmPage.getTotalPriceFixedField()).toHaveAttribute("value", totalPrice, { timeout: longTimeOut });
         });
     });
 
 
     test("Verify Booked hotel Price GST At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
         let totalPrice: string;
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
@@ -530,14 +520,13 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getGstFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) / 10).toString()}`, { timeout: timeOut });
+            await expect(bookConfirmPage.getGstFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) / 10).toString()}`, { timeout: longTimeOut });
         });
     });
 
 
-        test("Verify Booked hotel Final Billing Price At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
+    test("Verify Booked hotel Final Billing Price At Booked Confirm Page Against Selected", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
         let totalPrice: string;
-        let timeOut: number = 60000;
 
         await test.step("", async () => {
             let totalPriceList = await selectHotelPage.getTableTotalPricesResult();
@@ -562,13 +551,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getFinalBillingPriceFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) * 1.1).toString().split(".")[0].trim()}`, { timeout: timeOut });
+            await expect(bookConfirmPage.getFinalBillingPriceFixedField()).toHaveAttribute("value", `AUD $ ${((+totalPrice.split(" ")[2].trim()) * 1.1).toString().split(".")[0].trim()}`, { timeout: longTimeOut });
         });
     });
 
 
-     test("Verify Booked hotel First Name At Booked Confirm Page Against Entered", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
+    test("Verify Booked hotel First Name At Booked Confirm Page Against Entered", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -588,13 +576,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getFirstNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.FirstName, { timeout: timeOut });
+            await expect(bookConfirmPage.getFirstNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.FirstName, { timeout: longTimeOut });
         });
     });
 
 
-         test("Verify Booked hotel Last Name At Booked Confirm Page Against Entered", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
+    test("Verify Booked hotel Last Name At Booked Confirm Page Against Entered", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -614,13 +601,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getLastNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.LastName, { timeout: timeOut });
+            await expect(bookConfirmPage.getLastNameFixedField()).toHaveAttribute("value", validTestData.RegisteredAccount.LastName, { timeout: longTimeOut });
         });
     });
 
 
-             test("Verify Booked hotel Billing Address At Booked Confirm Page Against Entered", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
-        let timeOut: number = 60000;
+    test("Verify Booked hotel Billing Address At Booked Confirm Page Against Entered", async ({ selectHotelPage, bookHotelPage, bookConfirmPage }) => {
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -640,13 +626,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getBillingAddressFixedField()).toHaveText( validTestData.BillingAddress, { timeout: timeOut });
+            await expect(bookConfirmPage.getBillingAddressFixedField()).toHaveText(validTestData.BillingAddress, { timeout: longTimeOut });
         });
     });
 
 
-    test("Verify Going To Search Hotel Page By Clicking On Search Hotel Button",async({page,selectHotelPage, bookHotelPage, bookConfirmPage})=>{
-              let timeOut: number = 60000;
+    test("Verify Going To Search Hotel Page By Clicking On Search Hotel Button", async ({ page, selectHotelPage, bookHotelPage, bookConfirmPage }) => {
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -665,19 +650,18 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
                 true);
         });
 
-               await test.step("", async () => {
+        await test.step("", async () => {
             await bookConfirmPage.clickSearchHotelButton();
         });
 
         await test.step("", async () => {
-            await expect.soft(page, "Search Hotel Page URL Not Match").toHaveURL(uiURL.SearchHotelPage,{timeout:timeOut});
-            await expect.soft(page, "Search Hotel Page Title Not Match").toHaveTitle(uiMSGs.SearchHotelPage.Title,{timeout:timeOut});
+            await expect.soft(page, "Search Hotel Page URL Not Match").toHaveURL(uiURL.SearchHotelPage, { timeout: longTimeOut });
+            await expect.soft(page, "Search Hotel Page Title Not Match").toHaveTitle(uiMSGs.SearchHotelPage.Title, { timeout: longTimeOut });
         });
     });
 
 
-        test("Verify Going To My Itinerary Page By Clicking On My Itinerary Button",async({page,selectHotelPage, bookHotelPage, bookConfirmPage})=>{
-              let timeOut: number = 60000;
+    test("Verify Going To My Itinerary Page By Clicking On My Itinerary Button", async ({ page, selectHotelPage, bookHotelPage, bookConfirmPage }) => {
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -696,19 +680,18 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
                 true);
         });
 
-               await test.step("", async () => {
+        await test.step("", async () => {
             await bookConfirmPage.clickMyItineraryButton();
         });
 
         await test.step("", async () => {
-            await expect.soft(page, "My Itinerary Page URL Not Match").toHaveURL(uiURL.BookedItineraryPage,{timeout:timeOut});
-            await expect.soft(page, "My Itinerary Page Title Not Match").toHaveTitle(uiMSGs.BookedItineraryPage.Title,{timeout:timeOut});
+            await expect.soft(page, "My Itinerary Page URL Not Match").toHaveURL(uiURL.BookedItineraryPage, { timeout: longTimeOut });
+            await expect.soft(page, "My Itinerary Page Title Not Match").toHaveTitle(uiMSGs.BookedItineraryPage.Title, { timeout: longTimeOut });
         });
     });
 
 
-            test("Verify Going To Logout Page By Clicking On Logout Button",async({page,selectHotelPage, bookHotelPage, bookConfirmPage})=>{
-              let timeOut: number = 60000;
+    test("Verify Going To Logout Page By Clicking On Logout Button", async ({ page, selectHotelPage, bookHotelPage, bookConfirmPage }) => {
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -727,19 +710,18 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
                 true);
         });
 
-               await test.step("", async () => {
+        await test.step("", async () => {
             await bookConfirmPage.clickLogoutButton();
         });
 
         await test.step("", async () => {
-            await expect.soft(page, "Logout Page URL Not Match").toHaveURL(uiURL.LogoutPage,{timeout:timeOut});
-            await expect.soft(page, "Logout Page Title Not Match").toHaveTitle(uiMSGs.LogoutPage.Title,{timeout:timeOut});
+            await expect.soft(page, "Logout Page URL Not Match").toHaveURL(uiURL.LogoutPage, { timeout: longTimeOut });
+            await expect.soft(page, "Logout Page Title Not Match").toHaveTitle(uiMSGs.LogoutPage.Title, { timeout: longTimeOut });
         });
     });
 
 
-                test("Verify Order Num Not Empty",async({page,selectHotelPage, bookHotelPage, bookConfirmPage})=>{
-              let timeOut: number = 60000;
+    test("Verify Order Num Not Empty", async ({ page, selectHotelPage, bookHotelPage, bookConfirmPage }) => {
 
         await test.step("", async () => {
             await selectHotelPage.selectRadioIndexAndClickContinue(0);
@@ -759,7 +741,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Hotel" }, () => {
         });
 
         await test.step("", async () => {
-            await expect(bookConfirmPage.getOrderNoFixedField()).not.toBeEmpty({timeout: timeOut});
+            await expect(bookConfirmPage.getOrderNoFixedField()).not.toBeEmpty({ timeout: longTimeOut });
         });
     });
 });
