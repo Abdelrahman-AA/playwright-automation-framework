@@ -63,8 +63,8 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Itinerary" }, () => {
 
     test("Verify Book Itinerary Page Table Visible", async ({ bookedItineraryPage }) => {
 
-        await test.step("", async () => {
-            await expect(bookedItineraryPage.getTableResult()).toBeVisible();
+        await test.step("Verify Table Is Visible", async () => {
+            await expect(bookedItineraryPage.getTableResult(), "Table is not visible").toBeVisible();
         });
     });
 
@@ -73,14 +73,14 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Itinerary" }, () => {
         const orderNoAnnotation = testInfo.annotations.find(a => a.type === 'orderNo');
         const orderNo = orderNoAnnotation ? orderNoAnnotation.description : "";
 
-        await test.step("", async () => {
+        await test.step("Enter Order ID at Search", async () => {
             await bookedItineraryPage.enterOrderIdAtSearch(orderNo ? orderNo : "");
             await bookedItineraryPage.clickSearchOrderButton();
         });
 
-        await test.step("", async () => {
+        await test.step("Verify Search Results", async () => {
             const finalCount = await bookedItineraryPage.getTableRowsCount();
-            expect(finalCount).toEqual(1);
+            expect(finalCount, "Search results do not match expected count").toEqual(1);
         });
     });
 
@@ -89,30 +89,30 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Itinerary" }, () => {
         const orderNoAnnotation = testInfo.annotations.find(a => a.type === 'orderNo');
         const orderNo = orderNoAnnotation ? orderNoAnnotation.description : "";
 
-        await test.step("", async () => {
+        await test.step("Search By Order ID", async () => {
             await bookedItineraryPage.searchBookedOrderByOrderID(orderNo ? orderNo : "");
         });
 
         await test.step("Verify table row data matches expected test data", async () => {
             let data: string[] = await bookedItineraryPage.getTableDataOfRowIndex(0);
-            expect.soft(data[3]).toEqual(validTestData.BookingData.Hotel);
-            expect.soft(data[4]).toEqual(validTestData.BookingData.Location);
-            expect.soft(data[5].split(" ")[0].trim()).toEqual(validTestData.BookingData.NumberOfRooms.split(" ")[0].trim());
-            expect.soft(data[6]).toEqual(validTestData.RegisteredAccount.FirstName);
-            expect.soft(data[7]).toEqual(validTestData.RegisteredAccount.LastName);
-            expect.soft(data[8]).toEqual(validTestData.BookingData.CheckInDate);
-            expect.soft(data[9]).toEqual(validTestData.BookingData.CheckOutDate);
-            expect.soft(data[10].split(" ")[0].trim()).toEqual(getDaysDifference(validTestData.BookingData.CheckInDate, validTestData.BookingData.CheckOutDate).toString());
-            expect.soft(data[11]).toEqual(validTestData.BookingData.RoomType);
-            expect.soft(data[12].split(" ")[2].trim()).toEqual(validTestData.BookingDataItinerary.PricePerNight);
-            expect.soft(data[13].split(" ")[2].trim()).toEqual(validTestData.BookingDataItinerary.FinalBillingPrice);
+            expect.soft(data[3], "Hotel name does not match").toEqual(validTestData.BookingData.Hotel);
+            expect.soft(data[4], "Location does not match").toEqual(validTestData.BookingData.Location);
+            expect.soft(data[5].split(" ")[0].trim(), "Number of rooms does not match").toEqual(validTestData.BookingData.NumberOfRooms.split(" ")[0].trim());
+            expect.soft(data[6], "First name does not match").toEqual(validTestData.RegisteredAccount.FirstName);
+            expect.soft(data[7], "Last name does not match").toEqual(validTestData.RegisteredAccount.LastName);
+            expect.soft(data[8], "Check-in date does not match").toEqual(validTestData.BookingData.CheckInDate);
+            expect.soft(data[9], "Check-out date does not match").toEqual(validTestData.BookingData.CheckOutDate);
+            expect.soft(data[10].split(" ")[0].trim(), "Number of nights does not match").toEqual(getDaysDifference(validTestData.BookingData.CheckInDate, validTestData.BookingData.CheckOutDate).toString());
+            expect.soft(data[11], "Room type does not match").toEqual(validTestData.BookingData.RoomType);
+            expect.soft(data[12].split(" ")[2].trim(), "Price per night does not match").toEqual(validTestData.BookingDataItinerary.PricePerNight);
+            expect.soft(data[13].split(" ")[2].trim(), "Final billing price does not match").toEqual(validTestData.BookingDataItinerary.FinalBillingPrice);
         });
     });
 
 
     test("Verify Going To Search Page By Clicking Search Hotel Button At Itinerary Page", async ({ page, bookedItineraryPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Click Search Hotel Button", async () => {
             await bookedItineraryPage.clickSearchHotelButton()
         });
 
@@ -125,7 +125,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Itinerary" }, () => {
 
     test("Verify Going To Logout Page And Logging Out By Clicking Logout Button At Itinerary Page", async ({ page, bookedItineraryPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Click Logout Button", async () => {
             await bookedItineraryPage.clickLogoutButton()
         });
 

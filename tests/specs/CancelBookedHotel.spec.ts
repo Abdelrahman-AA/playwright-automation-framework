@@ -40,8 +40,6 @@ test.beforeEach("Login and Get Session ID Then Select Hotel And Open Select Page
     await loginService.injectSessionId(page, sessionID);
 
     await bookedItineraryPage.goToBooKItineraryPage();
-
-
 });
 
 
@@ -52,11 +50,11 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Cancel" }, () => {
         const orderNoAnnotation = testInfo.annotations.find(a => a.type === 'orderNo');
         const orderNo = orderNoAnnotation ? orderNoAnnotation.description : "";
 
-        await test.step("", async () => {
+        await test.step("Search By Order ID", async () => {
             await bookedItineraryPage.searchBookedOrderByOrderID(orderNo ? orderNo : "");
         });
 
-        await test.step("", async () => {
+        await test.step("Select Booked Order By Table Index", async () => {
             await bookedItineraryPage.checkSelectBookedOrderByTableIndex("0");
             page.once('dialog', async dialog => {
                 await dialog.accept();
@@ -64,12 +62,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Cancel" }, () => {
             await bookedItineraryPage.clickCancelSelectedBookedOrders();
         });
 
-        await test.step("", async () => {
+        await test.step("Search By Order ID", async () => {
             await bookedItineraryPage.searchBookedOrderByOrderID(orderNo ? orderNo : "");
         });
 
-        await test.step("", async () => {
-            await expect(bookedItineraryPage.getSearchResultMsg()).toHaveText(uiMSGs.BookedItineraryPage.NoOrder)
+        await test.step("Verify No Order Found", async () => {
+            await expect(bookedItineraryPage.getSearchResultMsg(), "Search result message does not match").toHaveText(uiMSGs.BookedItineraryPage.NoOrder)
         });
     });
 
@@ -78,34 +76,34 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Cancel" }, () => {
         const orderNoAnnotation = testInfo.annotations.find(a => a.type === 'orderNo');
         const orderNo = orderNoAnnotation ? orderNoAnnotation.description : "";
 
-        await test.step("", async () => {
+        await test.step("Search By Order ID", async () => {
             await bookedItineraryPage.searchBookedOrderByOrderID(orderNo ? orderNo : "");
         });
 
-        await test.step("", async () => {
+        await test.step("Click Cancel Button To Booked Order At Table By Table Index", async () => {
             page.once('dialog', async dialog => {
                 await dialog.accept();
             });
             await bookedItineraryPage.clickCancelButtonToBookedOrderAtTableByTableIndex("0");
         });
 
-        await test.step("", async () => {
+        await test.step("Search By Order ID", async () => {
             await bookedItineraryPage.searchBookedOrderByOrderID(orderNo ? orderNo : "");
         });
 
-        await test.step("", async () => {
-            await expect(bookedItineraryPage.getSearchResultMsg()).toHaveText(uiMSGs.BookedItineraryPage.NoOrder)
+        await test.step("Verify No Order Found", async () => {
+            await expect(bookedItineraryPage.getSearchResultMsg(), "Search result message does not match").toHaveText(uiMSGs.BookedItineraryPage.NoOrder)
         });
     });
 
 
         test("Verify Cancel All Booking Itinerary", async ({ page, bookedItineraryPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Select All Booked Orders", async () => {
             await bookedItineraryPage.checkToSelectAllBookedOrders();
         });
 
-        await test.step("", async () => {
+        await test.step("Click Cancel Button", async () => {
             page.once('dialog', async dialog => {
                 await dialog.accept();
             });
@@ -113,13 +111,10 @@ test.describe("Happy Path Suite", { tag: "@happy @Book-Cancel" }, () => {
             await bookedItineraryPage.clickCancelSelectedBookedOrders()
         });
 
-        await test.step("", async () => {
-            await expect(await bookedItineraryPage.getTableRowsCount()).toEqual(0);
+        await test.step("Verify All Orders Cancelled", async () => {
+            await expect(await bookedItineraryPage.getTableRowsCount(), "Table rows count does not match").toEqual(0);
         });
     });
-
-
-
 });
 
 
@@ -131,11 +126,11 @@ test.describe("Negative Path Suite", { tag: "@negative @Book-Cancel" }, () => {
         let rowsCount1: number;
         let rowsCount2: number;
 
-        await test.step("", async () => {
+        await test.step("Get Initial Table Rows Count", async () => {
             rowsCount1 = await bookedItineraryPage.getTableRowsCount();
         });
 
-        await test.step("", async () => {
+        await test.step("Click Cancel Button Without Selection", async () => {
             page.once('dialog', async dialog => {
                 await dialog.accept();
             });
@@ -143,14 +138,14 @@ test.describe("Negative Path Suite", { tag: "@negative @Book-Cancel" }, () => {
             await bookedItineraryPage.clickCancelSelectedBookedOrders()
         });
 
-        await test.step("", async () => {
+        await test.step("Get Table Rows Count After Cancel", async () => {
            await page.reload();
             rowsCount2 = await bookedItineraryPage.getTableRowsCount();
 
         });
 
-        await test.step("", async () => {
-            expect(rowsCount1).toEqual(rowsCount2);
+        await test.step("Verify No Orders Cancelled", async () => {
+            await expect(rowsCount1, "Initial table rows count does not match").toEqual(rowsCount2);
         });
     });
 });
