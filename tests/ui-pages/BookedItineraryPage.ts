@@ -19,7 +19,7 @@ export class BookedItineraryPage {
     };
 
     private getTableRowsCancelButton(id: string) {
-        return this.page.locator(`btn_id_${id}`);
+        return this.page.locator(`#btn_id_${id}`);
     };
 
     private readonly tableRowsIds: Locator;
@@ -40,7 +40,7 @@ export class BookedItineraryPage {
         this.tableCheckBoxSelectAll = page.locator("#check_all");
 
         this.tableRowsIds = page.locator("//input[@name='ids[]']");
-        this.cancelSelectedButton = page.locator("input[value='Cancel Selected']");
+        this.cancelSelectedButton = page.locator("//input[@name='cancelall']");
         this.searchHotelButton = page.locator("//input[@id='search_hotel']");
         this.logoutButton = page.locator("#logout");
         this.searchResultMsg = page.locator("#search_result_error");
@@ -94,7 +94,7 @@ export class BookedItineraryPage {
     // #endregion
 
     // #region Getters
-    getTableResult(){
+    getTableResult() {
         return this.itineraryTable;
     }
 
@@ -105,12 +105,22 @@ export class BookedItineraryPage {
         );
     }
 
-    async getTableRowsCount():Promise<number> {
-    return await this.tableRowsIds.count();
-}
+    async getTableRowsCount(): Promise<number> {
+        return await this.tableRowsIds.count();
+    }
 
     getSearchResultMsg(): Locator {
         return this.searchResultMsg;
+    }
+
+async getTableDataOfRowIndex(index: number): Promise<string[]> {
+        let ids = await this.getTableRowsIDs();
+        const targetRowId = ids[index];
+        const targetRow = this.getTableCheckBoxForRows(targetRowId).locator('xpath=ancestor::tr[1]');
+        return await targetRow.first().evaluate((row) => {
+            const inputs = Array.from(row.querySelectorAll("input"));
+            return inputs.map((input) => input.value || '');
+        });
     }
     // #endregion
 

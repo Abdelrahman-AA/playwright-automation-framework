@@ -1,10 +1,11 @@
 RegisteredAccount:
- UserName: "Abdelrahman01"
+ UserName: "Abdelrahman02"
  FullName: "Abdelrahman"
  FirstName: "Abdelrahman"
  LastName: "Abd"
  Password: "Abdelrahman0123"
  RePassword: "Abdelrahman0123"
+ email: ""
 
 CCNum: "1234567812345678"
 CCType: "VISA"

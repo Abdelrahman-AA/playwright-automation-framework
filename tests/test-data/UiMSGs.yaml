@@ -63,6 +63,7 @@ BookingConfirmPage:
 
 BookedItineraryPage:
   Title: "Adactin.com - Select Hotel"  ##as title name at website 
+  NoOrder: "0 result(s) found. Show all"
 
 ForgetPasswordPage:
   Title: "Adactin.com - Forgot Password"
