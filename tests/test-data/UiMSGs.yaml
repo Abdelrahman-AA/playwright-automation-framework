@@ -83,3 +83,6 @@ ChangePasswordPage:
 
 LogoutPage:
   Title: "Adactin.com - Logout"
+
+TermsConditionsPage:
+  Title: "Terms and Conditions - AdactIn.com"

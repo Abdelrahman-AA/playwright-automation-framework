@@ -48,4 +48,4 @@ export const test = baseTest.extend<MyFixtures>({
     changePasswordPage: async ({ page }, use) => await use(new UiPages.ChangePasswordPage(page))
 });
 
-export { expect } from '@playwright/test';
+export { expect,Page } from '@playwright/test';
