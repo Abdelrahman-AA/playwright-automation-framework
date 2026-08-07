@@ -194,7 +194,7 @@ export class RegisterPage {
         await this.enterEmail(email);
         if (terms) await this.checkAgreeTermsAndConditions();
         if (captcha) await this.enterCaptchaText(captcha);
-        if (submit) await this.clickResetButton();
+        if (submit) await this.clickRegisterButton();
     }
     // #endregion
 }

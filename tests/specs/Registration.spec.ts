@@ -2,7 +2,6 @@ import { test, expect, Page } from "../fixtures/fixtures";
 import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/testDataYamlReader";
 import { getRandomString } from "../helpers/helpers";
 
-let empty: string = "";
 let longTimeout: number = 120000;
 
 
@@ -106,6 +105,173 @@ test.describe("Happy Path Suite", { tag: "@happy @Registration" }, () => {
         await test.step("", async () => {
             await expect.soft(registerPage.getSuccessfullyRegistrationMsg()).toBeVisible({ timeout: longTimeout });
             await expect.soft(registerPage.getSuccessfullyRegistrationMsg()).toHaveText(uiMSGs.RegisterPage.Success.Registration);
+        });
+    });
+});
+
+
+
+
+test.describe("Happy Path Suite", { tag: "@happy @Registration" }, () => {
+
+
+    test("Verify Error MSG For Register With Empty Data", async ({ registerPage }) => {
+
+        await test.step("", async () => {
+            await registerPage.clickRegisterButton();
+        });
+
+        await test.step("", async () => {
+            await expect.soft(registerPage.getUserNameErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getUserNameErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.EmptyUserName);
+
+            await expect.soft(registerPage.getPasswordErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getPasswordErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.EmptyPassword);
+
+            await expect.soft(registerPage.getConfirmPasswordErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getConfirmPasswordErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.EmptyConfirmPassword);
+
+            await expect.soft(registerPage.getFullNameErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getFullNameErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.EmptyFullName);
+
+            await expect.soft(registerPage.getEmailErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getEmailErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.EmptyEmail);
+
+            await expect.soft(registerPage.getCaptchaErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getCaptchaErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.EmptyCaptcha);
+
+            await expect.soft(registerPage.getMustAgreeTermsErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getMustAgreeTermsErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.NotAgreeTerms);
+        });
+    });
+
+
+    test("Verify Error Msg For Wrong Email Format", async ({ registerPage }) => {
+
+        await test.step("", async () => {
+            await registerPage.enterEmail(inValidTestData.InvalidRegistration.WrongEmailFormat);
+        });
+
+        await test.step("", async () => {
+            await registerPage.clickRegisterButton()
+        });
+
+        await test.step("", async () => {
+            await expect.soft(registerPage.getEmailErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getEmailErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.InvalidEmail);
+        });
+    });
+
+
+    test("Verify Error Msg For Wrong Captcha", async ({ registerPage }) => {
+
+        await test.step("", async () => {
+            await registerPage.enterCaptchaText(inValidTestData.InvalidRegistration.Captcha);
+        });
+
+        await test.step("", async () => {
+            await registerPage.clickRegisterButton()
+        });
+
+        await test.step("", async () => {
+            await expect.soft(registerPage.getCaptchaErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getCaptchaErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.InvalidCaptcha);
+        });
+    });
+
+
+    test("Verify Error MSG For Entering Short Data But With Valid Email For Registration", async ({ registerPage }) => {
+        let randomString: string = getRandomString(5);
+
+        await test.step("", async () => {
+            await registerPage.fillRegistrationFormAndOptionalClickSubmit(
+                inValidTestData.InvalidShortRegistration.UserName,
+                inValidTestData.InvalidShortRegistration.Password,
+                inValidTestData.InvalidShortRegistration.ConfirmPassword,
+                inValidTestData.InvalidShortRegistration.FullName,
+                `${randomString}${validTestData.ValidRegistration.Email}`,
+                true,
+                inValidTestData.InvalidShortRegistration.RandomCaptcha,
+                true)
+        });
+
+        await test.step("", async () => {
+            await expect.soft(registerPage.getUserNameErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getUserNameErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.ShortUserName);
+
+            await expect.soft(registerPage.getPasswordErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getPasswordErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.ShortPassword);
+
+            await expect.soft(registerPage.getFullNameErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getFullNameErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.ShortFullName);
+
+            await expect.soft(registerPage.getCaptchaErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getCaptchaErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.InvalidCaptcha);
+        });
+    });
+
+
+    test("Verify Error MSG For Miss Match Password Confirmation At Registration", async ({ registerPage }) => {
+        let randomString: string = getRandomString(5);
+
+        await test.step("", async () => {
+            await registerPage.fillRegistrationFormAndOptionalClickSubmit(
+                `${validTestData.ValidRegistration.UserName}${randomString}`,
+                validTestData.ValidRegistration.Password,
+                inValidTestData.InvalidRegistration.MismatchConfirmPassword,
+                validTestData.ValidRegistration.FullName,
+                `${randomString}${validTestData.ValidRegistration.Email}`,
+                true,
+                inValidTestData.InvalidRegistration.Captcha,
+                true)
+        });
+
+        await test.step("", async () => {
+            await expect.soft(registerPage.getConfirmPasswordErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getConfirmPasswordErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.ConfirmPasswordNotMatch);
+        });
+    });
+
+
+    test("Verify Error MSG For Registered User Name At Registration", async ({ registerPage }) => {
+        let randomString: string = getRandomString(5);
+
+        await test.step("", async () => {
+            await registerPage.fillRegistrationFormAndOptionalClickSubmit(
+                validTestData.RegisteredAccount.UserName,
+                validTestData.ValidRegistration.Password,
+                validTestData.ValidRegistration.ConfirmPassword,
+                validTestData.ValidRegistration.FullName,
+                `${randomString}${validTestData.ValidRegistration.Email}`,
+                true,
+                inValidTestData.InvalidRegistration.Captcha,
+                true)
+        });
+
+        await test.step("", async () => {
+            await expect.soft(registerPage.getUserNameErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getUserNameErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.UsedUserName);
+        });
+    });
+
+
+    test.only("Verify Error MSG For Registered Email At Registration", async ({ registerPage }) => {
+
+        await test.step("", async () => {
+            await registerPage.fillRegistrationFormAndOptionalClickSubmit(
+                validTestData.ValidRegistration.UserName,
+                validTestData.ValidRegistration.Password,
+                validTestData.ValidRegistration.ConfirmPassword,
+                validTestData.ValidRegistration.FullName,
+                validTestData.RegisteredAccount.email,
+                true,
+                inValidTestData.InvalidRegistration.Captcha,
+                true)
+        });
+
+        await test.step("", async () => {
+            await expect.soft(registerPage.getEmailErrorMSG(), "").toBeVisible();
+            await expect.soft(registerPage.getEmailErrorMSG(), "").toHaveText(uiMSGs.RegisterPage.Errors.UsedEmail);
         });
     });
 });

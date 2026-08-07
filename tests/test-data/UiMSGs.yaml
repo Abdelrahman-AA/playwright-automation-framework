@@ -20,7 +20,7 @@ RegisterPage:
     ShortPassword: "Password must contain minimum 6 characters"
     ShortFullName: "Full Name must contain minimum 6 characters"
     UsedUserName: "This username is Not available"
-    UsedEmail: "This Email Is Already Registered"
+    UsedEmail: "Email address is already in use"
     ConfirmPasswordNotMatch: "Passwords Do Not Match"
     InvalidEmail: "Invalid email, Please enter correct email."
     InvalidCaptcha: "Captcha is Invalid"

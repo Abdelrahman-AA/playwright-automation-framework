@@ -44,3 +44,5 @@ InvalidShortRegistration:
 
 InvalidRegistration:
   MismatchConfirmPassword: "cfg456BB"
+  WrongEmailFormat: "adho55ha@.com"
+  Captcha: "ertyil"
