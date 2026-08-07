@@ -255,7 +255,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Registration" }, () => {
     });
 
 
-    test.only("Verify Error MSG For Registered Email At Registration", async ({ registerPage }) => {
+    test("Verify Error MSG For Registered Email At Registration", async ({ registerPage }) => {
 
         await test.step("Fill Registration Form With Invalid Data", async () => {
             await registerPage.fillRegistrationFormAndOptionalClickSubmit(

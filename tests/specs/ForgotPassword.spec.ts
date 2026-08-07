@@ -1,15 +1,96 @@
 import { test, expect } from "../fixtures/fixtures";
+import { getRandomString } from "../helpers/helpers";
 import { uiMSGs, validTestData } from "../test-data/testDataYamlReader";
+
+
+let longTimeout: number = 120000;
+
+
+test.beforeEach("Navigate to Home Page", async ({ forgetPasswordPage }) => {
+    await forgetPasswordPage.goToForgetPasswordPage()
+});
 
 
 
 test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
 
 
-    test("Verify Sending Email To Reset Password When Entering Registered Email", async ({forgetPasswordPage}) => {
-        
-        await test.step("", async () => {
-            // forgetPasswordPage.enterEmail(validTestData.)
+    test("Verify Sending Email To Reset Password When Entering Registered Email @manual-Captcha", async ({ forgetPasswordPage, registerPage }) => {
+        let randomString: string = getRandomString(5);
+        let userName: string = `${validTestData.ValidRegistration.UserName}${randomString}`;
+        let email: string = `${randomString}${validTestData.ValidRegistration.Email}`;
+        let password: string = validTestData.ValidRegistration.Password;
+        let fullName: string = validTestData.ValidRegistration.FullName;
+
+        await test.step("Fill Registration Form", async () => {
+            await registerPage.goToRegisterPage()
+            await registerPage.fillRegistrationFormAndOptionalClickSubmit(userName, password, password, fullName, email, true)
         });
+
+        await test.step("", async () => {
+            const successMsg = registerPage.getSuccessfullyRegistrationMsg();
+            await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
+            await forgetPasswordPage.goToForgetPasswordPage();
+        });
+
+        await test.step("", async () => {
+            await forgetPasswordPage.enterEmail(email);
+        });
+
+        await test.step("", async () => {
+            await forgetPasswordPage.clickEmailPasswordButton()
+        });
+
+        await test.step("", async () => {
+            await expect(forgetPasswordPage.getSuccessfullyEmailedPasswordMSG(), "").toBeVisible();
+        });
+    });
+
+
+
+    test.only("Verify Still Able TO Login With Original Password While Not Reset Password From Email @manual-Captcha", async ({ loginPage, forgetPasswordPage, registerPage,page }) => {
+        let randomString: string = getRandomString(5);
+        let userName: string = `${validTestData.ValidRegistration.UserName}${randomString}`;
+        let email: string = `${randomString}${validTestData.ValidRegistration.Email}`;
+        let password: string = validTestData.ValidRegistration.Password;
+        let fullName: string = validTestData.ValidRegistration.FullName;
+
+        await test.step("Fill Registration Form", async () => {
+            await registerPage.goToRegisterPage()
+            await registerPage.fillRegistrationFormAndOptionalClickSubmit(userName, password, password, fullName, email, true)
+        });
+
+        await test.step("", async () => {
+            const successMsg = registerPage.getSuccessfullyRegistrationMsg();
+            await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
+            await forgetPasswordPage.goToForgetPasswordPage();
+        });
+
+        await test.step("", async () => {
+            await forgetPasswordPage.enterEmail(email);
+        });
+
+        await test.step("", async () => {
+            await forgetPasswordPage.clickEmailPasswordButton()
+        });
+
+        await test.step("", async () => {
+            const successMsg = forgetPasswordPage.getSuccessfullyEmailedPasswordMSG();
+            await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
+            await loginPage.goToLoginPage();
+        });
+
+        await test.step("", async () => {
+            await loginPage.enterUserNameAndPasswordAndClickLoginButton(userName,password);
+        });
+
+        await test.step("", async () => {
+            await expect (page,"").toHaveTitle(uiMSGs.SelectHotelPage.Title);
+        });
+    });
+
+
+    test("", async ({}) => {
+        
     });
 });
