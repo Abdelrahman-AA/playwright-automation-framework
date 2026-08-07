@@ -27,22 +27,22 @@ test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
             await registerPage.fillRegistrationFormAndOptionalClickSubmit(userName, password, password, fullName, email, true)
         });
 
-        await test.step("", async () => {
+        await test.step("Navigate to Forget Password Page", async () => {
             const successMsg = registerPage.getSuccessfullyRegistrationMsg();
             await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
             await forgetPasswordPage.goToForgetPasswordPage();
         });
 
-        await test.step("", async () => {
+        await test.step("Enter Email and Click Email Password Button", async () => {
             await forgetPasswordPage.enterEmail(email);
         });
 
-        await test.step("", async () => {
+        await test.step("Click Email Password Button", async () => {
             await forgetPasswordPage.clickEmailPasswordButton()
         });
 
-        await test.step("", async () => {
-            await expect(forgetPasswordPage.getSuccessfullyEmailedPasswordMSG(), "").toBeVisible();
+        await test.step("Verify Successfully Emailed Password Message", async () => {
+            await expect(forgetPasswordPage.getSuccessfullyEmailedPasswordMSG(),"Successfully emailed password message is not visible").toBeVisible();
         });
     });
 
@@ -60,32 +60,32 @@ test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
             await registerPage.fillRegistrationFormAndOptionalClickSubmit(userName, password, password, fullName, email, true)
         });
 
-        await test.step("", async () => {
+        await test.step("Navigate to Forget Password Page", async () => {
             const successMsg = registerPage.getSuccessfullyRegistrationMsg();
             await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
             await forgetPasswordPage.goToForgetPasswordPage();
         });
 
-        await test.step("", async () => {
+        await test.step("Enter Email", async () => {
             await forgetPasswordPage.enterEmail(email);
         });
 
-        await test.step("", async () => {
+        await test.step("Click Email Password Button", async () => {
             await forgetPasswordPage.clickEmailPasswordButton()
         });
 
-        await test.step("", async () => {
+        await test.step("Navigate to Login Page", async () => {
             const successMsg = forgetPasswordPage.getSuccessfullyEmailedPasswordMSG();
             await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
             await loginPage.goToLoginPage();
         });
 
-        await test.step("", async () => {
+        await test.step("Enter User Name and Password and Click Login Button", async () => {
             await loginPage.enterUserNameAndPasswordAndClickLoginButton(userName, password);
         });
 
-        await test.step("", async () => {
-            await expect(page, "").toHaveTitle(uiMSGs.SelectHotelPage.Title);
+        await test.step("Verify Navigation to Select Hotel Page", async () => {
+            await expect(page, "Navigation to Select Hotel Page failed").toHaveTitle(uiMSGs.SelectHotelPage.Title);
         });
     });
 
@@ -94,27 +94,27 @@ test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
         let randomString: string = getRandomString(5);
         let email: string = `${randomString}${validTestData.ValidRegistration.Email}`;
 
-        await test.step("", async () => {
+        await test.step("Enter Email and Click Reset", async () => {
             await forgetPasswordPage.enterEmail(email)
         });
 
-        await test.step("", async () => {
+        await test.step("Click Reset Button", async () => {
             await forgetPasswordPage.clickResetButton()
         });
 
-        await test.step("", async () => {
-            expect(await forgetPasswordPage.getTextOfEmailField(), "").toEqual("");
+        await test.step("Verify Email Field Is Reset", async () => {
+            expect(await forgetPasswordPage.getTextOfEmailField(), "Email field is not reset").toEqual("");
         });
     });
 
     test("Verify Navigate Back To Login Page When Clicking Back To Login CTA", async ({ forgetPasswordPage, page }) => {
 
-        test.step("", async () => {
+        test.step("Click Back To Login CTA", async () => {
             await forgetPasswordPage.clickBackToLoginPageCta()
         });
 
-        await test.step("", async () => {
-            await expect(page, "").toHaveTitle(uiMSGs.LoginPage.Title);
+        await test.step("Verify Navigation to Login Page", async () => {
+            await expect(page, "Navigation to Login Page failed").toHaveTitle(uiMSGs.LoginPage.Title);
         });
     });
 });
@@ -128,12 +128,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
 
     test("Verify Reset Email Field When Click Reset While Email Field Is Empty", async ({ forgetPasswordPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Click Reset Button", async () => {
             await forgetPasswordPage.clickResetButton()
         });
 
-        await test.step("", async () => {
-            expect(await forgetPasswordPage.getTextOfEmailField(), "").toEqual("");
+        await test.step("Verify Email Field Is Reset", async () => {
+            expect(await forgetPasswordPage.getTextOfEmailField(), "Email field is not reset").toEqual("");
         });
     });
 
@@ -142,79 +142,79 @@ test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
         let randomString: string = getRandomString(5);
         let email: string = `${randomString}${validTestData.ValidRegistration.Email}`;
 
-        await test.step("", async () => {
+        await test.step("Enter Email", async () => {
             await forgetPasswordPage.enterEmail(email)
         });
 
-        await test.step("", async () => {
+        await test.step("Click Email Password Button", async () => {
             await forgetPasswordPage.clickEmailPasswordButton()
         });
 
-        await test.step("", async () => {
-            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "").toBeVisible();
-            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "").toHaveText(uiMSGs.ForgetPasswordPage.Errors.NotRegisteredEmail);
+        await test.step("Verify Error Message", async () => {
+            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "Error message is not visible").toBeVisible();
+            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "Error message content is incorrect").toHaveText(uiMSGs.ForgetPasswordPage.Errors.NotRegisteredEmail);
         });
     });
 
 
     test("Verify Error MSG Appear When Enter Empty Email With MSG Statement Content", async ({ forgetPasswordPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Click Email Password Button", async () => {
             await forgetPasswordPage.clickEmailPasswordButton()
         });
 
-        await test.step("", async () => {
-            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "").toBeVisible();
-            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "").toHaveText(uiMSGs.ForgetPasswordPage.Errors.EmptyEmail);
+        await test.step("Verify Error Message", async () => {
+            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "Error message is not visible").toBeVisible();
+            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "Error message content is incorrect").toHaveText(uiMSGs.ForgetPasswordPage.Errors.EmptyEmail);
         });
     });
 
 
     test("Verify Error MSG Appear When Enter Wrong Email Format With MSG Statement Content", async ({ forgetPasswordPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Enter Email", async () => {
             await forgetPasswordPage.enterEmail(inValidTestData.InvalidRegistration.WrongEmailFormat)
         });
 
-        await test.step("", async () => {
+        await test.step("Click Email Password Button", async () => {
             await forgetPasswordPage.clickEmailPasswordButton()
         });
 
-        await test.step("", async () => {
-            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "").toBeVisible();
-            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "").toHaveText(uiMSGs.ForgetPasswordPage.Errors.InvalidEmail);
+        await test.step("Verify Error Message", async () => {
+            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "Error message is not visible").toBeVisible();
+            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "Error message content is incorrect").toHaveText(uiMSGs.ForgetPasswordPage.Errors.InvalidEmail);
         });
     });
 
 
     test("Verify Reset Email Field After Enter Email And Click Reset When InValid Email", async ({ forgetPasswordPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Enter Email", async () => {
             await forgetPasswordPage.enterEmail(inValidTestData.InvalidShortRegistration.Email)
         });
 
-        await test.step("", async () => {
+        await test.step("Click Reset Button", async () => {
             await forgetPasswordPage.clickResetButton()
         });
 
-        await test.step("", async () => {
-            expect(await forgetPasswordPage.getTextOfEmailField(), "").toEqual("");
+        await test.step("Verify Email Field Is Reset", async () => {
+            expect(await forgetPasswordPage.getTextOfEmailField(), "Email field is not reset").toEqual("");
         });
     });
 
 
     test("Verify Reset Email Field After Enter Email And Click Reset After Email Field Error MSG Appear When InValid Email Format", async ({ forgetPasswordPage }) => {
 
-        await test.step("", async () => {
+        await test.step("Enter Email", async () => {
             await forgetPasswordPage.enterEmail(inValidTestData.InvalidRegistration.WrongEmailFormat)
         });
 
-        await test.step("", async () => {
+        await test.step("Click Reset Button", async () => {
             await forgetPasswordPage.clickResetButton()
         });
 
-        await test.step("", async () => {
-            expect(await forgetPasswordPage.getTextOfEmailField(), "").toEqual("");
+        await test.step("Verify Email Field Is Reset", async () => {
+            expect(await forgetPasswordPage.getTextOfEmailField(), "Email field is not reset").toEqual("");
         });
     });
 
@@ -223,22 +223,22 @@ test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
         let randomString: string = getRandomString(5);
         let email: string = `${randomString}${validTestData.ValidRegistration.Email}`;
 
-        await test.step("", async () => {
+        await test.step("Enter Email", async () => {
             await forgetPasswordPage.enterEmail(email)
         });
 
-        await test.step("", async () => {
+        await test.step("Click Email Password Button", async () => {
             await forgetPasswordPage.clickEmailPasswordButton()
         });
 
-        await test.step("", async () => {
+        await test.step("Verify Error Message", async () => {
             const errorMsg = forgetPasswordPage.getEmailFieldErrorMSG();
             await errorMsg.waitFor({ state: 'visible', timeout: longTimeout });
             await forgetPasswordPage.clickResetButton();
         });
 
-        await test.step("", async () => {
-            expect(await forgetPasswordPage.getTextOfEmailField(), "").toEqual("");
+        await test.step("Verify Email Field Is Reset", async () => {
+            expect(await forgetPasswordPage.getTextOfEmailField(), "Email field is not reset").toEqual("");
         });
     });
 });
