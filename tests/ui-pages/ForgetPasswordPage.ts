@@ -64,7 +64,7 @@ export class ForgetPasswordPage {
     }
 
   async  getTextOfEmailField(): Promise<string> {
-        return await this.emailField.innerText();
+        return await this.emailField.inputValue();
     }
     // #endregion
 
