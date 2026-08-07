@@ -19,3 +19,14 @@ export function getDateShiftingOfToday(shifting:number,format:string='en-GB'):st
     if(shifting===0) return new Date().toLocaleDateString(format);
     else return (new Date(new Date().setDate(new Date().getDate() +shifting)).toLocaleDateString(format))
 }
+
+
+export function getRandomString(length: number): string {
+    if (length <= 0) return "";
+    
+    const chars = "abcdefghijklmnopqrstuvwxyz1234567890";
+    return Array.from(
+        { length }, 
+        () => chars[Math.floor(Math.random() * chars.length)]
+    ).join("");
+}

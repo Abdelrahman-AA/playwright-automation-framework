@@ -53,7 +53,7 @@ export class RegisterPage {
         this.errorMsgEmail = page.locator("#email_add_span");
         this.errorMsgCaptcha = page.locator("#captcha_span");
         this.errorMsgMustAgreeTerms = page.locator("#tnc_span");
-        this.successfullyRegistrationMsg = page.locator("/html/body/table[2]/tbody/tr/td[1]/table/tbody/tr/td");
+        this.successfullyRegistrationMsg = page.locator("xpath=/html/body/table[2]/tbody/tr/td[1]/table/tbody/tr/td");
     }
     // #endregion
 

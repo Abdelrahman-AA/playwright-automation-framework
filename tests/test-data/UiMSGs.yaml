@@ -25,7 +25,7 @@ RegisterPage:
     InvalidEmail: "Invalid email, Please enter correct email."
     InvalidCaptcha: "Captcha is Invalid"
   Success:
-    Registration: "An email verification code has been sent to your email address. Please check your email and verify your email address."
+    Registration: "An email verification code has been sent to your email address. Please check your email and verify your email address.Click here to loginNote: If you do not receive email within next 5 minutes, please check your junk/spam email folder first and if you still cannot find the verification email please send an email request to info@adactin.com for verification."
 
 SearchHotelPage:
   Title: "Adactin.com - Search Hotel"

@@ -1,8 +1,9 @@
 import { test, expect, Page } from "../fixtures/fixtures";
 import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/testDataYamlReader";
+import { getRandomString } from "../helpers/helpers";
 
 let empty: string = "";
-let longTimeout:number=120000;
+let longTimeout: number = 120000;
 
 
 test.beforeEach("Navigate to Home Page", async ({ registerPage }) => {
@@ -89,23 +90,22 @@ test.describe("Happy Path Suite", { tag: "@happy @Registration" }, () => {
 
 
     test("Verify Successfully Registration @manual-Captcha", async ({ registerPage }) => {
+        let randomString: string = getRandomString(5);
 
         await test.step("", async () => {
             await registerPage.fillRegistrationFormAndOptionalClickSubmit(
-                validTestData.ValidRegistration.UserName,
+                `${validTestData.ValidRegistration.UserName}${randomString}`,
                 validTestData.ValidRegistration.Password,
                 validTestData.ValidRegistration.ConfirmPassword,
                 validTestData.ValidRegistration.FullName,
-                validTestData.ValidRegistration.Email,
+                `${randomString}${validTestData.ValidRegistration.Email}`,
                 true,
             )
         });
 
         await test.step("", async () => {
-            await expect.soft(registerPage.getSuccessfullyRegistrationMsg()).toBeVisible({timeout:longTimeout});
+            await expect.soft(registerPage.getSuccessfullyRegistrationMsg()).toBeVisible({ timeout: longTimeout });
             await expect.soft(registerPage.getSuccessfullyRegistrationMsg()).toHaveText(uiMSGs.RegisterPage.Success.Registration);
         });
     });
-
-
 });
