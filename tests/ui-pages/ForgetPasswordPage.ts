@@ -62,6 +62,10 @@ export class ForgetPasswordPage {
     getEmailFieldErrorMSG(): Locator {
         return this.emailFieldErrorMsg;
     }
+
+  async  getTextOfEmailField(): Promise<string> {
+        return await this.emailField.innerText();
+    }
     // #endregion
 
     // #region Flows

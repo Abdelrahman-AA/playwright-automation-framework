@@ -48,7 +48,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
 
 
 
-    test.only("Verify Still Able TO Login With Original Password While Not Reset Password From Email @manual-Captcha", async ({ loginPage, forgetPasswordPage, registerPage,page }) => {
+    test("Verify Still Able TO Login With Original Password While Not Reset Password From Email @manual-Captcha", async ({ loginPage, forgetPasswordPage, registerPage, page }) => {
         let randomString: string = getRandomString(5);
         let userName: string = `${validTestData.ValidRegistration.UserName}${randomString}`;
         let email: string = `${randomString}${validTestData.ValidRegistration.Email}`;
@@ -81,16 +81,79 @@ test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
         });
 
         await test.step("", async () => {
-            await loginPage.enterUserNameAndPasswordAndClickLoginButton(userName,password);
+            await loginPage.enterUserNameAndPasswordAndClickLoginButton(userName, password);
         });
 
         await test.step("", async () => {
-            await expect (page,"").toHaveTitle(uiMSGs.SelectHotelPage.Title);
+            await expect(page, "").toHaveTitle(uiMSGs.SelectHotelPage.Title);
         });
     });
 
 
-    test("", async ({}) => {
-        
+    test("Verify Reset Email Field After Enter Email And Click Reset When Valid Email", async ({ forgetPasswordPage }) => {
+        let randomString: string = getRandomString(5);
+        let email: string = `${randomString}${validTestData.ValidRegistration.Email}`;
+
+        await test.step("", async () => {
+            await forgetPasswordPage.enterEmail(email)
+        });
+
+        await test.step("", async () => {
+            await forgetPasswordPage.clickResetButton()
+        });
+
+        await test.step("", async () => {
+            expect(await forgetPasswordPage.getTextOfEmailField(), "").toEqual("");
+        });
+    });
+
+    test("Verify Navigate Back To Login Page When Clicking Back To Login CTA", async ({ forgetPasswordPage, page }) => {
+
+        test.step("", async () => {
+            await forgetPasswordPage.clickBackToLoginPageCta()
+        });
+
+        await test.step("", async () => {
+            await expect(page, "").toHaveTitle(uiMSGs.LoginPage.Title);
+        });
+    });
+});
+
+
+
+
+
+test.describe("Happy Path Suite", { tag: "@happy @Forgot-Password" }, () => {
+
+
+    test("Verify Reset Email Field When Click Reset While Email Field Is Empty", async ({ forgetPasswordPage }) => {
+
+        await test.step("", async () => {
+            await forgetPasswordPage.clickResetButton()
+        });
+
+        await test.step("", async () => {
+            expect(await forgetPasswordPage.getTextOfEmailField(), "").toEqual("");
+        });
+    });
+
+
+    test("Verify Error MSG Appear When Enter Not Registered Email With MSG Statement Content", async ({ forgetPasswordPage }) => {
+        let randomString: string = getRandomString(5);
+        let email: string = `${randomString}${validTestData.ValidRegistration.Email}`;
+
+        await test.step("", async () => {
+            await forgetPasswordPage.enterEmail(email)
+        });
+
+        await test.step("", async () => {
+            await forgetPasswordPage.clickEmailPasswordButton()
+        });
+
+        await test.step("", async () => {
+            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "").toBeVisible();
+            await expect.soft(forgetPasswordPage.getEmailFieldErrorMSG(), "").toHaveText(uiMSGs.ForgetPasswordPage.Errors.NotRegisteredEmail);
+        });
+
     });
 });
