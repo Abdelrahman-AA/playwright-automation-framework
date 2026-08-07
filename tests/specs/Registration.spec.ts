@@ -62,7 +62,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Registration" }, () => {
     });
 
 
-    test.only("Verify Input Fields Cleared After Click Reset", async ({ registerPage }) => {
+    test("Verify Input Fields Cleared After Click Reset", async ({ registerPage }) => {
 
         await test.step("", async () => {
             await registerPage.fillRegistrationFormAndOptionalClickSubmit(
