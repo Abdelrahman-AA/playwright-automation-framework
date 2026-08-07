@@ -1,6 +1,6 @@
 import { test, expect } from "../fixtures/fixtures";
 import { getDaysDifference } from "../helpers/helpers";
-import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/testDataYamlReader";
+import { uiURL, uiMSGs, validTestData } from "../test-data/testDataYamlReader";
 
 
 test.beforeEach("Login and Get Session ID Then Select Hotel And Open Select Page", async ({ page, loginService, bookHotelService, bookedItineraryPage }, testInfo) => {

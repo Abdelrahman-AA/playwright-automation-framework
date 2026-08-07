@@ -33,3 +33,14 @@ InvalidLastName:
   ContainNum: "Abo123"
   Short: "A"
   OnlyNum: "123"
+
+InvalidShortRegistration:
+  UserName: "A"
+  Password: "a"
+  ConfirmPassword: "a"
+  FullName: "A"
+  Email: "a"
+  RandomCaptcha: "a"
+
+InvalidRegistration:
+  MismatchConfirmPassword: "cfg456BB"

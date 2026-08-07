@@ -153,8 +153,26 @@ export class RegisterPage {
         return this.errorMsgMustAgreeTerms;
     }
 
-    getSuccessfullyRegistrationMsgErrorMSG(): Locator {
+    getSuccessfullyRegistrationMsg(): Locator {
         return this.successfullyRegistrationMsg;
+    }
+
+    getRegisterButton():Locator{
+        return this.registerButton;
+    }
+
+    async getAllFieldsTextAndTermsCondition(): Promise<(string | boolean)[]> {
+        const [userName, password, confirmPassword, fullName, email, captchaText, isAgreed]
+            = await Promise.all([
+                this.userNameField.innerText(),
+                this.passwordField.innerText(),
+                this.confirmPasswordField.innerText(),
+                this.fullNameField.innerText(),
+                this.emailField.innerText(),
+                this.captchaTextField.innerText(),
+                this.checkAgreementTermsAndConditions.isChecked()
+            ]);
+        return [userName, password, confirmPassword, fullName, email, captchaText, isAgreed];
     }
     // #endregion
 

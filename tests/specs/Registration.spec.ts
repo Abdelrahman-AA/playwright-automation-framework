@@ -1,5 +1,8 @@
-import { test, expect,Page } from "../fixtures/fixtures";
-import { uiURL, uiMSGs, validTestData } from "../test-data/testDataYamlReader";
+import { test, expect, Page } from "../fixtures/fixtures";
+import { uiURL, uiMSGs, validTestData, inValidTestData } from "../test-data/testDataYamlReader";
+
+let empty: string = "";
+let longTimeout:number=120000;
 
 
 test.beforeEach("Navigate to Home Page", async ({ registerPage }) => {
@@ -39,12 +42,12 @@ test.describe("Happy Path Suite", { tag: "@happy @Registration" }, () => {
 
 
     test("Verify Opening Terms Page From Registration Page CTA", async ({ context, registerPage }) => {
-        let newPage:Page;
+        let newPage: Page;
 
         await test.step("", async () => {
-             [newPage] = await Promise.all([
+            [newPage] = await Promise.all([
                 context.waitForEvent('page'),
-                 registerPage.clickTermsAndConditionsCTA()
+                registerPage.clickTermsAndConditionsCTA()
             ]);
             await newPage.waitForLoadState();
         });
@@ -57,5 +60,52 @@ test.describe("Happy Path Suite", { tag: "@happy @Registration" }, () => {
             await expect.soft(newPage).toHaveTitle(uiMSGs.TermsConditionsPage.Title)
         });
     });
+
+
+    test.only("Verify Input Fields Cleared After Click Reset", async ({ registerPage }) => {
+
+        await test.step("", async () => {
+            await registerPage.fillRegistrationFormAndOptionalClickSubmit(
+                validTestData.ValidRegistration.UserName,
+                validTestData.ValidRegistration.Password,
+                validTestData.ValidRegistration.ConfirmPassword,
+                validTestData.ValidRegistration.FullName,
+                validTestData.ValidRegistration.Email,
+                true,
+                validTestData.ValidRegistration.Captcha,
+            );
+        });
+
+        await test.step("", async () => {
+            await registerPage.clickResetButton()
+
+        });
+
+        await test.step("", async () => {
+            expect.soft(await registerPage.getAllFieldsTextAndTermsCondition()).toContainEqual("");
+            expect.soft(await registerPage.getAllFieldsTextAndTermsCondition()).toContainEqual(false);
+        });
+    });
+
+
+    test("Verify Successfully Registration @manual-Captcha", async ({ registerPage }) => {
+
+        await test.step("", async () => {
+            await registerPage.fillRegistrationFormAndOptionalClickSubmit(
+                validTestData.ValidRegistration.UserName,
+                validTestData.ValidRegistration.Password,
+                validTestData.ValidRegistration.ConfirmPassword,
+                validTestData.ValidRegistration.FullName,
+                validTestData.ValidRegistration.Email,
+                true,
+            )
+        });
+
+        await test.step("", async () => {
+            await expect.soft(registerPage.getSuccessfullyRegistrationMsg()).toBeVisible({timeout:longTimeout});
+            await expect.soft(registerPage.getSuccessfullyRegistrationMsg()).toHaveText(uiMSGs.RegisterPage.Success.Registration);
+        });
+    });
+
 
 });

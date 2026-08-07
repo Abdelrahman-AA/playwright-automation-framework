@@ -33,3 +33,11 @@ BookingDataItinerary:
  TotalPrice: "3010"
  GST: "301"
  FinalBillingPrice: "3311"
+
+ValidRegistration:
+  UserName: "Abcd123AB"
+  Password: "abc123AA"
+  ConfirmPassword: "abc123AA"
+  FullName: "Abc Abd"
+  Email: "abc123ab@mail.com"
+  Captcha: "apihuio"
