@@ -47,10 +47,8 @@ InvalidRegistration:
   WrongEmailFormat: "adho55ha@.com"
   Captcha: "ertyil"
 
-InvalidShortChangePassword:
-  NewPassword: "ac#Bn"
-  ConfirmNewPassword: "ac#Bn"
+InvalidShortChangePassword: "ac#Bn"
 
-InvalidNotMatchChangePassword:
-  NewPassword: "ac#Bnn"
-  ConfirmNewPassword: "ac@Nbn"
+InvalidNotMatchChangePassword: "ac@Nbn"
+
+InvalidCurrentPassword: "acvbgn#dnd"

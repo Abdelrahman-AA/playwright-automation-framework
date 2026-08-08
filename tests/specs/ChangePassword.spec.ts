@@ -1,20 +1,26 @@
 import { test, expect } from "../fixtures/fixtures";
-import { getCurrentPageSessionID } from "../helpers/helpers";
-import { uiMSGs, validTestData } from "../test-data/testDataYamlReader";
+import { uiMSGs, validTestData, uiURL, inValidTestData } from "../test-data/testDataYamlReader";
+import { LoginPage } from "../ui-pages/LoginPage";
 
 
-const longTimeout: number = 120000;
+const longTimeout: number = 60000;
 const empty: string = "";
 
 const registeredAccountUserName: string = validTestData.RegisteredAccount.UserName;
 const registeredAccountPassword: string = validTestData.RegisteredAccount.Password;
+
 const validChangeNewPassword: string = validTestData.ValidChangePassword.NewPassword;
 const validChangeConfirmPassword: string = validTestData.ValidChangePassword.ConfirmNewPassword;
+
+const inValidShortNewAndConfirmPassword: string = inValidTestData.InvalidShortChangePassword;
+const invalidNotMatchChangePassword: string = inValidTestData.InvalidNotMatchChangePassword;
+
+const invalidCurrentPassword: string=inValidTestData.InvalidCurrentPassword;
 
 
 
 test.beforeEach("", async ({ page, loginService, changePasswordPage }, testInfo) => {
-    let sessionID: string = await loginService.getLoginPhpSessionId(registeredAccountUserName, registeredAccountPassword);
+    const sessionID: string = await loginService.getLoginPhpSessionId(registeredAccountUserName, registeredAccountPassword);
     await loginService.injectSessionId(page, sessionID);
     await changePasswordPage.goToChangePasswordPage();
 
@@ -24,7 +30,7 @@ test.beforeEach("", async ({ page, loginService, changePasswordPage }, testInfo)
 
 
 test.afterEach("", async ({ changePasswordService }, testInfo) => {
-    let sessionID = testInfo.annotations.find(a => a.type === 'sessionID')?.description || "";
+    const sessionID = testInfo.annotations.find(a => a.type === 'sessionID')?.description || "";
     const testPass1 = testInfo.annotations.find(a => a.type === 'testPass1')?.description || "";
     const testPass2 = testInfo.annotations.find(a => a.type === 'testPass2')?.description || "";
 
@@ -65,7 +71,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Change-Password" }, () => {
     });
 
 
-    test("Verify Password Changed Successfully When Valid Data", async ({ page, changePasswordPage, loginPage, logoutPage }, testInfo) => {
+    test.only("Verify Password Changed Successfully When Valid Data", async ({ page, changePasswordPage }, testInfo) => {
 
         await test.step("", async () => {
             await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, validChangeNewPassword, validChangeConfirmPassword)
@@ -74,29 +80,24 @@ test.describe("Happy Path Suite", { tag: "@happy @Change-Password" }, () => {
         await test.step("", async () => {
             const successMsg = changePasswordPage.getSubmitChangePasswordMSG()
             await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
-            await changePasswordPage.staticBar.clickLogoutCTA();
         });
 
         await test.step("", async () => {
-            await logoutPage.clickOnClickHereToLoginAgainCTA()
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage)
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, validChangeNewPassword)
+
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.SearchHotelPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
         });
 
         await test.step("", async () => {
-            await expect.soft(page, "").toHaveTitle(uiMSGs.LoginPage.Title);
-            await loginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, validChangeNewPassword)
-        });
-
-        await test.step("", async () => {
-            await expect.soft(page, "").toHaveTitle(uiMSGs.SearchHotelPage.Title);
-        });
-
-        await test.step("", async () => {
-            const currentSessionId = await getCurrentPageSessionID(page);
-            testInfo.annotations.push({ type: 'sessionID', description: currentSessionId });
             testInfo.annotations.push({ type: 'testPass1', description: validChangeNewPassword });
             testInfo.annotations.push({ type: 'testPass2', description: validChangeConfirmPassword });
         });
-
     });
 });
 
@@ -124,7 +125,7 @@ test.describe("Negative Path Suite", { tag: "@negative @Change-Password" }, () =
     });
 
 
-        test("Verify Password Not Changed When Confirm Password Is Empty", async ({ page, changePasswordPage, loginPage, logoutPage }, testInfo) => {
+    test("Verify Password Not Changed When Confirm Password Is Empty", async ({ page, changePasswordPage }, testInfo) => {
 
         await test.step("", async () => {
             await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, validChangeNewPassword, empty)
@@ -133,26 +134,22 @@ test.describe("Negative Path Suite", { tag: "@negative @Change-Password" }, () =
         await test.step("", async () => {
             const successMsg = changePasswordPage.getSubmitChangePasswordMSG()
             await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
-            await changePasswordPage.staticBar.clickLogoutCTA();
         });
 
         await test.step("", async () => {
-            await logoutPage.clickOnClickHereToLoginAgainCTA()
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage)
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, validChangeNewPassword)
+
+            await expect.soft(newPage, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.LoginPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
         });
 
         await test.step("", async () => {
-            await expect.soft(page, "").toHaveTitle(uiMSGs.LoginPage.Title);
-            await loginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, validChangeNewPassword)
-        });
-
-        await test.step("", async () => {
-            await expect.soft(page, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
-            await expect.soft(page, "").toHaveTitle(uiMSGs.LoginPage.Title);
-        });
-
-        await test.step("", async () => {
-            const currentSessionId = await getCurrentPageSessionID(page);
-            testInfo.annotations.push({ type: 'sessionID', description: currentSessionId });
             testInfo.annotations.push({ type: 'testPass1', description: validChangeNewPassword });
             testInfo.annotations.push({ type: 'testPass2', description: empty });
         });
@@ -177,7 +174,7 @@ test.describe("Negative Path Suite", { tag: "@negative @Change-Password" }, () =
     });
 
 
-        test("Verify Password Not Changed When New Password Is Empty", async ({ page, changePasswordPage, loginPage, logoutPage }, testInfo) => {
+    test("Verify Password Not Changed When New Password Is Empty", async ({ page, changePasswordPage }, testInfo) => {
 
         await test.step("", async () => {
             await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, empty, validChangeConfirmPassword)
@@ -186,33 +183,29 @@ test.describe("Negative Path Suite", { tag: "@negative @Change-Password" }, () =
         await test.step("", async () => {
             const successMsg = changePasswordPage.getSubmitChangePasswordMSG()
             await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
-            await changePasswordPage.staticBar.clickLogoutCTA();
         });
 
         await test.step("", async () => {
-            await logoutPage.clickOnClickHereToLoginAgainCTA()
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage);
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, validChangeConfirmPassword)
+
+            await expect.soft(newPage, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.LoginPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
         });
 
         await test.step("", async () => {
-            await expect.soft(page, "").toHaveTitle(uiMSGs.LoginPage.Title);
-            await loginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, validChangeConfirmPassword)
-        });
-
-        await test.step("", async () => {
-            await expect.soft(page, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
-            await expect.soft(page, "").toHaveTitle(uiMSGs.LoginPage.Title);
-        });
-
-        await test.step("", async () => {
-            const currentSessionId = await getCurrentPageSessionID(page);
-            testInfo.annotations.push({ type: 'sessionID', description: currentSessionId });
             testInfo.annotations.push({ type: 'testPass1', description: empty });
             testInfo.annotations.push({ type: 'testPass2', description: validChangeConfirmPassword });
         });
-    });    
+    });
 
 
-        test("Verify Password Change Error MSG Appeared When New And Confirm Passwords Are Empty", async ({ changePasswordPage }, testInfo) => {
+    test("Verify Password Change Error MSG Appeared When New And Confirm Passwords Are Empty", async ({ changePasswordPage }, testInfo) => {
 
         await test.step("", async () => {
             await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, empty, empty)
@@ -230,7 +223,7 @@ test.describe("Negative Path Suite", { tag: "@negative @Change-Password" }, () =
     });
 
 
-        test("Verify Password Not Changed When New And Confirm Passwords Are Empty", async ({ page, changePasswordPage, loginPage, logoutPage }, testInfo) => {
+    test("Verify Password Not Changed When New And Confirm Passwords Are Empty", async ({ page, changePasswordPage }, testInfo) => {
 
         await test.step("", async () => {
             await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, empty, empty)
@@ -239,28 +232,282 @@ test.describe("Negative Path Suite", { tag: "@negative @Change-Password" }, () =
         await test.step("", async () => {
             const successMsg = changePasswordPage.getSubmitChangePasswordMSG()
             await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
-            await changePasswordPage.staticBar.clickLogoutCTA();
         });
 
         await test.step("", async () => {
-            await logoutPage.clickOnClickHereToLoginAgainCTA()
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage);
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, empty)
+
+            await expect.soft(newPage, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.LoginPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
         });
 
         await test.step("", async () => {
-            await expect.soft(page, "").toHaveTitle(uiMSGs.LoginPage.Title);
-            await loginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, empty)
-        });
-
-        await test.step("", async () => {
-            await expect.soft(page, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
-            await expect.soft(page, "").toHaveTitle(uiMSGs.LoginPage.Title);
-        });
-
-        await test.step("", async () => {
-            const currentSessionId = await getCurrentPageSessionID(page);
-            testInfo.annotations.push({ type: 'sessionID', description: currentSessionId });
             testInfo.annotations.push({ type: 'testPass1', description: empty });
             testInfo.annotations.push({ type: 'testPass2', description: empty });
         });
-    });   
+    });
+
+
+    test("Verify Password Change Error MSG Appeared When New Password Is InValid Short", async ({ changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, inValidShortNewAndConfirmPassword, inValidShortNewAndConfirmPassword)
+        });
+
+        await test.step("", async () => {
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toBeVisible();
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toHaveText(uiMSGs.ChangePasswordPage.Errors.ShortPassWord);
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: inValidShortNewAndConfirmPassword });
+            testInfo.annotations.push({ type: 'testPass2', description: inValidShortNewAndConfirmPassword });
+        });
+    });
+
+
+    test("Verify Password Not Changed When New Password Is InValid Short", async ({ page, changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, inValidShortNewAndConfirmPassword, inValidShortNewAndConfirmPassword)
+        });
+
+        await test.step("", async () => {
+            const successMsg = changePasswordPage.getSubmitChangePasswordMSG()
+            await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
+        });
+
+        await test.step("", async () => {
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage);
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, inValidShortNewAndConfirmPassword)
+
+            await expect.soft(newPage, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.LoginPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: inValidShortNewAndConfirmPassword });
+            testInfo.annotations.push({ type: 'testPass2', description: inValidShortNewAndConfirmPassword });
+        });
+    });
+
+
+    test("Verify Password Change Error MSG Appeared When New Password Miss Match Confirm Password", async ({ changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, validChangeNewPassword, invalidNotMatchChangePassword)
+        });
+
+        await test.step("", async () => {
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toBeVisible();
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toHaveText(uiMSGs.ChangePasswordPage.Errors.MismatchConfirmation);
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: validChangeNewPassword });
+            testInfo.annotations.push({ type: 'testPass2', description: invalidNotMatchChangePassword });
+        });
+    });
+
+
+    test("Verify Password Not Changed When New Password Miss Match Confirm Password By Both Miss Matched Passwords", async ({ page, changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, validChangeNewPassword, invalidNotMatchChangePassword)
+        });
+
+        await test.step("", async () => {
+            const successMsg = changePasswordPage.getSubmitChangePasswordMSG()
+            await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
+        });
+
+        await test.step("", async () => {
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage);
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, validChangeNewPassword)
+
+            await expect.soft(newPage, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.LoginPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
+        });
+
+        await test.step("", async () => {
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage);
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, invalidNotMatchChangePassword)
+
+            await expect.soft(newPage, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.LoginPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: validChangeNewPassword });
+            testInfo.annotations.push({ type: 'testPass2', description: invalidNotMatchChangePassword });
+        });
+    });
+
+
+        test("Verify Password Change Error MSG Appeared When Current Password Is Wrong", async ({ changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(invalidCurrentPassword, validChangeNewPassword, validChangeConfirmPassword)
+        });
+
+        await test.step("", async () => {
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toBeVisible();
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toHaveText(uiMSGs.ChangePasswordPage.Errors.WrongCurrentPassword);
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: validChangeNewPassword });
+            testInfo.annotations.push({ type: 'testPass2', description: validChangeConfirmPassword });
+        });
+    });
+
+
+    test("Verify Password Not Changed When Current Password Is Wrong", async ({ page, changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(invalidCurrentPassword, validChangeNewPassword, validChangeConfirmPassword)
+        });
+
+        await test.step("", async () => {
+            const successMsg = changePasswordPage.getSubmitChangePasswordMSG()
+            await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
+        });
+
+        await test.step("", async () => {
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage);
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, validChangeNewPassword)
+
+            await expect.soft(newPage, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.LoginPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: validChangeNewPassword });
+            testInfo.annotations.push({ type: 'testPass2', description: validChangeConfirmPassword });
+        });
+    });
+
+
+            test("Verify Password Change Error MSG Appeared When Current Password Is Empty", async ({ changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(empty, validChangeNewPassword, validChangeConfirmPassword)
+        });
+
+        await test.step("", async () => {
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toBeVisible();
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toHaveText(uiMSGs.ChangePasswordPage.Errors.WrongCurrentPassword);
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: validChangeNewPassword });
+            testInfo.annotations.push({ type: 'testPass2', description: validChangeConfirmPassword });
+        });
+    });
+
+
+    test("Verify Password Not Changed When Current Password Is Empty", async ({ page, changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(empty, validChangeNewPassword, validChangeConfirmPassword)
+        });
+
+        await test.step("", async () => {
+            const successMsg = changePasswordPage.getSubmitChangePasswordMSG()
+            await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
+        });
+
+        await test.step("", async () => {
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage);
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, validChangeNewPassword)
+
+            await expect.soft(newPage, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.LoginPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: validChangeNewPassword });
+            testInfo.annotations.push({ type: 'testPass2', description: validChangeConfirmPassword });
+        });
+    });
+
+
+                test("Verify Password Change Error MSG Appeared When Submit With Empty Fields", async ({ changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.clickSubmitButton()
+        });
+
+        await test.step("", async () => {
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toBeVisible();
+            await expect.soft(changePasswordPage.getSubmitChangePasswordMSG(), "").toHaveText(uiMSGs.ChangePasswordPage.Errors.WrongCurrentPassword);
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: empty });
+            testInfo.annotations.push({ type: 'testPass2', description: empty });
+        });
+    });
+
+
+    test("Verify Password Not Changed When When Submit With Empty Fields", async ({ page, changePasswordPage }, testInfo) => {
+
+        await test.step("", async () => {
+            await changePasswordPage.clickSubmitButton();
+        });
+
+        await test.step("", async () => {
+            const successMsg = changePasswordPage.getSubmitChangePasswordMSG()
+            await successMsg.waitFor({ state: 'visible', timeout: longTimeout });
+        });
+
+        await test.step("", async () => {
+            const newPage = await page.context().newPage();
+            await newPage.goto(uiURL.LoginPage);
+            const newLoginPage = new LoginPage(newPage);
+            await newLoginPage.enterUserNameAndPasswordAndClickLoginButton(registeredAccountUserName, empty)
+
+            await expect.soft(newPage, "").not.toHaveTitle(uiMSGs.SearchHotelPage.Title);
+            await expect.soft(newPage, "").toHaveTitle(uiMSGs.LoginPage.Title);
+
+            await newPage.close();
+            await page.bringToFront();
+        });
+
+        await test.step("", async () => {
+            testInfo.annotations.push({ type: 'testPass1', description: empty });
+            testInfo.annotations.push({ type: 'testPass2', description: empty });
+        });
+    });
 });
