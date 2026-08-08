@@ -1,4 +1,4 @@
-import { APIRequestContext } from "@playwright/test";
+import { Page } from "@playwright/test";
 
 export function getDaysDifference(dateString1: string, dateString2: string): string {
     const parseDate = (dateStr: string) => {
@@ -30,4 +30,10 @@ export function getRandomString(length: number): string {
         { length },
         () => chars[Math.floor(Math.random() * chars.length)]
     ).join("");
+}
+
+
+export async function getCurrentPageSessionID(page: Page) {
+    const sessionID = (await page.context().cookies()).find(c => c.name === 'PHPSESSID')?.value || "";
+    return sessionID;
 }
