@@ -8,10 +8,11 @@ export class ChangePasswordService {
         this.request = request;
     }
 
-    async changePassword(current_pass: string, new_password: string, re_password: string) {
-        const response = await this.request.post((endPoints.ChangePassword), {
+    async changePassword(sessionID: string, current_pass: string, new_password: string, re_password: string) {
+        const response = await this.request.post((`https://${endPoints.Domain}${endPoints.ChangePassword}`), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Cookie': `PHPSESSID=${sessionID}`,
             },
             form: {
                 current_pass: current_pass,

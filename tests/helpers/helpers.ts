@@ -1,3 +1,4 @@
+import { APIRequestContext } from "@playwright/test";
 
 export function getDaysDifference(dateString1: string, dateString2: string): string {
     const parseDate = (dateStr: string) => {
@@ -15,18 +16,26 @@ export function getDaysDifference(dateString1: string, dateString2: string): str
 }
 
 
-export function getDateShiftingOfToday(shifting:number,format:string='en-GB'):string{
-    if(shifting===0) return new Date().toLocaleDateString(format);
-    else return (new Date(new Date().setDate(new Date().getDate() +shifting)).toLocaleDateString(format))
+export function getDateShiftingOfToday(shifting: number, format: string = 'en-GB'): string {
+    if (shifting === 0) return new Date().toLocaleDateString(format);
+    else return (new Date(new Date().setDate(new Date().getDate() + shifting)).toLocaleDateString(format))
 }
 
 
 export function getRandomString(length: number): string {
     if (length <= 0) return "";
-    
+
     const chars = "abcdefghijklmnopqrstuvwxyz1234567890";
     return Array.from(
-        { length }, 
+        { length },
         () => chars[Math.floor(Math.random() * chars.length)]
     ).join("");
+}
+
+
+export async function getCurrentPageSessionID(request: APIRequestContext) {
+    const storage = await request.storageState();
+    const sessionCookie = storage.cookies.find(c => c.name === 'PHPSESSID');
+
+    return sessionCookie ? sessionCookie.value : 'Not found';
 }

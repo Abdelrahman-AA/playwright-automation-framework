@@ -41,3 +41,7 @@ ValidRegistration:
   FullName: "Abc Abd"
   Email: "abc123ab@mail.com"
   Captcha: "apihuio"
+
+ValidChangePassword:
+  NewPassword: "ac#Bnm"
+  ConfirmNewPassword: "ac#Bnm"

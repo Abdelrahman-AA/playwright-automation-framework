@@ -46,3 +46,11 @@ InvalidRegistration:
   MismatchConfirmPassword: "cfg456BB"
   WrongEmailFormat: "adho55ha@.com"
   Captcha: "ertyil"
+
+InvalidShortChangePassword:
+  NewPassword: "ac#Bn"
+  ConfirmNewPassword: "ac#Bn"
+
+InvalidNotMatchChangePassword:
+  NewPassword: "ac#Bnn"
+  ConfirmNewPassword: "ac@Nbn"

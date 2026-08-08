@@ -30,6 +30,10 @@ export class ChangePasswordPage {
     // #endregion
 
     // #region Actions
+    async goToChangePasswordPage() {
+        await this.page.goto(uiURL.ChangePasswordPage);
+    }
+
     async enterCurrentPassword(currentPassword: string) {
         await this.currentPasswordField.clear();
         await this.currentPasswordField.fill(currentPassword);
