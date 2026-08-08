@@ -7,8 +7,13 @@ on:
   #   branches: [ main, master ]
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 180
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pages: write
+      id-token: write 
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -18,10 +23,84 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+
     - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
+      id: playwright-tests
+      continue-on-error: true
+      run: |
+        rm -rf playwright-report test-results.json
+        npx playwright test --grep-invert "@manual-Captcha" --workers=1
+
+    - name: Prepare Report for GitHub Pages
+      if: always()
+      run: |
+        if [ -d "playwright-report" ]; then
+          touch playwright-report/.nojekyll
+        fi
+
+    - name: Setup Pages
+      if: always()
+      uses: actions/configure-pages@v4
+
+    - name: Upload Pages Artifact
+      if: always()
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: 'playwright-report/'
+
+    - name: Deploy to GitHub Pages
+      if: always()
+      id: deployment
+      uses: actions/deploy-pages@v4
+
+    - name: Create Issue on Failure
+      if: steps.playwright-tests.outcome == 'failure'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const repoName = context.repo.repo;
+          const ownerName = context.repo.owner;
+          const runId = context.runId;
+          const pagesUrl = `https://${ownerName}.github.io/${repoName}/`;
+          
+          let failCount = 0;
+          try {
+            const results = JSON.parse(fs.readFileSync('test-results.json', 'utf8'));
+            failCount = results.stats.unexpected || 0;
+          } catch (e) {
+            console.log("Could not read test-results.json, defaulting to multiple.");
+          }
+
+          const issueBody = `### Automated Test Failure Detected
+
+          **Summary:** We detected **${failCount > 0 ? failCount : 'multiple'}** failed test case(s) during the last run.
+
+          **Quick Links:**
+          - **Latest Live Report:** [View Current Dashboard](${pagesUrl}) 
+            *(Note: This link always shows the results of the most recent run)*
+          - **Specific Run Context:** [View Logs & Artifacts for THIS Failure](https://github.com/${ownerName}/${repoName}/actions/runs/${runId})
+            *(Go here to download the exact trace/report for this specific issue)*
+
+          **Next Steps:**
+          1. Open the **Live Report** link above to investigate.
+          2. Check the **Trace Viewer** for exact failure points.
+          3. Verify if these are known environmental issues.
+
+          ---
+          *This issue was generated automatically by GitHub Actions.*`;
+
+          await github.rest.issues.create({
+            owner: ownerName,
+            repo: repoName,
+            title: `[BUGs Detected in Run]: ${failCount > 0 ? failCount : ''} Bugs Detected in Website Automation Testes`,
+            body: issueBody,
+            labels: ['bug', 'automated', 'critical']
+          });
+
+    - name: Archive Playwright Artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
       with:
         name: playwright-report
         path: playwright-report/

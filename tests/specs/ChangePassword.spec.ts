@@ -71,7 +71,7 @@ test.describe("Happy Path Suite", { tag: "@happy @Change-Password" }, () => {
     });
 
 
-    test.only("Verify Password Changed Successfully When Valid Data", async ({ page, changePasswordPage }, testInfo) => {
+    test("Verify Password Changed Successfully When Valid Data", async ({ page, changePasswordPage }, testInfo) => {
 
         await test.step("Enter valid password details and submit", async () => {
             await changePasswordPage.enterCurrentAndNewAndConfirmPasswordsAndSubmit(registeredAccountPassword, validChangeNewPassword, validChangeConfirmPassword)
