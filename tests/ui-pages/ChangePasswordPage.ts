@@ -62,7 +62,7 @@ export class ChangePasswordPage {
 
     // #region Flows
     async enterCurrentAndNewAndConfirmPasswordsAndSubmit(currentPassword: string, newPassword: string, confirmPassword: string) {
-        await this.enterCurrentPassword(confirmPassword);
+        await this.enterCurrentPassword(currentPassword);
         await this.enterNewPassword(newPassword);
         await this.enterConfirmPassword(confirmPassword);
         await this.clickSubmitButton();

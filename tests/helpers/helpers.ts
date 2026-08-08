@@ -31,11 +31,3 @@ export function getRandomString(length: number): string {
         () => chars[Math.floor(Math.random() * chars.length)]
     ).join("");
 }
-
-
-export async function getCurrentPageSessionID(request: APIRequestContext) {
-    const storage = await request.storageState();
-    const sessionCookie = storage.cookies.find(c => c.name === 'PHPSESSID');
-
-    return sessionCookie ? sessionCookie.value : 'Not found';
-}
