@@ -28,7 +28,7 @@ jobs:
       id: playwright-tests
       continue-on-error: true
       run: |
-        rm -rf playwright-report test-results.json
+        rm -rf playwright-report all-blob-reports
         npm run test:ci
 
     - name: Prepare Report for GitHub Pages
@@ -66,10 +66,10 @@ jobs:
           
           let failCount = 0;
           try {
-            const results = JSON.parse(fs.readFileSync('test-results.json', 'utf8'));
+            const results = JSON.parse(fs.readFileSync('playwright-report/results.json', 'utf8'));
             failCount = results.stats.unexpected || 0;
           } catch (e) {
-            console.log("Could not read test-results.json, defaulting to multiple.");
+            console.log("Could not read playwright-report/results.json, defaulting to multiple.");
           }
 
           const issueBody = `### Automated Test Failure Detected
