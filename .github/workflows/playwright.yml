@@ -57,6 +57,7 @@ jobs:
       uses: actions/deploy-pages@v4
 
     - name: Create Issue on Failure
+      if: failure()
       uses: actions/github-script@v7
       with:
         script: |
@@ -67,34 +68,11 @@ jobs:
           const pagesUrl = `https://${ownerName}.github.io/${repoName}/`;
           
           let failCount = 0;
-          let hasFailures = false;
-
-          function searchForResults(dir) {
-            if (!fs.existsSync(dir)) return;
-            const files = fs.readdirSync(dir, { withFileTypes: true });
-            for (const file of files) {
-              const fullPath = `${dir}/${file.name}`;
-              if (file.isDirectory()) {
-                searchForResults(fullPath);
-              } else if (file.name.endsWith('.json')) {
-                try {
-                  const content = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-                  if (content.stats && (content.stats.unexpected > 0 || content.stats.failed > 0)) {
-                    failCount += (content.stats.unexpected || 0) + (content.stats.failed || 0);
-                    hasFailures = true;
-                  }
-                } catch (err) {
-                }
-              }
-            }
-          }
-
-          searchForResults('playwright-report');
-          searchForResults('all-blob-reports');
-
-          if (!hasFailures && failCount === 0) {
-            console.log("No test failures detected or no json result found. Skipping issue creation.");
-            return;
+          try {
+            const results = JSON.parse(fs.readFileSync('playwright-report/results.json', 'utf8'));
+            failCount = results.stats.unexpected || results.stats.failed || 0;
+          } catch (e) {
+            console.log("Could not read playwright-report/results.json, defaulting to multiple.");
           }
 
           const issueBody = `### Automated Test Failure Detected
@@ -108,7 +86,7 @@ jobs:
             *(Go here to download the exact trace/report for this specific issue)*
           - **Automation Engineer:** [Abdelrahman Abodief](https://abdelrahmanabodief.wixsite.com/abodief-tester)
 
-          **NextSteps:**
+          **Next Steps:**
           1. Open the **Live Report** link above to investigate.
           2. Check the **Trace Viewer** for exact failure points.
           3. Verify if these are known environmental issues.

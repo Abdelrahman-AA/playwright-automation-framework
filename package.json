@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:fast": "npx playwright test --grep-invert \"@Change-Password|@manual-Captcha\" --workers=4 --reporter=blob",
-    "test:slow": "npx playwright test --grep \"@Change-Password\" --workers=1 --reporter=blob",
-    "test:merge": "npx playwright merge-reports --reporter=html,json ./all-blob-reports",
-    "test:ci": "rm -rf all-blob-reports && mkdir -p all-blob-reports && (npm run test:fast || true) && cp -r blob-report/* all-blob-reports/ 2>/dev/null || true && (npm run test:slow || true) && cp -r blob-report/* all-blob-reports/ 2>/dev/null || true && npm run test:merge"
+    "test:fast": "npx playwright test --grep-invert \"@Change-Password|@manual-Captcha\" --workers=4",
+    "test:changePass": "npx playwright test --grep \"@Change-Password\" --workers=1",
+    "test:manualCaptcha": "npx playwright test --grep \"@manual-Captcha\" --workers=1",
+    "test:ci": "npx playwright test --grep-invert \"@manual-Captcha\" --workers=1"
   },
   "keywords": [],
   "author": "",
