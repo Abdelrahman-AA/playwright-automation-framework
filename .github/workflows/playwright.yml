@@ -68,24 +68,38 @@ jobs:
           
           let failCount = 0;
           let hasFailures = false;
-          try {
-            const results = JSON.parse(fs.readFileSync('playwright-report/results.json', 'utf8'));
-            failCount = results.stats.unexpected || results.stats.failed || 0;
-            if (failCount > 0) {
-              hasFailures = true;
+
+          function searchForResults(dir) {
+            if (!fs.existsSync(dir)) return;
+            const files = fs.readdirSync(dir, { withFileTypes: true });
+            for (const file of files) {
+              const fullPath = `${dir}/${file.name}`;
+              if (file.isDirectory()) {
+                searchForResults(fullPath);
+              } else if (file.name.endsWith('.json')) {
+                try {
+                  const content = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+                  if (content.stats && (content.stats.unexpected > 0 || content.stats.failed > 0)) {
+                    failCount += (content.stats.unexpected || 0) + (content.stats.failed || 0);
+                    hasFailures = true;
+                  }
+                } catch (err) {
+                }
+              }
             }
-          } catch (e) {
-            console.log("Could not read playwright-report/results.json: ", e.message);
           }
 
-          if (!hasFailures) {
-            console.log("No test failures detected. Skipping issue creation.");
+          searchForResults('playwright-report');
+          searchForResults('all-blob-reports');
+
+          if (!hasFailures && failCount === 0) {
+            console.log("No test failures detected or no json result found. Skipping issue creation.");
             return;
           }
 
           const issueBody = `### Automated Test Failure Detected
 
-          **Summary:** We detected **${failCount}** failed test case(s) during the last run.
+          **Summary:** We detected **${failCount > 0 ? failCount : 'multiple'}** failed test case(s) during the last run.
 
           **Quick Links:**
           - **Latest Live Report:** [View Current Dashboard](${pagesUrl}) 
@@ -94,7 +108,7 @@ jobs:
             *(Go here to download the exact trace/report for this specific issue)*
           - **Automation Engineer:** [Abdelrahman Abodief](https://abdelrahmanabodief.wixsite.com/abodief-tester)
 
-          **Next Steps:**
+          **NextSteps:**
           1. Open the **Live Report** link above to investigate.
           2. Check the **Trace Viewer** for exact failure points.
           3. Verify if these are known environmental issues.
@@ -105,7 +119,7 @@ jobs:
           await github.rest.issues.create({
             owner: ownerName,
             repo: repoName,
-            title: `[BUGs Detected in Run]: ${failCount} Bugs Detected in Website Automation Testes`,
+            title: `[BUGs Detected in Run]: ${failCount > 0 ? failCount : ''} Bugs Detected in Website Automation Testes`,
             body: issueBody,
             labels: ['bug', 'automated']
           });
