@@ -1,10 +1,10 @@
 name: Playwright Tests
 on:
-  workflow_dispatch:
-  # push:
-  #   branches: [ main, master ]
-  # pull_request:
-  #   branches: [ main, master ]
+  # workflow_dispatch:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 jobs:
   test:
     timeout-minutes: 180
@@ -81,6 +81,7 @@ jobs:
             *(Note: This link always shows the results of the most recent run)*
           - **Specific Run Context:** [View Logs & Artifacts for THIS Failure](https://github.com/${ownerName}/${repoName}/actions/runs/${runId})
             *(Go here to download the exact trace/report for this specific issue)*
+          - **Automation Engineer:** [Abdelrahman Abodief](https://abdelrahmanabodief.wixsite.com/abodief-tester)
 
           **Next Steps:**
           1. Open the **Live Report** link above to investigate.
@@ -95,7 +96,7 @@ jobs:
             repo: repoName,
             title: `[BUGs Detected in Run]: ${failCount > 0 ? failCount : ''} Bugs Detected in Website Automation Testes`,
             body: issueBody,
-            labels: ['bug', 'automated', 'critical']
+            labels: ['bug', 'automated']
           });
 
     - name: Archive Playwright Artifacts
