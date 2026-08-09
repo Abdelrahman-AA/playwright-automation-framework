@@ -29,7 +29,7 @@ jobs:
       continue-on-error: true
       run: |
         rm -rf playwright-report test-results.json
-        npx playwright test --grep-invert "@manual-Captcha" --workers=1
+        npm run test:ci
 
     - name: Prepare Report for GitHub Pages
       if: always()

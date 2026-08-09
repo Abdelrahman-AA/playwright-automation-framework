@@ -25,6 +25,7 @@ export class LoginService {
   }
 
   async getLoginPhpSessionId(username: string, password: string) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.login(username, password);
 
     const storage = await this.request.storageState();

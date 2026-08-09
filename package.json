@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:fast": "npx playwright test --grep-invert \"@Change-Password|@manual-Captcha\" --workers=4 --reporter=blob",
+    "test:slow": "npx playwright test --grep \"@Change-Password\" --workers=1 --reporter=blob",
+    "test:merge": "npx playwright merge-reports --reporter=html ./blob-report",
+    "test:ci": "npm run test:fast || true && npm run test:slow || true && npm run test:merge"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
